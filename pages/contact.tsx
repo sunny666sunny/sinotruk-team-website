@@ -16,23 +16,60 @@ export default function ContactPage() {
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
+  const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/0a8ca31f-bcd9-4079-8085-514663ae7ddd'
+
+  const sendToFeishu = async (data: typeof formData) => {
+    const time = new Date().toISOString().replace('T', ' ').slice(0, 19)
+    const payload = {
+      msg_type: 'interactive',
+      card: {
+        header: {
+          title: { content: 'New Inquiry from sinotrukteam.com', tag: 'plain_text' },
+          template: 'turquoise',
+        },
+        elements: [
+          { tag: 'div', text: { tag: 'lark_md', content: `**Time:** ${time}` } },
+          { tag: 'hr' },
+          { tag: 'div', text: { tag: 'lark_md', content: `**Name:** ${data.name}` } },
+          { tag: 'div', text: { tag: 'lark_md', content: `**Phone/WhatsApp:** ${data.phone}` } },
+          { tag: 'div', text: { tag: 'lark_md', content: `**Email:** ${data.email}` } },
+          { tag: 'div', text: { tag: 'lark_md', content: `**Country:** ${data.country}` } },
+          { tag: 'hr' },
+          { tag: 'div', text: { tag: 'lark_md', content: `**Message:**\n${data.message}` } },
+        ],
+      },
+    }
+    return fetch(FEISHU_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitState('loading')
     setErrorMsg('')
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      const data = await res.json()
-      if (data.success) {
+      // Try server API first, fallback to direct Feishu webhook
+      let res: Response
+      try {
+        res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        })
+      } catch {
+        res = await sendToFeishu(formData)
+      }
+
+      const resData = await res.json()
+      if (resData.code === 0 || resData.success) {
         setSubmitState('success')
         setFormData({ name: '', phone: '', email: '', country: '', message: '' })
       } else {
-        throw new Error(data.error || 'Submission failed')
+        throw new Error(resData.error || 'Submission failed')
       }
     } catch (err: any) {
       setSubmitState('error')
