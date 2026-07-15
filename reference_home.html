@@ -1,0 +1,2461 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>SINOTRUK</title>
+    <meta name="description" content="Sinotruk (China National Heavy Duty Truck Group Co., Ltd.) is a top heavy duty truck manufacturer. Explore our full range of vehicles including Dump Trucks, Tractor Trucks, Cargo Trucks, Mixer Trucks, Special Vehicles, Light Trucks, Pickups, SUVs, Semi Trailers, and New Energy Vehicles.">
+	<link rel="canonical" href="https://sinotruk.international/" />
+	<link rel="shortcut icon" type="image/x-icon" href="/image-library/SINOTRUK-Group-icon.webp" />
+    <style>
+        :root {
+            --primary-color: #18565d;
+            --secondary-color: #18565d;
+            --accent-color: #18565d;
+            --light-color: #F2F7F8;
+            --dark-color: #333;
+            --text-color: #444;
+            --font-main: 'Helvetica Neue', Arial, sans-serif;
+            --container-width: 140rem;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+            --border-radius: 0.4rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 62.5%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+        }
+
+        .logo-container a {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            margin-right: var(--spacing-sm);
+        }
+
+        .logo img {
+            height: 7rem;
+        }
+
+        .logo-text {
+           font-size: 3rem;
+            color: var(--primary-color);
+            padding: 0rem 1.2rem;
+            font-weight:800;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+	    .nav-menu li a{ text-transform: uppercase;  }
+		
+        .nav-menu a {
+            color: var(--dark-color);
+            padding: 2.2rem 1.5rem;
+            display: block;
+            font-weight: 500;
+            font-size: 1.6rem;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-color);
+        }
+
+        .dropdown {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-width: 20rem;
+            display: none;
+            z-index: 100;
+            border-radius: var(--border-radius);
+        }
+
+        .dropdown a {
+            color: var(--dark-color);
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #eee;
+			text-transform:capitalize !important;
+        }
+
+        .dropdown a:hover {
+         
+        }
+
+        .nav-menu li:hover .dropdown {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2.4rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 6rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            z-index: 999;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-nav.active {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+        }
+
+        .mobile-nav-menu li {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .mobile-nav-menu a {
+            display: block;
+            padding: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav-menu .dropdown-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-dropdown {
+            display: none;
+            padding-left: var(--spacing-md);
+        }
+
+        .mobile-dropdown.active {
+            display: block;
+        }
+
+        .mobile-dropdown a {
+            font-size: 1.6rem;
+            padding: 1.2rem 1.5rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            position: relative;
+            height: 90vh;
+            min-height: 60rem;
+            overflow: hidden;
+            margin-top: 9rem;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 81%;
+            left: 20%;
+            transform: translateY(-50%);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            max-width: 60rem;
+			z-index:9
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-md);
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 2.4rem;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+        }
+
+        .hero-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-controls {
+            position: absolute;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-dots {
+            display: flex;
+            margin: 0 var(--spacing-sm);
+        }
+
+        .hero-dot {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+
+        .hero-nav {
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-nav:hover {
+            color: var(--accent-color);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            font-size: 3.6rem;
+            position: relative;
+            padding-bottom: var(--spacing-sm);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8rem;
+            height: 0.3rem;
+            background-color: var(--accent-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.7rem;
+            color: #666;
+            margin: 0 auto var(--spacing-xl);
+        }
+
+        /* Products Section */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-1rem);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+		height:21rem;
+   
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: var(--spacing-md);
+        }
+
+        .product-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xs);
+            text-align: center;
+        }
+
+        .product-desc {
+            color: #666;
+            margin-bottom: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: var(--spacing-sm);
+        }
+
+        .product-btn {
+            padding: 1rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1.4rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .detail-btn {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        .detail-btn:hover {
+            background-color: #e5eef0;
+        }
+
+        .price-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .price-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* About Section */
+        .about-section {
+           
+            padding: var(--spacing-xl) 0;
+            position: relative;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(24, 84, 94, 0.05);
+            z-index: -1;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .about-image {
+           
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .about-text {
+            padding: var(--spacing-md);
+        }
+
+        .about-title {
+            font-size: 3.2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-color);
+        }
+
+        .about-desc {
+            font-size: 1.7rem;
+            line-height: 1.8;
+            margin-bottom: var(--spacing-md);
+            color: #555;
+        }
+
+        .about-features {
+            list-style: none;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .about-features li {
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+        }
+
+        .about-features li i {
+            color: var(--accent-color);
+            margin-right: var(--spacing-sm);
+            font-size: 1.8rem;
+        }
+
+        .about-link {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .about-link:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Technology Section */
+        .technology-section {
+            background-color: var(--light-color);
+            padding: var(--spacing-xl) 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .tech-card {
+            background-color: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tech-icon {
+            font-size: 4.5rem;
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tech-title {
+            font-size: 2.2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .tech-desc {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Global Network Section */
+        .network-section {
+            padding:16rem 0;
+            background: url('/image-library/Service-Network.webp') no-repeat center/cover;
+            position: relative;
+            color: white;
+        }
+
+  
+
+        .network-section > .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .network-section .section-title {
+            color: var(--primary-color);
+        }
+
+        .network-section .section-title::after {
+            background-color: var(--accent-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: var(--spacing-md);
+            background-color: rgba(24, 84, 94, 0.85);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: var(--spacing-xs);
+            color: white;
+        }
+
+        .stat-text {
+            font-size: 1.6rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Applications Section */
+        .applications-section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .app-card {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            height: 30rem;
+        }
+
+        .app-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .app-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .app-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: var(--spacing-md);
+            color: white;
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            margin-bottom: var(--spacing-xs);
+            color: white;
+        }
+
+        .app-desc {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* News Section */
+        .news-section {
+            background-color: var(--light-color);
+            padding: var(--spacing-xl) 0;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .news-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-image {
+            height: 20rem;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: var(--spacing-md);
+        }
+
+        .news-date {
+            font-size: 1.4rem;
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .news-title {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .news-excerpt {
+            color: #666;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .news-link {
+            color: var(--primary-color);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .news-link i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .news-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: var(--spacing-xl) 0;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 3.6rem;
+            margin-bottom: var(--spacing-md);
+            color: white;
+        }
+
+        .cta-text {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-lg);
+            max-width: 80rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .cta-btn {
+            padding: 1.5rem 3rem;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            font-size: 1.6rem;
+            transition: all 0.3s;
+        }
+
+        .cta-btn.primary {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .cta-btn.primary:hover {
+            background-color: var(--light-color);
+            transform: translateY(-3px);
+        }
+
+        .cta-btn.secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn.secondary:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: var(--spacing-xl) 0 var(--spacing-md);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .footer-col h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-md);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 4rem;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact {
+            list-style: none;
+        }
+
+        .footer-contact li {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .footer-contact i {
+            color: var(--accent-color);
+            margin-right: 1rem;
+            font-size: 1.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid #444;
+        }
+
+        .copyright {
+            font-size: 1.4rem;
+            color: #999;
+        }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-text {
+            margin-right: var(--spacing-sm);
+            font-size: 1.4rem;
+            color: #999;
+        }
+
+        .social-icons {
+            display: flex;
+        }
+
+        .social-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: var(--spacing-xs);
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+       
+            transform: translateY(-3px);
+        }
+
+        .social-icon img {
+            width: 1.8rem;
+        }
+
+     @media (max-width: 1400px) {
+
+		.hero {
+                height: auto;
+                min-height: 41rem;
+            }
+            .hero-controls{ bottom:0}
+            .hero-btn{ display:none}
+
+
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-grid,
+            .stats-grid,
+            .apps-grid,
+            .news-grid,
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+			.hero {
+                height: auto;
+                min-height: 41rem;
+            }
+            .hero-controls{ bottom:0}
+            .hero-btn{ display:none}
+        }
+
+        @media (max-width: 768px) {
+		.hero{ margin-top:7rem;}
+		.logo img{ height:5rem;margin-left:1.2rem;}
+		.logo-text{ font-size:2.5rem;}
+		.footer-col:not(:last-child) {
+                display: none;
+            }
+		 .network-section {
+            padding:6rem 0;}
+		 .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+		 .products-grid {
+         
+            grid-template-columns: repeat(1, 1fr);
+          
+        }
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+				margin-right:2rem;
+            }
+            
+            .mobile-nav {
+                display: block;
+            }
+            
+            .hero {
+                height: auto;
+                min-height: 19rem;
+            }
+            .hero-btn{ display:none}
+            .hero-content {
+                left: 5%;
+                right: 5%;
+                text-align: center;
+            }
+            .hero-controls{bottom:0}
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 2rem;
+            }
+            
+            .tech-grid,
+            .stats-grid,
+            .apps-grid,
+            .news-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: var(--spacing-lg) 0;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.8rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .social-links {
+                margin-top: var(--spacing-md);
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+	<link rel="stylesheet" type="text/css" href="/style/sinotruk-fa.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="/" class="logo"><img src="/image-library/SINOTRUK-Group-icon.webp" alt="Sinotruk logo">
+                <div class="logo-text">SINOTRUK</div>  </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                
+                 <li>
+                    <a href="/about/">About Us</a>
+                    <div class="dropdown">
+                        <a href="/about/who-we-are/">Who We Are</a>
+                        <a href="/about/our-journey/">Our Journey</a>
+                        <a href="/about/our-facilities/">Our Facilities</a>
+                        <a href="/about/social-responsibility/">Social Responsibility</a>
+                    </div>
+                </li>
+                <style> 
+  .truck-menu {
+    width: 100%;
+    position: fixed;
+    left: 0;
+}
+
+.truck-menu ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    gap: 0.9375rem;
+    justify-content: space-between;
+}
+
+.truck-menu li {
+    flex: 1;
+    min-width: calc(16.666% - 0.9375rem);
+    background: #f8fafc;
+    border-radius: 0.625rem;
+    padding: 0.9375rem;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.truck-menu li:hover {
+    transform: translateY(-0.3125rem);
+    box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.12);
+    background: #fff;
+}
+
+.truck-menu li > a:first-child {
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #18565d;
+    padding: 1rem 0;
+    margin-bottom: 0.625rem;
+    border-bottom: 0.125rem solid #e2e8f0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.truck-menu li > a:first-child:hover {
+    color: #18565d;
+}
+
+.truck-menu li > a:not(:first-child) {
+   display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    text-decoration: none;
+    color: #2d3748;
+    border-radius: 1.375rem;
+    transition: background 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.truck-menu li > a:not(:first-child):hover {
+    background: #edf2f7;
+}
+
+.truck-menu li > a:not(:first-child) > div:first-child {
+    flex: 1;
+    font-weight: 500;
+    padding-right: 0.625rem;
+}
+
+.truck-menu li > a:not(:first-child) > div:last-child {
+    width: 11rem;
+    height:8rem;
+    
+   
+}
+
+.truck-menu li > a:not(:first-child) > div:last-child img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+      
+    </style>
+                <li>
+                    <a href="/products/">Products</a>
+					
+					  <div class="dropdown truck-menu">
+			 
+            <ul>
+                <li>
+                    <a href="/products/heavy-truck/" target="_blank">Heavy Truck</a>
+                    <a href="/products/heavy-truck/dump-truck/#list" target="_blank">
+                        <div>Dump Truck</div>
+                        <div>
+                            <img src="/image-library/Heavy-Truck.png">
+                        </div>
+                    </a>
+                    <a href="/products/heavy-truck/tractor-truck/#list" target="_blank">
+                        <div>Tractor Truck</div>
+                        <div>
+                            <img src="/image-library/Tractor-Truck.png">
+                        </div>
+                    </a>
+                    <a href="/products/heavy-truck/cargo-truck/#list" target="_blank">
+                        <div>Cargo Truck</div>
+                        <div>
+                            <img src="/image-library/Cargo-Truck-1.png">
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/products/light-truck/" target="_blank">Light Truck</a>
+                    <a href="/products/light-truck/cargo-truck-light-truck/#list" target="_blank">
+                        <div>Cargo Truck</div>
+                        <div>
+                            <img src="/image-library/Cargo-Truck.png">
+                        </div>
+                    </a>
+                    <a href="/products/light-truck/tipper-truck-light-truck/#list" target="_blank">
+                        <div>Tipper Truck</div>
+                        <div>
+                            <img src="/image-library/Tipper-Truck.png">
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/products/special-vehicle/" target="_blank">Special Vehicle</a>
+                    <a href="/products/special-vehicle/water-tanker/#list" target="_blank">
+                        <div>Water Tanker</div>
+                        <div>
+                            <img src="/image-library/1-water-tanker.png">
+                        </div>
+                    </a>
+                    <a href="/products/special-vehicle/oil-tanker/#list" target="_blank">
+                        <div>Oil Tanker</div>
+                        <div>
+                            <img src="/image-library/oil-tanker.png">
+                        </div>
+                    </a>
+                    <a href="/products/special-vehicle/mixer-truck/#list" target="_blank">
+                        <div>Mixer Truck</div>
+                        <div>
+                            <img src="/image-library/mixer-truck.png">
+                        </div>
+                    </a>
+                    <a href="/products/special-vehicle/other-truck/#list" target="_blank">
+                        <div>Other Truck</div>
+                        <div>
+                            <img src="/image-library/howo-Truck-Crane.png">
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/products/light-vehicle/" target="_blank">Light Vehicle</a>
+                    <a href="/products/light-vehicle/pickup/#list" target="_blank">
+                        <div>Pickup</div>
+                        <div>
+                            <img src="/image-library/howo-Pickup.png">
+                        </div>
+                    </a>
+                    <a href="/products/light-vehicle/suv/#list" target="_blank">
+                        <div>SUV</div>
+                        <div>
+                            <img src="/image-library/howo-SUV.png">
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/products/semi-trailer/" target="_blank">Semi Trailer</a>
+                    <a href="/products/semi-trailer/semi-trailer-semi-trailer/#list" target="_blank">
+                        <div>Semi Trailer</div>
+                        <div>
+                            <img src="/image-library/howo-Semi-Trailer-1.png">
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/products/new-energy-vehicle/" target="_blank">New Energy Vehicle</a>
+                    <a href="/products/new-energy-vehicle/new-energy-vehicle-new-energy-vehicle/#list" target="_blank">
+                        <div>New Energy Vehicle</div>
+                        <div>
+                            <img src="/image-library/howo-Energy-Vehicle.png">
+                        </div>
+                    </a>
+                </li>
+            </ul>
+    
+                  
+                     
+                    </div>
+                </li>
+                
+                <li>
+                    <a href="/parts/">Parts</a>
+                    <div class="dropdown">
+                        <a href="/parts/cabin-body/">Cabin & Body</a>
+                        <a href="/parts/engine/">Engine</a>
+                        <a href="/parts/gearbox/">Gearbox</a>
+                        <a href="/parts/axle/">Axle</a>
+                        <a href="/parts/chassis/">Chassis</a>
+                        <a href="/parts/other/">Other Parts</a>
+                    </div>
+                </li>
+                
+                <li><a href="/news/">News</a></li>
+                
+                <li><a href="/video/">Video</a></li>
+                
+                <li>
+                    <a href="/service/">Service</a>
+                    <div class="dropdown">
+                        <a href="/service/after-sales-service/">After-sales Service</a>
+                        <a href="/service/service-broadcast/">Service Broadcast</a>
+                        <a href="/service/maintenance-manual/">Maintenance Manual</a>
+                    </div>
+                </li>
+                
+                <li><a href="/contact/">Contact Us</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-menu">
+            <li><a href="/">Home</a></li>
+            
+            <li>
+                <a href="/about/" class="dropdown-toggle">About Us <i class="fas fa-chevron-down"></i></a>
+                <div class="mobile-dropdown">
+                    <a href="/about/who-we-are/">Who We Are</a>
+                    <a href="/about/our-journey/">Our Journey</a>
+                    <a href="/about/our-facilities/">Our Facilities</a>
+                    <a href="/about/social-responsibility/">Social Responsibility</a>
+                </div>
+            </li>
+            
+            <li>
+                <a href="/products/" class="dropdown-toggle">Products <i class="fas fa-chevron-down"></i></a>
+                <div class="mobile-dropdown">
+                   <a href="/products/heavy-truck/">Heavy Truck</a>
+<a href="/products/light-truck/">Light Truck</a>
+<a href="/products/special-vehicle/">Special Vehicle</a>
+<a href="/products/light-vehicle/">Light Vehicle</a>
+<a href="/products/semi-trailer/">Semi Trailer</a>
+<a href="/products/new-energy-vehicle/">New Energy Vehicle</a>
+                </div>
+				
+            </li>
+            
+            <li>
+                <a href="/parts/" class="dropdown-toggle">Parts <i class="fas fa-chevron-down"></i></a>
+                <div class="mobile-dropdown">
+                    <a href="/parts/cabin-body/">Cabin & Body</a>
+                    <a href="/parts/engine/">Engine</a>
+                    <a href="/parts/gearbox/">Gearbox</a>
+                    <a href="/parts/axle/">Axle</a>
+                    <a href="/parts/chassis/">Chassis</a>
+                    <a href="/parts/other/">Other Parts</a>
+                </div>
+            </li>
+            
+            <li>
+                <a href="/news/">News</a>
+                
+            </li>
+            
+            <li><a href="/video/">Video</a></li>
+            
+            <li>
+                <a href="/service/" class="dropdown-toggle">Service <i class="fas fa-chevron-down"></i></a>
+                <div class="mobile-dropdown">
+                    <a href="/service/after-sales-service/">After-sales Service</a>
+                    <a href="/service/service-broadcast/">Service Broadcast</a>
+                    <a href="/service/maintenance-manual/">Maintenance Manual</a>
+                </div>
+            </li>
+            
+            <li><a href="/contact/">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-slide active">
+            <img src="/image-library/Howo-TX-8x4-Tipper-Truck-1.webp" alt="Sinotruk Howo Truck">
+            <div class="hero-content">
+                <a href="/products/heavy-truck/dump-truck/" class="hero-btn">View Details<i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <div class="hero-slide">
+            <img src="/image-library/Howo-NX-Tractor-Truck.webp" alt="Sinotruk Tractor Truck">
+            <div class="hero-content">
+                <a href="/products/heavy-truck/tractor-truck/" class="hero-btn">View Details<i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <div class="hero-slide">
+            <img src="/image-library/howo-TX-mixer-truck-1.webp" alt="Sinotruk Mixer Truck">
+            <div class="hero-content">
+                <a href="/products/special-vehicle/" class="hero-btn">View Details<i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <div class="hero-controls">
+            <div class="hero-nav prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="hero-dots">
+                <span class="hero-dot active"></span>
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+            </div>
+            <div class="hero-nav next"><i class="fas fa-chevron-right"></i></div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Products Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">WELCOME TO SINOTRUK</h2>
+            <p class="section-subtitle">
+SINOTRUK's products cover multiple fields, dedicated to meeting the needs of various users. Our diverse range of models â from heavy-duty trucks to light commercial vehicles â serves a wide spectrum of applications, including urban logistics, building and construction transport, long-distance transportation, and specialized operations, ensuring we deliver the optimal solution for every scenario.
+</p>
+            
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/heavy-truck/">
+                            <img src="/image-library/Heavy-Truck.webp" alt="Heavy Truck">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Heavy Truck</h3>
+                        <p class="product-desc">Robust and durable, suitable for various construction scenarios</p>
+                        <div class="product-actions">
+                            <a href="/products/heavy-truck/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/light-truck/">
+                            <img src="/image-library/Light-Truck.webp" alt="Light Truck">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Light Truck</h3>
+                        <p class="product-desc">Fuel-efficient and powerful for long-distance logistics</p>
+                        <div class="product-actions">
+                            <a href="/products/light-truck/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/special-vehicle/">
+                            <img src="/image-library/Special-Vehicle.webp" alt="Special Vehicle">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Special Vehicle</h3>
+                        <p class="product-desc">Versatile design for various cargo transportation needs</p>
+                        <div class="product-actions">
+                            <a href="/products/special-vehicle/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/light-vehicle/">
+                            <img src="/image-library/Light-Vehicle.webp" alt="Light Vehicle">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Light Vehicle</h3>
+                        <p class="product-desc">Specialized design for concrete transportation</p>
+                        <div class="product-actions">
+                            <a href="/products/light-vehicle/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/semi-trailer/">
+                            <img src="/image-library/Semi-Trailer.webp" alt="Semi Trailer">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Semi Trailer</h3>
+                        <p class="product-desc">Designed for safe transportation of liquids and gases</p>
+                        <div class="product-actions">
+                            <a href="/products/semi-trailer/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/products/new-energy-vehicle/">
+                            <img src="/image-library/New-Energy-Vehicle.webp" alt="New Energy Vehicle">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">New Energy Vehicle</h3>
+                        <p class="product-desc">High-capacity trailers for efficient logistics operations</p>
+                        <div class="product-actions">
+                            <a href="/products/new-energy-vehicle/" class="product-btn detail-btn">View Details</a>
+                            <a href="/contact/" class="product-btn price-btn">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="/image-library/about-SINOTRUK.webp" alt="Sinotruk about">
+                </div>
+                
+                <div class="about-text">
+                    <h2 class="about-title">About Sinotruk</h2>
+                    <p class="about-desc">China National Heavy Duty Truck Group Co., Ltd. (SINOTRUK) is the cradle of China's heavy-duty automobile industry and a leading enterprise in the domestic heavy-duty truck sector.</p>
+                    
+                    <ul class="about-features">
+                        <li><i class="fas fa-check-circle"></i> Over 60 years of heavy-duty truck R&D and Our Facilities experience</li>
+                        <li><i class="fas fa-check-circle"></i> Products exported to more than 100 countries and regions worldwide</li>
+                        <li><i class="fas fa-check-circle"></i> National-level enterprise technology center and post-doctoral research workstation</li>
+                        <li><i class="fas fa-check-circle"></i> Annual production capacity of over 300,000 vehicles</li>
+                    </ul>
+                    
+                    <p class="about-desc">We always adhere to technological innovation as the driving force and customer needs as the orientation to provide customers with high-quality products and excellent services.</p>
+                    
+                    <a href="/about/" class="about-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+<section class="technology-section"> <div class="container"> <h2 class="section-title">Technology Advantages</h2> <p class="section-subtitle">Innovative technology creates excellent products and wins world recognition</p>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3 class="tech-title">Power System</h3>
+                <p class="tech-desc">Equipped with self-developed high-power energy-saving engines that deliver excellent fuel economy while meeting both China VI and Euro VI emission standards.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h3 class="tech-title">Intelligent Driving</h3>
+                <p class="tech-desc">Develops L4 autonomous driving trucks utilizing multi-sensor fusion and dual-mode positioning systems for specific highway operations.</p>
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="tech-title">Safety Technology</h3>
+                <p class="tech-desc">Incorporates high-strength steel structures with multiple active and passive safety systems to ensure comprehensive driving protection.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3 class="tech-title">Extreme Environment Adaptation</h3>
+                <p class="tech-desc">Vehicles undergo extensive real-world testing to ensure reliable operation in extreme cold conditions and high-altitude regions worldwide.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="tech-title">Emission Control</h3>
+                <p class="tech-desc">Advanced emission control systems utilizing SCR technology to meet global environmental standards with high fuel efficiency.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3 class="tech-title">Global Service Network</h3>
+                <p class="tech-desc">Comprehensive worldwide service coverage with extensive support points along major international logistics routes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Global Network Section -->
+    <section class="network-section">
+        <div class="container">
+            <h2 class="section-title">Global Sales Layout</h2>
+            <p class="section-subtitle">Complete service network nationwide providing timely and professional support</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-text">Countries & Regions Sold</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">30000+</div>
+                    <div class="stat-text">Vehicles Operating Worldwide</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">1500+</div>
+                    <div class="stat-text">Global Dealer Networks</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">3770+</div>
+                    <div class="stat-text">Global Service Networks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section class="applications-section"> <div class="container"> <h2 class="section-title">Industry Applications</h2> <p class="section-subtitle">Widely used in various industries to create maximum value for customers</p>
+	        <div class="apps-grid">
+            <div class="app-card">
+                <img src="/image-library/Construction.webp" alt="Construction">
+                <div class="app-overlay">
+                    <h3 class="app-title">Construction</h3>
+                    <p class="app-desc">Dump trucks and concrete mixer trucks provide reliable solutions for infrastructure and building projects worldwide</p>
+                </div>
+            </div>
+            
+            <div class="app-card">
+                <img src="/image-library/Logistics-Transportation.webp" alt="Logistics">
+                <div class="app-overlay">
+                    <h3 class="app-title">Logistics & Transportation</h3>
+                    <p class="app-desc">Tractor heads and cargo trucks deliver efficient long-haul and distribution services across global supply chains</p>
+                </div>
+            </div>
+            
+            <div class="app-card">
+                <img src="/image-library/Mining.webp" alt="Mining">
+                <div class="app-overlay">
+                    <h3 class="app-title">Mining</h3>
+                    <p class="app-desc">Heavy-duty mining trucks and dump trucks engineered for extreme conditions in mining operations globally</p>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <img src="/image-library/Port-Operations.webp" alt="Port Operations">
+                <div class="app-overlay">
+                    <h3 class="app-title">Port Operations</h3>
+                    <p class="app-desc">Specialized terminal tractors and container handlers optimize cargo movement in ports and logistics hubs</p>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <img src="/image-library/Energy-Sector.webp" alt="Energy Sector">
+                <div class="app-overlay">
+                    <h3 class="app-title">Energy Sector</h3>
+                    <p class="app-desc">Fuel tankers and specialized vehicles support oil, gas, and renewable energy projects across diverse terrains</p>
+                </div>
+            </div>
+
+            <div class="app-card">
+                <img src="/image-library/Municipal-Services.webp" alt="Municipal Services">
+                <div class="app-overlay">
+                    <h3 class="app-title">Municipal Services</h3>
+                    <p class="app-desc">Garbage trucks, sweepers, and firefighting vehicles enhance urban maintenance and public safety services</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- News Section -->
+    <section class="news-section">
+        <div class="container">
+            <h2 class="section-title">News & Events</h2>
+            <p class="section-subtitle">Latest company updates and industry information</p>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="/img/HOWO-TX-EV-8.webp" alt="How to Become a Dump Truck Driver and Operate a HOWO Orange Dump Truck">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">September 28, 2025</div>
+                        <h3 class="news-title">How to Become a Dump Truck Driver and Operate a HOWO Orange Dump Truck</h3>
+                        <p class="news-excerpt">Have you ever considered a career where you're in control of powerful machinery, enjoy competitive pay, and have the opportunity to work on essential infrastructure projects...</p>
+                        <a href="/news/how-to-become-a-dump-truck-driver-and-operate-a-howo-orange-dump-truck/" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="/img/HOWO-TX-EV-8x4-Tippe3.webp" alt="How to Drive a Manual Transmission HOWO Truck for Beginners Starting Tips and Automatic vs Manual Options
+">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">September 28, 2025</div>
+                        <h3 class="news-title">How to Drive a Manual Transmission HOWO Truck for Beginners Starting Tips and Automatic vs Manual Options
+</h3>
+                        <p class="news-excerpt">Stepping into the cab of a HOWO truck for the first time can be intimidating...</p>
+                        <a href="/news/how-to-drive-a-manual-transmission-howo-truck-for-beginners-starting-tips-and-automatic-vs-manual-options/" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="/img/HOWO-TX-6x4-tipper-4.webp" alt="Howo Truck Price in the Philippines and China How Much Does a Howo Dump Truck Cost Price List Included">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">September 28, 2025</div>
+                        <h3 class="news-title">Howo Truck Price in the Philippines and China How Much Does a Howo Dump Truck Cost Price List Included
+</h3>
+                        <p class="news-excerpt">If you're in the construction, mining, or heavy transport industry in the Philippines, you've likely considered Howo...</p>
+                        <a href="/news/howo-truck-price-in-the-philippines-and-china-how-much-does-a-howo-dump-truck-cost-price-list-included/" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+ 
+ 
+ 
+ 
+ 
+    <style>
+        :root {
+            --primary-color: #18565d;
+            --primary-light: #2a7d87;
+            --primary-lighter: #e0f0f2;
+            --text-color: #333;
+            --light-text: #666;
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --spacing-md: 10px;
+            --secondary-color: #666;
+        }
+      
+        .category-system{ 
+          padding: var(--spacing-xl) 0;
+        }
+      
+        .category-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+			
+        }
+	 
+        .category-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .category-label {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-label i {
+            margin-right: 8px;
+        }
+        
+        .category-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .category-option {
+            padding: 8px 16px;
+            background: var(--primary-lighter);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        .category-option:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .category-sub-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            width: 100%;
+            text-align: center;
+        }
+        
+        .category-sub-option {
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 0.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+            color: var(--text-color);
+			border-radius: var(--border-radius);
+        }
+        
+        .category-sub-option:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .category-filter-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .category-filter-toggle:hover {
+            background: var(--primary-lighter);
+        }
+        
+        .category-filter-toggle i {
+            margin-right: 5px;
+        }
+        
+        .category-section-header {
+            text-align: center;
+            margin-bottom: .5rem;
+        }
+
+        .category-section-title {
+               text-align: center;
+            margin-bottom: var(--spacing-lg);
+            font-size: 3.6rem;
+            position: relative;
+            padding-bottom: var(--spacing-sm);
+        }
+
+      
+		   .category-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8rem;
+            height: 0.3rem;
+            background-color: var(--accent-color);
+        }
+
+
+        .category-section-subtitle {
+            color: var(--secondary-color);
+            margin: 0 auto;
+			font-size:1.7rem;
+        }
+        
+        .category-note {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: var(--primary-lighter);
+            border-radius: 8px;
+            color: var(--primary-color);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+         @media (max-width: 1400px) {
+		.category-system{padding:var(--spacing-xl) var(--spacing-md)}
+		}
+        /* Responsive design */
+        @media (max-width: 992px) {
+		.category-system{padding:var(--spacing-xl) var(--spacing-md)}
+            .category-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .category-label {
+                min-width: auto;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+		.category-system{padding:var(--spacing-xl) var(--spacing-md)}
+            .category-options {
+                gap: 8px;
+            }
+            
+            .category-option {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .category-sub-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+             
+        }
+        
+        @media (max-width: 576px) {
+            .category-option {
+                padding: 5px 10px;
+                font-size: 0.85rem;
+            }
+            
+            .category-filter-toggle {
+                display: block;
+            }
+            
+            .category-options.collapsed {
+                height: 40px;
+                overflow: hidden;
+            }
+            
+            .category-sub-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+ 
+    <div class="container category-system">
+        <div class="category-section-header">
+            <h2 class="category-section-title">Product Categories</h2>
+            <p class="category-section-subtitle">Browse our complete range of vehicle categories</p>
+        </div>
+        
+        <!-- Heavy Truck -->
+        <div class="category-row" style="margin-top:5rem;">
+            <div class="category-label">
+                <i class="fas fa-truck-moving"></i> Heavy Truck
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/howo-tx-6x4-dump-truck/" class="category-sub-option">Howo TX 6X4 Dump Truck</a>
+                    <a href="/products/howo-tx-8x4-dump-truck/" class="category-sub-option">Howo TX 8X4 Dump Truck</a>
+                    <a href="/products/howo-n-6x4-dump-truck/" class="category-sub-option">Howo N 6X4 Dump Truck</a>
+                    <a href="/products/howo-n-8x4-dump-truck/" class="category-sub-option">Howo N 8X4 Dump Truck</a>
+                    <a href="/products/howo-6x4-dump-truck/" class="category-sub-option">Howo 6X4 Dump Truck</a>
+                    <a href="/products/howo-8x4-dump-truck/" class="category-sub-option">Howo 8X4 Dump Truck</a>
+                    <a href="/products/howo-t7-6x4-tractor-truck/" class="category-sub-option">Howo T7 6X4 Tractor Truck</a>
+                    <a href="/products/howo-tx-6x4-tractor-truck/" class="category-sub-option">Howo TX 6X4 Tractor Truck</a>
+                    <a href="/products/howo-n-4x2-tractor-truck/" class="category-sub-option">Howo N 4X2 Tractor Truck</a>
+                    <a href="/products/howo-n-6x4-tractor-truck/" class="category-sub-option">Howo N 6X4 Tractor Truck</a>
+                    <a href="/products/howo-6x4-tractor-truck/" class="category-sub-option">Howo 6X4 Tractor Truck</a>
+                    <a href="/products/howo-4x2-tractor-truck/" class="category-sub-option">Howo 4X2 Tractor Truck</a>
+                    <a href="/products/howo-6x4-cargo-truck/" class="category-sub-option">Howo 6X4 Cargo Truck</a>
+                    <a href="/products/howo-tx-4x2-cargo-truck-2/" class="category-sub-option">Howo TX 4X2 Cargo Truck</a>
+                    <a href="/products/howo-tx-4x2-cargo-truck/" class="category-sub-option">Howo TX 4X2 Cargo Truck</a>
+                    <a href="/products/howo-tx-8x4-cargo-truck/" class="category-sub-option">Howo TX 8X4 Cargo Truck</a>
+                    <a href="/products/howo-n-6x4-cargo-truck/" class="category-sub-option">Howo N 6X4 Cargo Truck</a>
+                    <a href="/products/howo-n-8x4-cargo-truck/" class="category-sub-option">Howo N 8X4 Cargo Truck</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Light Truck -->
+        <div class="category-row">
+            <div class="category-label">
+                <i class="fas fa-truck-pickup"></i> Light Truck
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/howo-cargo-truck/" class="category-sub-option">Howo Cargo Truck</a>
+                    <a href="/products/howo-light-cargo-truck/" class="category-sub-option">Howo Light Cargo Truck</a>
+                    <a href="/products/howo-box-van-cargo-truck/" class="category-sub-option">Howo Box Van Cargo Truck</a>
+                    <a href="/products/howo-light-stake-truck/" class="category-sub-option">Howo Light Stake Truck</a>
+                    <a href="/products/howo-refrigerator-cargo-truck/" class="category-sub-option">Howo Refrigerator Cargo Truck</a>
+                    <a href="/products/howo-wing-van-cargo-truck/" class="category-sub-option">Howo Wing Van Cargo Truck</a>
+                    <a href="/products/howo-mini-tipper-truck/" class="category-sub-option">Howo Mini Tipper Truck</a>
+                    <a href="/products/howo-light-duty-tipper-truck/" class="category-sub-option">Howo Light Duty Tipper Truck</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Special Vehicle -->
+        <div class="category-row">
+            <div class="category-label">
+                <i class="fas fa-truck-monster"></i> Special Vehicle
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/sinotruck-howo-water-tanker-2/" class="category-sub-option">Sinotruck Howo Water Tanker</a>
+                    <a href="/products/sinotruck-howo-water-tanker/" class="category-sub-option">Sinotruck Howo Water Tanker</a>
+                    <a href="/products/sinotruck-howo-oil-tanker/" class="category-sub-option">Sinotruck Howo Oil Tanker</a>
+                    <a href="/products/sinotruck-howo-8x4-oil-tanker/" class="category-sub-option">Sinotruck Howo 8X4 Oil Tanker</a>
+                    <a href="/products/sinotruck-howo-6x4-oil-tanker-2/" class="category-sub-option">Sinotruck Howo 6X4 Oil Tanker</a>
+                    <a href="/products/sinotruck-howo-6x4-oil-tanker/" class="category-sub-option">Sinotruck Howo 6X4 Oil Tanker</a>
+                    <a href="/products/howo-mixer-truck-n-6x4/" class="category-sub-option">Howo Mixer Truck N 6X4</a>
+                    <a href="/products/howo-mixer-truck-n-8x4/" class="category-sub-option">Howo Mixer Truck N 8X4</a>
+                    <a href="/products/howo-mixer-truck-tx-8x4/" class="category-sub-option">Howo Mixer Truck TX 8X4</a>
+                    <a href="/products/howo-mixer-truck-t7h-6x4/" class="category-sub-option">Howo Mixer Truck T7H 6X4</a>
+                    <a href="/products/howo-mixer-truck-t7h-8x4/" class="category-sub-option">Howo Mixer Truck T7H 8X4</a>
+                    <a href="/products/howo-7-mixer-truck-6x4/" class="category-sub-option">Howo 7 Mixer Truck 6X4</a>
+                    <a href="/products/sinotruck-howo-bitumen-tank-2/" class="category-sub-option">Sinotruck Howo Bitumen Tank</a>
+                    <a href="/products/sinotruck-howo-bitumen-tank/" class="category-sub-option">Sinotruck Howo Bitumen Tank</a>
+                    <a href="/products/sinotruck-howo-garbage-truck-2/" class="category-sub-option">Sinotruck Howo Garbage Truck</a>
+                    <a href="/products/sinotruck-howo-garbage-truck/" class="category-sub-option">Sinotruck Howo Garbage Truck</a>
+                    <a href="/products/sinotruck-howo-mounted-crane-truck/" class="category-sub-option">Sinotruck Howo Mounted Crane Truck</a>
+                    <a href="/products/sinotruck-howo-small-truck-crane/" class="category-sub-option">Sinotruck Howo Small Truck Crane</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Light Vehicle -->
+        <div class="category-row">
+            <div class="category-label">
+                <i class="fas fa-car"></i> Light Vehicle
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/sinotruck-pickup-off-road-version/" class="category-sub-option">Sinotruck Pickup Off-road Version</a>
+                    <a href="/products/sinotruck-pickup-passenger-version/" class="category-sub-option">Sinotruck Pickup Passenger Version</a>
+                    <a href="/products/sinotruck-pickup-commercial-version/" class="category-sub-option">Sinotruck Pickup Commercial Version</a>
+                    <a href="/products/sinotruk-vgv-vx7/" class="category-sub-option">Sinotruk VGV VX7</a>
+                    <a href="/products/sinotruk-vgv-u70pro/" class="category-sub-option">Sinotruk VGV U70PRO</a>
+                    <a href="/products/sinotruk-vgv-u75plus/" class="category-sub-option">Sinotruk VGV U75PLUS</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Semi Trailer -->
+        <div class="category-row">
+            <div class="category-label">
+                <i class="fas fa-trailer"></i> Semi Trailer
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/sinotruck-dump-semi-trailer-truck/" class="category-sub-option">Sinotruck Dump Semi Trailer Truck</a>
+                    <a href="/products/sinotruck-fuel-tanker-trailer-truck/" class="category-sub-option">Sinotruck Fuel Tanker Trailer Truck</a>
+                    <a href="/products/sinotruck-fence-semi-trailer-truck/" class="category-sub-option">Sinotruck Fence Semi Trailer Truck</a>
+                    <a href="/products/sinotruck-sidewall-semi-trailer-truck/" class="category-sub-option">Sinotruck Sidewall Semi Trailer Truck</a>
+                    <a href="/products/sinotruck-flatbed-semi-trailer-truck/" class="category-sub-option">Sinotruck Flatbed Semi Trailer Truck</a>
+                    <a href="/products/sinotruck-low-bed-semi-trailer-truck/" class="category-sub-option">Sinotruck Low Bed Semi Trailer Truck</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Energy Vehicle -->
+        <div class="category-row">
+            <div class="category-label">
+                <i class="fas fa-charging-station"></i> New Energy Vehicle
+            </div>
+            <div class="category-options">
+                <div class="category-sub-options">
+                    <a href="/products/howo-pure-electric-light-truck/" class="category-sub-option">Howo Pure Electric Light Truck</a>
+                    <a href="/products/howo-pure-electric-dump-truck/" class="category-sub-option">Howo Pure Electric Dump Truck</a>
+                    <a href="/products/howo-pure-electric-tractor-truck/" class="category-sub-option">Howo Pure Electric Tractor truck</a>
+                    <a href="/products/howo-pure-electric-single-side-dock-tractor-truck/" class="category-sub-option">Howo Pure Electric Single Side Dock Tractor Truck</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ 
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to find your perfect truck?</h2>
+            <p class="cta-text">Contact us for the latest product information and professional consultation, our sales team will provide you with the most suitable solution</p>
+            
+            <div class="cta-buttons">
+                <a href="/contact/" class="cta-btn primary">Request Quote <i class="fas fa-arrow-right"></i></a>
+                <a href="/products/" class="cta-btn secondary">Browse Products <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>About Us</h3>
+                    <ul class="footer-links">
+                      <li><a href="/about/who-we-are/">Who We Are</a></li>
+                      <li><a href="/about/our-journey/">Our Journey</a></li>
+                      <li><a href="/about/our-facilities/">Our Facilities</a></li>
+                      <li><a href="/about/social-responsibility/">Social Responsibility</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Products</h3>
+                    <ul class="footer-links">
+                        <li><a href="/products/heavy-truck/">Heavy Truck</a></li>
+                        <li><a href="/products/light-truck/">Light Truck</a></li>
+                        <li><a href="/products/special-vehicle/">Special Vehicle</a></li>
+                        <li><a href="/products/light-vehicle/">Light Vehicle</a></li>
+                        <li><a href="/products/semi-trailer/">Semi Trailer</a></li>
+						<li><a href="/products/new-energy-vehicle/">New Energy Vehicle</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Parts</h3>
+                    <ul class="footer-links">
+                        <li><a href="/parts/cabin-body/">Cabin & Body</a></li>
+                        <li><a href="/parts/engine/">Engine</a></li>
+                        <li><a href="/parts/gearbox/">Gearbox</a></li>
+                        <li><a href="/parts/axle/">Axle</a></li>
+                        <li><a href="/parts/chassis/">Chassis</a></li>
+                        <li><a href="/parts/other/">Other Parts</a></li>
+                    </ul>
+                </div>
+                
+				<div class="footer-col">
+                    <h3>Service</h3>
+                    <ul class="footer-links">
+                      <li><a href="/service/after-sales-service/">After-sales Service</a></li>
+                      <li><a href="/service/service-broadcast/">Service Broadcast</a></li>
+                      <li><a href="/service/maintenance-manual/">Maintenance Manual</a></li>
+                    </ul>
+                </div>
+				
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> No. 777 Huaâao Road, Innovation Zone, Jinan, Shandong Province, China</li>
+                        <li><i class="fas fa-envelope"></i>info@sinotruk.international</li>
+                        <li><i class="fas fa-clock"></i> Monday-Saturday 8:00-17:30</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    Â© 2025 China National Heavy Duty Truck Group Co., Ltd. All rights reserved.
+                </div>
+                
+                <div class="social-links">
+                    <div class="social-text">Follow us:</div>
+                    <div class="social-icons">
+                        <a target="_blank" href="https://www.facebook.com/SinotrukOfficial" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a target="_blank" href="https://x.com/SinotrukGroup" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a target="_blank" href="https://www.tiktok.com/@sinotruk.international?_t=ZT-8vb2srG0gm2&_r=1" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                        <a target="_blank" href="https://www.youtube.com/@SinotrukOfficial" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+  <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        });
+        
+        // Mobile dropdown toggle
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.parentElement.querySelector('.mobile-dropdown').classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-chevron-down');
+                this.querySelector('i').classList.toggle('fa-chevron-up');
+            });
+        });
+        
+        // Hero slider functionality
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const heroDots = document.querySelectorAll('.hero-dot');
+        let currentSlide = 0;
+        
+        function showSlide(n) {
+            heroSlides.forEach(slide => slide.classList.remove('active'));
+            heroDots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (n + heroSlides.length) % heroSlides.length;
+            
+            heroSlides[currentSlide].classList.add('active');
+            heroDots[currentSlide].classList.add('active');
+        }
+        
+        document.querySelector('.hero-nav.prev').addEventListener('click', function() {
+            showSlide(currentSlide - 1);
+        });
+        
+        document.querySelector('.hero-nav.next').addEventListener('click', function() {
+            showSlide(currentSlide + 1);
+        });
+        
+        heroDots.forEach((dot, index) => {
+            dot.addEventListener('click', function() {
+                showSlide(index);
+            });
+        });
+        
+        // Auto slide
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+    </script>
+	<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.images;
+  
+ 
+  for (let i = 0; i < images.length; i++) {
+    if (i < 3) { 
+      images[i].loading = 'eager';
+    } else { 
+      images[i].loading = 'lazy';
+    }
+  }
+  window.addEventListener('scroll', function() {
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      if (img.loading === 'lazy' && !img.complete) {
+        const rect = img.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 500) {
+          const src = img.src;
+          img.src = '';
+          img.src = src;
+        }
+      }
+    }
+  });
+});
+</script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.images;
+  const processed = new Set();
+  
+  // åå»ºå ä½ç¬¦å¾çï¼éæ1x1åç´ ï¼
+  const placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==';
+  
+  // è®°å½åå§å°ºå¯¸ï¼é¿åå¸å±åç§»
+  function storeOriginalSize(img) {
+    if (!img.dataset.origWidth) {
+      img.dataset.origWidth = img.offsetWidth || img.width || 'auto';
+      img.dataset.origHeight = img.offsetHeight || img.height || 'auto';
+    }
+  }
+  
+  // åºç¨å ä½ç¬¦å°ºå¯¸
+  function applyPlaceholderSize(img) {
+    storeOriginalSize(img);
+    if (img.dataset.origWidth !== 'auto') {
+      img.style.width = img.dataset.origWidth + 'px';
+    }
+    if (img.dataset.origHeight !== 'auto') {
+      img.style.height = img.dataset.origHeight + 'px';
+    }
+    img.style.backgroundColor = '#f5f5f5'; // æ·»å èæ¯è²æ¹åè§è§ææ
+  }
+  
+  // æ¢å¤åå§å°ºå¯¸
+  function restoreOriginalSize(img) {
+    img.style.width = '';
+    img.style.height = '';
+    img.style.backgroundColor = '';
+  }
+  
+  for (let i = 0; i < images.length; i++) {
+    const img = images[i];
+    if (processed.has(img)) continue;
+    processed.add(img);
+    
+    // è·³è¿åèå¾çæå·²ç»å è½½å®æçå¾ç
+    if (img.complete || img.src.startsWith('data:')) continue;
+    
+    if (i < 3 || isInViewport(img)) {
+      // é¦å±å¾çä¿æåæ ·ï¼ä½æ·»å å è½½ç¶æ
+      img.style.opacity = '0.8';
+      img.addEventListener('load', function() {
+        this.style.opacity = '1';
+      });
+    } else {
+      // éé¦å±å¾çï¼å°srcè½¬ç§»å°data-src
+      if (img.src && !img.src.startsWith('data:')) {
+        img.setAttribute('data-src', img.src);
+        applyPlaceholderSize(img);
+        img.src = placeholder;
+        img.style.opacity = '0.5';
+        img.style.transition = 'opacity 0.3s ease';
+        
+        img.addEventListener('load', function() {
+          this.style.opacity = '1';
+          restoreOriginalSize(this);
+        });
+        
+        // æ·»å éè¯¯å¤ç
+        img.addEventListener('error', function() {
+          console.warn('Failed to load image:', this.dataset.src);
+          this.style.opacity = '1';
+          restoreOriginalSize(this);
+        });
+      }
+    }
+  }
+  
+  // å è½½æ¥è¿è§å£çå¾ç
+  function loadVisibleImages() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    
+    lazyImages.forEach(img => {
+      const rect = img.getBoundingClientRect();
+      // å½å¾çè¿å¥è§å£ä¸æ¹300pxå°ä¸æ¹100pxèå´åæ¶å è½½
+      if (rect.top < window.innerHeight + 300 && rect.bottom > -100) {
+        // æ·»å å è½½å¨ç»
+        img.style.opacity = '0.3';
+        
+        // è®¾ç½®srcè§¦åå è½½
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+        
+        // çå¬å è½½å®æ
+        const onLoad = function() {
+          this.style.opacity = '1';
+          restoreOriginalSize(this);
+          this.removeEventListener('load', onLoad);
+        };
+        img.addEventListener('load', onLoad);
+      }
+    });
+  }
+  
+  // æ·»å æ»å¨åè°æ´å¤§å°çå¬ï¼ä½¿ç¨é²æä¼åæ§è½ï¼
+  let scrollTimeout;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(loadVisibleImages, 20);
+  });
+  
+  window.addEventListener('resize', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(loadVisibleImages, 20);
+  });
+  
+  // åå§å è½½ä¸æ¬¡
+  loadVisibleImages();
+  
+  // å¤çå¨ææ·»å çå¾ç
+  if (window.MutationObserver) {
+    const observer = new MutationObserver(function(mutations) {
+      let hasNewImages = false;
+      
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeType === 1) {
+            if (node.tagName === 'IMG') {
+              hasNewImages = true;
+            } else if (node.querySelectorAll) {
+              const newImages = node.querySelectorAll('img');
+              if (newImages.length > 0) {
+                hasNewImages = true;
+              }
+            }
+          }
+        });
+      });
+      
+      if (hasNewImages) {
+        setTimeout(loadVisibleImages, 50);
+      }
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+  
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  }
+});
+
+// æ·»å å è½½ä¸­æ ·å¼
+const style = document.createElement('style');
+style.textContent = `
+  img[data-src] {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+  }
+  img:not([data-src]) {
+    transition: opacity 0.3s ease;
+  }
+`;
+document.head.appendChild(style);
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"fcf910900e31496ba11dd913d97d82ce","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+- [x] Checkpoint 1: 分类列表页Banner显示面包屑(Home > Products > 分类名)、分类标题、分类描述
+- [x] Checkpoint 2: 子分类筛选Tab可点击切换，默认显示All
+- [x] Checkpoint 3: 产品卡片网格3列布局，显示图片、名称、描述、Read more链接
+- [x] Checkpoint 4: 底部CTA区域显示 "Ready to find your perfect truck?" 和两个按钮
+- [x] Checkpoint 5: 产品详情页显示面包屑导航
+- [x] Checkpoint 6: 产品详情页显示产品大图
+- [x] Checkpoint 7: 产品详情页显示规格参数表
+- [x] Checkpoint 8: 产品详情页不显示价格
+- [x] Checkpoint 9: 产品详情页显示联系CTA按钮
+- [x] Checkpoint 10: Products总览页产品链接可正确跳转
+- [x] Checkpoint 11: 所有6个分类列表页正常显示
+- [x] Checkpoint 12: 响应式布局在移动端和桌面端良好显示

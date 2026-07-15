@@ -1,0 +1,10 @@
+- [x] Checkpoint 1: 所有有图片的产品显示正确的参考网站图片
+- [x] Checkpoint 2: 无图片的产品有合理的 fallback 图片
+- [x] Checkpoint 3: Banner中图片完整可见，不被裁剪
+- [x] Checkpoint 4: 面包屑和标题在图片上方清晰可读
+- [x] Checkpoint 5: 旧文件 `pages/products/[category]/[subcategory].tsx` 已删除
+- [x] Checkpoint 6: 访问旧路由 `/products/heavy-truck/dump-truck` 返回404
+- [x] Checkpoint 7: Products总览页面包屑正确
+- [x] Checkpoint 8: 分类列表页面包屑正确
+- [x] Checkpoint 9: 产品详情页面包屑正确
+- [x] Checkpoint 10: 所有页面间路由跳转正常

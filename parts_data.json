@@ -1,0 +1,482 @@
+[
+  {
+    "id": "vg2600020220-a7-sinotruk-wd615-engine-flywheel",
+    "name": "WD615 Engine Flywheel",
+    "partNumber": "VG2600020220",
+    "category": "engine",
+    "imageUrl": "/image-library/VG2600020220-A7-SINOTRUK-WD615-Engine-Flywheel.webp",
+    "detailUrl": "/parts/vg2600020220-a7-sinotruk-wd615-engine-flywheel/"
+  },
+  {
+    "id": "vg1560130080-air-compressor-2-cylinders-sinotruk-wd615-engine-parts",
+    "name": "Air Compressor 2 Cylinders",
+    "partNumber": "VG1560130080",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1560130080-Air-Compressor-2-Cylinders-SINOTRUK-Wd615-Engine-Parts.webp",
+    "detailUrl": "/parts/vg1560130080-air-compressor-2-cylinders-sinotruk-wd615-engine-parts/"
+  },
+  {
+    "id": "vg1560030009-connection-rod-wd615-sinotruk-spare-parts",
+    "name": "Connection Rod WD615",
+    "partNumber": "VG1560030009",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1560030009-Connection-Rod-WD615-SINOTRUK-Spare-Parts.webp",
+    "detailUrl": "/parts/vg1560030009-connection-rod-wd615-sinotruk-spare-parts/"
+  },
+  {
+    "id": "vg1560020029-crankshaft-a7-wd615-euro-2-sinotruk-spare-parts",
+    "name": "Crankshaft A7 WD615 Euro 2",
+    "partNumber": "VG1560020029",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1560020029-Crankshaft-A7-WD615-Euro-2-SINOTRUK-Spare-Parts.webp",
+    "detailUrl": "/parts/vg1560020029-crankshaft-a7-wd615-euro-2-sinotruk-spare-parts/"
+  },
+  {
+    "id": "vg1500070021-howo-wd615-euro-2-engine-oil-pump",
+    "name": "HOWO WD615 Euro 2 Engine Oil Pump",
+    "partNumber": "VG1500070021",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1500070021-HOWO-WD615-Euro-2-Engine-Oil-Pump.webp",
+    "detailUrl": "/parts/vg1500070021-howo-wd615-euro-2-engine-oil-pump/"
+  },
+  {
+    "id": "vg1500060051-sinotruk-howo-a7-engine-water-pump",
+    "name": "HOWO A7 Engine Water Pump",
+    "partNumber": "VG1500060051",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1500060051-SINOTRUK-HOWO-A7-Engine-Water-Pump.webp",
+    "detailUrl": "/parts/vg1500060051-sinotruk-howo-a7-engine-water-pump/"
+  },
+  {
+    "id": "vg1500010046-cranhshaft-sinotruk-wd615-main-bearing",
+    "name": "Cranhshaft",
+    "partNumber": "VG1500010046",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1500010046-Cranhshaft-SINOTRUK-WD615-Main-Bearing.webp",
+    "detailUrl": "/parts/vg1500010046-cranhshaft-sinotruk-wd615-main-bearing/"
+  },
+  {
+    "id": "turbocharger-vg1560118229-wd615-sinotruk-spare-parts",
+    "name": "Turbocharger",
+    "partNumber": "VG1560118229",
+    "category": "engine",
+    "imageUrl": "/image-library/Turbocharger-VG1560118229-WD615-SINOTRUK-Spare-Parts.webp",
+    "detailUrl": "/parts/turbocharger-vg1560118229-wd615-sinotruk-spare-parts/"
+  },
+  {
+    "id": "howo-alternator-vg1560090010-wd615-engine-sinotruk-spare-parts",
+    "name": "HOWO Alternator",
+    "partNumber": "VG1560090010",
+    "category": "engine",
+    "imageUrl": "/image-library/HOWO-Alternator-VG1560090010-WD615-Engine-SINOTRUK-Spare-Parts.webp",
+    "detailUrl": "/parts/howo-alternator-vg1560090010-wd615-engine-sinotruk-spare-parts/"
+  },
+  {
+    "id": "engine-fuel-pipes-vg1560080278a-wd615-howo-sinotruk-spare-parts",
+    "name": "Engine Fuel Pipes",
+    "partNumber": "VG1560080278A",
+    "category": "engine",
+    "imageUrl": "/image-library/Engine-Fuel-Pipes-VG1560080278A-WD615-HOWO-SINOTRUK-Spare-Parts.webp",
+    "detailUrl": "/parts/engine-fuel-pipes-vg1560080278a-wd615-howo-sinotruk-spare-parts/"
+  },
+  {
+    "id": "brake-shoe-assembly-wg9100440030",
+    "name": "Brake shoe assembly",
+    "partNumber": "WG9100440030",
+    "category": "chassis",
+    "imageUrl": "/image-library/Brake-shoe-assembly-WG9100440030.webp",
+    "detailUrl": "/parts/brake-shoe-assembly-wg9100440030/"
+  },
+  {
+    "id": "front-brake-adjusting-arm-az9100440005",
+    "name": "Front Brake Adjusting Arm",
+    "partNumber": "AZ9100440005",
+    "category": "chassis",
+    "imageUrl": "/image-library/Front-Brake-Adjusting-Arm-AZ9100440005.webp",
+    "detailUrl": "/parts/front-brake-adjusting-arm-az9100440005/"
+  },
+  {
+    "id": "front-brake-lining-wg9100440029",
+    "name": "Front Brake Lining",
+    "partNumber": "WG9100440029",
+    "category": "chassis",
+    "imageUrl": "/image-library/Front-Brake-Lining-WG9100440029.webp",
+    "detailUrl": "/parts/front-brake-lining-wg9100440029/"
+  },
+  {
+    "id": "push-rod-az9631523175",
+    "name": "Push rod",
+    "partNumber": "AZ9631523175",
+    "category": "chassis",
+    "imageUrl": "/image-library/Push-rod-AZ9631523175.webp",
+    "detailUrl": "/parts/push-rod-az9631523175/"
+  },
+  {
+    "id": "release-bearing-wg9725160510",
+    "name": "Release bearing",
+    "partNumber": "WG9725160510",
+    "category": "chassis",
+    "imageUrl": "/image-library/Release-bearing-WG9725160510.webp",
+    "detailUrl": "/parts/release-bearing-wg9725160510/"
+  },
+  {
+    "id": "rubber-bracket-az9725520278",
+    "name": "Rubber bracket",
+    "partNumber": "AZ9725520278",
+    "category": "chassis",
+    "imageUrl": "/image-library/Rubber-bracket-AZ9725520278.webp",
+    "detailUrl": "/parts/rubber-bracket-az9725520278/"
+  },
+  {
+    "id": "shifting-device-wg9725240208",
+    "name": "Shifting device",
+    "partNumber": "WG9725240208",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Shifting-device-WG9725240208.webp",
+    "detailUrl": "/parts/shifting-device-wg9725240208/"
+  },
+  {
+    "id": "wg9000360101-brake-air-chamber",
+    "name": "Brake air chamber",
+    "partNumber": "WG9000360101",
+    "category": "chassis",
+    "imageUrl": "/image-library/WG9000360101-Brake-air-chamber-1.webp",
+    "detailUrl": "/parts/wg9000360101-brake-air-chamber/"
+  },
+  {
+    "id": "wg9525595410-front-rubber-bearing-assembly",
+    "name": "Front rubber bearing assembly",
+    "partNumber": "WG9525595410",
+    "category": "chassis",
+    "imageUrl": "/image-library/WG9525595410-Front-rubber-bearing-assembly.webp",
+    "detailUrl": "/parts/wg9525595410-front-rubber-bearing-assembly/"
+  },
+  {
+    "id": "wg9725310020-universal-joint-cross-shaft-assembly",
+    "name": "Universal joint cross shaft assembly",
+    "partNumber": "WG9725310020",
+    "category": "chassis",
+    "imageUrl": "/image-library/WG9725310020-Universal-joint-cross-shaft-assembly.webp",
+    "detailUrl": "/parts/wg9725310020-universal-joint-cross-shaft-assembly/"
+  },
+  {
+    "id": "axle-housing-az9231320259",
+    "name": "Axle Housing",
+    "partNumber": "AZ9231320259",
+    "category": "axle",
+    "imageUrl": "/image-library/Axle-Housing-AZ9231320259.webp",
+    "detailUrl": "/parts/axle-housing-az9231320259/"
+  },
+  {
+    "id": "bearing-190003326148",
+    "name": "Bearing",
+    "partNumber": "190003326148",
+    "category": "axle",
+    "imageUrl": "/image-library/Bearing-190003326148.webp",
+    "detailUrl": "/parts/bearing-190003326148/"
+  },
+  {
+    "id": "diff-cover-az9231320264",
+    "name": "Diff Cover",
+    "partNumber": "AZ9231320264",
+    "category": "axle",
+    "imageUrl": "/image-library/Diff-Cover-AZ9231320264.webp",
+    "detailUrl": "/parts/diff-cover-az9231320264/"
+  },
+  {
+    "id": "first-rear-axle-housing-26013330208",
+    "name": "First Rear Axle Housing",
+    "partNumber": "26013330208",
+    "category": "axle",
+    "imageUrl": "/image-library/First-Rear-Axle-Housing-26013330208.webp",
+    "detailUrl": "/parts/first-rear-axle-housing-26013330208/"
+  },
+  {
+    "id": "front-axle-abs-ring-gear-wg9112410019",
+    "name": "Front Axle ABS Ring Gear",
+    "partNumber": "WG9112410019",
+    "category": "axle",
+    "imageUrl": "/image-library/Front-Axle-ABS-Ring-Gear-WG9112410019.webp",
+    "detailUrl": "/parts/front-axle-abs-ring-gear-wg9112410019/"
+  },
+  {
+    "id": "gear-bushing-wg9231320159",
+    "name": "Gear Bushing",
+    "partNumber": "WG9231320159",
+    "category": "axle",
+    "imageUrl": "/image-library/Gear-Bushing-WG9231320159.webp",
+    "detailUrl": "/parts/gear-bushing-wg9231320159/"
+  },
+  {
+    "id": "gears-wg9114320251",
+    "name": "Gears",
+    "partNumber": "WG9114320251",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Gears-WG9114320251.webp",
+    "detailUrl": "/parts/gears-wg9114320251/"
+  },
+  {
+    "id": "middle-axle-housing-az9231330990",
+    "name": "Middle Axle Housing",
+    "partNumber": "AZ9231330990",
+    "category": "axle",
+    "imageUrl": "/image-library/Middle-Axle-Housing-AZ9231330990.webp",
+    "detailUrl": "/parts/middle-axle-housing-az9231330990/"
+  },
+  {
+    "id": "wg9100440005-front-slack-adjustor",
+    "name": "Front slack adjustor",
+    "partNumber": "WG9100440005",
+    "category": "axle",
+    "imageUrl": "/image-library/WG9100440005-Front-slack-adjustor.webp",
+    "detailUrl": "/parts/wg9100440005-front-slack-adjustor/"
+  },
+  {
+    "id": "wg9925240020-shift-handle",
+    "name": "Shift handle",
+    "partNumber": "WG9925240020",
+    "category": "gearbox",
+    "imageUrl": "/image-library/WG9925240020-Shift-handle.webp",
+    "detailUrl": "/parts/wg9925240020-shift-handle/"
+  },
+  {
+    "id": "synchronizer-gear-holder-wg2210100007",
+    "name": "Synchronizer Gear Holder",
+    "partNumber": "WG2210100007",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Synchronizer-Gear-Holder-WG2210100007.webp",
+    "detailUrl": "/parts/synchronizer-gear-holder-wg2210100007/"
+  },
+  {
+    "id": "iron-range-gear-wg2203100006",
+    "name": "Iron Range Gear",
+    "partNumber": "WG2203100006",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Iron-Range-Gear-WG2203100006.webp",
+    "detailUrl": "/parts/iron-range-gear-wg2203100006/"
+  },
+  {
+    "id": "gear-switch-179100710069",
+    "name": "Gear Switch",
+    "partNumber": "179100710069",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Gear-Switch-179100710069.webp",
+    "detailUrl": "/parts/gear-switch-179100710069/"
+  },
+  {
+    "id": "clutch-pressure-plate-assembly-az9725160100",
+    "name": "Clutch Pressure Plate Assembly",
+    "partNumber": "AZ9725160100",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Clutch-Pressure-Plate-Assembly-AZ9725160100.webp",
+    "detailUrl": "/parts/clutch-pressure-plate-assembly-az9725160100/"
+  },
+  {
+    "id": "sinotruck-howo-truck-transmission-hw19710090608",
+    "name": "Sinotruck Transmission",
+    "partNumber": "HW19710090608",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Transmission-HW19710090608.webp",
+    "detailUrl": "/parts/sinotruck-howo-truck-transmission-hw19710090608/"
+  },
+  {
+    "id": "sinotruck-howo-part-gear-shifting-cylinder-750132019",
+    "name": "Gear Shifting Cylinder",
+    "partNumber": "750132019",
+    "category": "gearbox",
+    "imageUrl": "/image-library/Sinotruck-HOWO-Part-Gear-Shifting-Cylinder-750132019.webp",
+    "detailUrl": "/parts/sinotruck-howo-part-gear-shifting-cylinder-750132019/"
+  },
+  {
+    "id": "howo-spare-parts-gear-shift-bar-wg9719240117",
+    "name": "HOWO Spare Parts Gear Shift Bar",
+    "partNumber": "WG9719240117",
+    "category": "gearbox",
+    "imageUrl": "/image-library/HOWO-Spare-Parts-Gear-Shift-Bar-WG9719240117.webp",
+    "detailUrl": "/parts/howo-spare-parts-gear-shift-bar-wg9719240117/"
+  },
+  {
+    "id": "sinotruk-hw19710-transmission-gearbox-rear-housing-az2220100105",
+    "name": "HW19710 Transmission Gearbox Rear Housing",
+    "partNumber": "AZ2220100105",
+    "category": "gearbox",
+    "imageUrl": "/image-library/SINOTRUK-HW19710-Transmission-Gearbox-Rear-Housing-AZ2220100105.webp",
+    "detailUrl": "/parts/sinotruk-hw19710-transmission-gearbox-rear-housing-az2220100105/"
+  },
+  {
+    "id": "sinotruk-howo-truck-parts-clutch-disk-wg9914161100",
+    "name": "SINOTRUK Cutch disk",
+    "partNumber": "WG9914161100",
+    "category": "gearbox",
+    "imageUrl": "/image-library/SINOTRUK-HOWO-truck-parts-clutch-disk-WG9914161100.webp",
+    "detailUrl": "/parts/sinotruk-howo-truck-parts-clutch-disk-wg9914161100/"
+  },
+  {
+    "id": "wg2203250003-howo-double-h-valve",
+    "name": "Howo double H valve",
+    "partNumber": "WG2203250003",
+    "category": "gearbox",
+    "imageUrl": "/image-library/WG2203250003-howo-double-H-valve.webp",
+    "detailUrl": "/parts/wg2203250003-howo-double-h-valve/"
+  },
+  {
+    "id": "sinotruk-truck-starter-vg1560090001",
+    "name": "Sinotruk Truck starter",
+    "partNumber": "VG1560090001",
+    "category": "engine",
+    "imageUrl": "/image-library/Sinotruk-Truck-starter-VG1560090001.webp",
+    "detailUrl": "/parts/sinotruk-truck-starter-vg1560090001/"
+  },
+  {
+    "id": "vg1560080021-high-pressure-fuel-injection-pump-with-k-type-governor",
+    "name": "High-pressure fuel injection pump with K-type governor",
+    "partNumber": "VG1560080021",
+    "category": "engine",
+    "imageUrl": "/image-library/VG1560080021-High-pressure-fuel-injection-pump-with-K-type-governor.webp",
+    "detailUrl": "/parts/vg1560080021-high-pressure-fuel-injection-pump-with-k-type-governor/"
+  },
+  {
+    "id": "sinotruk-howo-truck-shacman-starter-vg1560090001",
+    "name": "Sinotruk Starter",
+    "partNumber": "VG1560090001",
+    "category": "engine",
+    "imageUrl": "/image-library/Sinotruk-Howo-Truck-Shacman-Starter-VG1560090001.webp",
+    "detailUrl": "/parts/sinotruk-howo-truck-shacman-starter-vg1560090001/"
+  },
+  {
+    "id": "sinotruk-howo-truck-water-pump-assembly-2w8001",
+    "name": "Water Pump Assembly",
+    "partNumber": "2W8001",
+    "category": "engine",
+    "imageUrl": "/image-library/Sinotruk-Howo-Truck-Water-Pump-Assembly-2W8001.webp",
+    "detailUrl": "/parts/sinotruk-howo-truck-water-pump-assembly-2w8001/"
+  },
+  {
+    "id": "sinotruk-howo-truck-fuel-injector-612601080249",
+    "name": "Fuel Injector",
+    "partNumber": "612601080249",
+    "category": "engine",
+    "imageUrl": "/image-library/Sinotruk-Howo-Truck-Fuel-Injector-612601080249.webp",
+    "detailUrl": "/parts/sinotruk-howo-truck-fuel-injector-612601080249/"
+  },
+  {
+    "id": "howo-wd615-engine-parts-starter-vg1560090001",
+    "name": "Howo WD615 Engine Parts- Starter",
+    "partNumber": "VG1560090001",
+    "category": "engine",
+    "imageUrl": "/image-library/Howo-WD615-Engine-Parts-Starter-VG1560090001.webp",
+    "detailUrl": "/parts/howo-wd615-engine-parts-starter-vg1560090001/"
+  },
+  {
+    "id": "howo-371-engine-assembly-hw47070107",
+    "name": "HOWO 371 engine assembly",
+    "partNumber": "HW47070107",
+    "category": "engine",
+    "imageUrl": "/image-library/SINOTRUK-PARTS-HOWO-371-engine.webp",
+    "detailUrl": "/parts/howo-371-engine-assembly-hw47070107/"
+  },
+  {
+    "id": "sinotruk-engine-parts-high-pressure-fuel-injection-pump-vg1560080021",
+    "name": "High Pressure Fuel Injection pump",
+    "partNumber": "VG1560080021",
+    "category": "engine",
+    "imageUrl": "/image-library/SINOTRUK-Engine-Parts-High-Pressure-Fuel-Injection-pump-VG1560080021.webp",
+    "detailUrl": "/parts/sinotruk-engine-parts-high-pressure-fuel-injection-pump-vg1560080021/"
+  },
+  {
+    "id": "sinotruk-howo-truck-parts-engine-turbocharger-vg1087110002",
+    "name": "Engine Turbocharger",
+    "partNumber": "Vg1087110002",
+    "category": "engine",
+    "imageUrl": "/image-library/Sinotruk-Howo-Truck-Parts-Engine-Turbocharger-Vg1087110002.webp",
+    "detailUrl": "/parts/sinotruk-howo-truck-parts-engine-turbocharger-vg1087110002/"
+  },
+  {
+    "id": "sinotruk-wp12-engine-spare-parts-oil-pump-612630010256",
+    "name": "WP12 Engine Spare Parts Oil Pump",
+    "partNumber": "612630010256",
+    "category": "engine",
+    "imageUrl": "/image-library/SINOTRUK-WP12-Engine-Spare-Parts-Oil-Pump-612630010256.webp",
+    "detailUrl": "/parts/sinotruk-wp12-engine-spare-parts-oil-pump-612630010256/"
+  },
+  {
+    "id": "sinotruck-howo-truck-mirrors-wg1642777010",
+    "name": "Mirrors",
+    "partNumber": "WG1642777010",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/Mirrors-WG1642777010.webp",
+    "detailUrl": "/parts/sinotruck-howo-truck-mirrors-wg1642777010/"
+  },
+  {
+    "id": "sinotruck-howo-fog-lamp-wg9719720025",
+    "name": "Fog Lamp",
+    "partNumber": "WG9719720025",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/Fog-Lamp-WG9719720025.webp",
+    "detailUrl": "/parts/sinotruck-howo-fog-lamp-wg9719720025/"
+  },
+  {
+    "id": "sinotruck-howo-truck-bumpers-dz9112930210",
+    "name": "Bumpers",
+    "partNumber": "DZ9112930210",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/Bumpers-DZ9112930210.webp",
+    "detailUrl": "/parts/sinotruck-howo-truck-bumpers-dz9112930210/"
+  },
+  {
+    "id": "sinotruck-howo-truck-led-corner-lights-9418200521",
+    "name": "LED Corner Lights",
+    "partNumber": "9418200521",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/LED-Corner-Lights-9418200521.webp",
+    "detailUrl": "/parts/sinotruck-howo-truck-led-corner-lights-9418200521/"
+  },
+  {
+    "id": "sinotruck-howo-fog-lamp-9438200056",
+    "name": "Fog Lamp",
+    "partNumber": "9438200056",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/Fog-Lamp-9438200056.webp",
+    "detailUrl": "/parts/sinotruck-howo-fog-lamp-9438200056/"
+  },
+  {
+    "id": "sinotruk-howo-water-expansion-tank-wg9719530260",
+    "name": "Water Expansion Tank",
+    "partNumber": "WG9719530260",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/Sinotruk-Howo-Water-Expansion-Tank-WG9719530260.webp",
+    "detailUrl": "/parts/sinotruk-howo-water-expansion-tank-wg9719530260/"
+  },
+  {
+    "id": "sinotruk-howo-hand-brake-valve-wg9000360165",
+    "name": "Hand Brake Valve",
+    "partNumber": "Wg9000360165",
+    "category": "chassis",
+    "imageUrl": "/image-library/Sinotruk-HOWO-Hand-Brake-Valve-Wg9000360165.webp",
+    "detailUrl": "/parts/sinotruk-howo-hand-brake-valve-wg9000360165/"
+  },
+  {
+    "id": "sinotruk-howo-air-conditioning-compressor-wg1500139016",
+    "name": "Air Conditioning Compressor",
+    "partNumber": "WG1500139016",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/SINOTRUK-HOWO-Air-Conditioning-Compressor-WG1500139016.webp",
+    "detailUrl": "/parts/sinotruk-howo-air-conditioning-compressor-wg1500139016/"
+  },
+  {
+    "id": "sinotruk-howo-heavy-truck-expansion-water-tank-wg9725536120",
+    "name": "Expansion Water Tank",
+    "partNumber": "WG9725536120",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/SINOTRUCK-Howo-WG9725536120.webp",
+    "detailUrl": "/parts/sinotruk-howo-heavy-truck-expansion-water-tank-wg9725536120/"
+  },
+  {
+    "id": "cabin-door-left-handle-wg1642340001",
+    "name": "Cabin Door left Handle",
+    "partNumber": "Wg1642340001",
+    "category": "cabin-body",
+    "imageUrl": "/image-library/HOWO-Truck-Parts-Cabin-Door-left-Handle-Wg1642340001.webp",
+    "detailUrl": "/parts/cabin-door-left-handle-wg1642340001/"
+  }
+]
