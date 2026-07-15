@@ -22,7 +22,7 @@ export default function ContactPage() {
     setErrorMsg('')
 
     try {
-      const res = await fetch('/api/contact.php', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
