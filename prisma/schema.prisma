@@ -1,0 +1,250 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id            String        @id
+  name          String
+  description   String?
+  tagline       String?
+  fullDesc      String?
+  bannerImage   String?
+  image         String?
+  icon          String?
+  sortOrder     Int           @default(0)
+  subcategories Subcategory[]
+  products      Product[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Subcategory {
+  id         String    @id
+  categoryId String
+  name       String
+  image      String?
+  sortOrder  Int       @default(0)
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products   Product[]
+
+  @@index([categoryId])
+}
+
+model Product {
+  id               String            @id
+  name             String
+  categoryId       String
+  subcategoryId    String
+  description      String
+  image            String
+  bannerImage      String?
+  specifications   String            @default("{}")
+  features         String            @default("[]")
+  detailedFeatures String            @default("{}")
+  galleryImages    String            @default("[]")
+  normalizedSpecs  String            @default("{}")
+  applicationTags  String            @default("[]")
+  marketTags       String            @default("[]")
+  isActive         Boolean           @default(true)
+  sortOrder        Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  category         Category          @relation(fields: [categoryId], references: [id])
+  subcategory      Subcategory       @relation(fields: [subcategoryId], references: [id])
+  performanceItems PerformanceItem[]
+
+  @@index([categoryId])
+  @@index([subcategoryId])
+}
+
+model PerformanceItem {
+  id          String  @id @default(cuid())
+  productId   String
+  title       String
+  description String
+  image       String
+  sortOrder   Int     @default(0)
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model News {
+  id                String         @id @default(cuid())
+  slug              String         @unique
+  title             String
+  date              String
+  image             String
+  excerpt           String
+  content           String
+  category          String?
+  tags              String         @default("[]")
+  seoTitle          String
+  seoDescription    String
+  keywords          String         @default("[]")
+  internalLinks     String         @default("[]")
+  externalLinks     String         @default("[]")
+  seoScore          Int?
+  isPublished       Boolean        @default(false)
+  sourceUrl         String?        @unique
+  sourceTitle       String?
+  sourceDate        String?
+  sourceFingerprint String?        @unique
+  generatedBy       String?
+  revisions         NewsRevision[]
+  jobs              ContentJob[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
+
+model PageContent {
+  id             String   @id
+  title          String
+  content        String   @default("{}")
+  seoTitle       String?
+  seoDescription String?
+  updatedAt      DateTime @updatedAt
+}
+
+model SeoMeta {
+  id            String   @id @default(cuid())
+  path          String   @unique
+  title         String
+  description   String
+  keywords      String?
+  ogTitle       String?
+  ogDescription String?
+  ogImage       String?
+  canonical     String?
+  updatedAt     DateTime @updatedAt
+}
+
+model SeoSubmission {
+  id             String   @id @default(cuid())
+  provider       String
+  submissionType String
+  target         String
+  status         String
+  responseCode   Int?
+  message        String?
+  createdAt      DateTime @default(now())
+
+  @@index([provider, createdAt])
+}
+
+model Inquiry {
+  id               String   @id @default(cuid())
+  name             String
+  phone            String
+  email            String
+  country          String
+  message          String
+  product          String?
+  company          String?
+  destinationPort  String?
+  quantity         Int?
+  useCase          String?
+  configuration    String?
+  selectionPayload String   @default("[]")
+  consent          Boolean  @default(false)
+  ip               String?
+  isRead           Boolean  @default(false)
+  createdAt        DateTime @default(now())
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  path         String
+  width        Int?
+  height       Int?
+  alt          String?
+  createdAt    DateTime @default(now())
+}
+
+model Part {
+  id               String   @id @default(cuid())
+  name             String
+  partNumber       String
+  category         String
+  description      String
+  image            String
+  specifications   String   @default("{}")
+  compatibleModels String   @default("[]")
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([category])
+}
+
+model NewsSource {
+  id                  String       @id @default(cuid())
+  name                String
+  baseUrl             String
+  feedUrl             String
+  sourceType          String       @default("rss")
+  enabled             Boolean      @default(false)
+  pollIntervalMinutes Int          @default(360)
+  dailyLimit          Int          @default(3)
+  allowImages         Boolean      @default(false)
+  defaultCategory     String?
+  defaultTags         String       @default("[]")
+  lastCursor          String?
+  lastPolledAt        DateTime?
+  failureCount        Int          @default(0)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  jobs                ContentJob[]
+}
+
+model ContentJob {
+  id               String      @id @default(cuid())
+  sourceId         String?
+  sourceUrl        String      @unique
+  fingerprint      String      @unique
+  status           String      @default("queued")
+  sourceTitle      String?
+  sourceDate       String?
+  extractedFacts   String      @default("[]")
+  generatedPayload String?
+  errorStage       String?
+  errorMessage     String?
+  attempts         Int         @default(0)
+  newsId           String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  publishedAt      DateTime?
+  source           NewsSource? @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  news             News?       @relation(fields: [newsId], references: [id], onDelete: SetNull)
+}
+
+model NewsRevision {
+  id        String   @id @default(cuid())
+  newsId    String
+  payload   String
+  reason    String
+  createdAt DateTime @default(now())
+  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+}
