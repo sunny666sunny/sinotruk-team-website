@@ -95,21 +95,17 @@ test('校验器拒绝子分类关系或配件分类变化', () => {
   assert.throws(() => compareCatalogSnapshots(base, changed), /subcategories.*heavy:dump.*categoryId.*变化/)
 })
 
-test('seed 对已有记录不执行更新，对缺失记录才创建', async () => {
-  const calls: string[] = []
-  const existingModel = {
-    findUnique: async () => ({ id: 'existing' }),
-    create: async () => { calls.push('create'); return { id: 'existing' } },
+test('seed 使用原子 upsert 且 update 为空，绝不覆盖已有数据', async () => {
+  const calls: unknown[] = []
+  const model = {
+    upsert: async (args: unknown) => { calls.push(args); return { id: 'existing', isActive: false } },
   }
-  const missingModel = {
-    findUnique: async () => null,
-    create: async ({ data }: { data: { id: string } }) => { calls.push(`create:${data.id}`); return data },
-  }
+  const create = { id: 'existing', image: '/seed.webp', specifications: '{}', isActive: true }
 
-  await createIfMissing(existingModel, { id: 'existing' }, { id: 'existing', isActive: true })
-  await createIfMissing(missingModel, { id: 'new' }, { id: 'new', isActive: true })
+  const result = await createIfMissing(model, { id: 'existing' }, create)
 
-  assert.deepEqual(calls, ['create:new'])
+  assert.deepEqual(calls, [{ where: { id: 'existing' }, update: {}, create }])
+  assert.deepEqual(result, { id: 'existing', isActive: false })
 })
 
 test('seed 任一步失败时返回非零退出码并断开数据库', async () => {

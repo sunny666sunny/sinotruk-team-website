@@ -1,7 +1,5 @@
 export async function createIfMissing(model, where, data) {
-  const existing = await model.findUnique({ where })
-  if (existing) return existing
-  return model.create({ data })
+  return model.upsert({ where, update: {}, create: data })
 }
 
 export async function runSeedCli(run, disconnect, writeError = (message) => { process.stderr.write(message) }) {
