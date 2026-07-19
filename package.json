@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:backup": "node scripts/backup-database.mjs",
+    "db:verify-catalog": "node scripts/verify-catalog-integrity.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.24.0",

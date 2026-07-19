@@ -15,6 +15,7 @@
 
 # production
 /build
+/backups/catalog/
 
 # misc
 .DS_Store
