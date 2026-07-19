@@ -13,21 +13,30 @@ export function archivePart(client: PartArchiveClient, id: string) {
   return client.part.update({ where: { id }, data: { isActive: false } })
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!getAdminSession(req)) return res.status(401).json({ error: 'Unauthorized' })
+type PartHandlerDependencies = {
+  getAdminSession: typeof getAdminSession
+  prisma: any
+  afterContentMutation: typeof afterContentMutation
+}
+
+export function createPartHandler(overrides: Partial<PartHandlerDependencies> = {}) {
+  const dependencies: PartHandlerDependencies = { getAdminSession, prisma, afterContentMutation, ...overrides }
+
+  return async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (!dependencies.getAdminSession(req)) return res.status(401).json({ error: 'Unauthorized' })
 
   const { id } = req.query
 
   switch (req.method) {
     case 'GET': {
-      const part = await prisma.part.findUnique({ where: { id: id as string } })
+      const part = await dependencies.prisma.part.findUnique({ where: { id: id as string } })
       if (!part) return res.status(404).json({ error: '配件未找到' })
       return res.status(200).json({ ...part, specifications: JSON.parse(part.specifications) })
     }
 
     case 'PUT': {
       const { name, partNumber, category, description, image, specifications, isActive, sortOrder } = req.body
-      const part = await prisma.part.update({
+      const part = await dependencies.prisma.part.update({
         where: { id: id as string },
         data: {
           ...(name !== undefined && { name }),
@@ -40,19 +49,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ...(sortOrder !== undefined && { sortOrder }),
         },
       })
-      await afterContentMutation(res, ['/parts', `/parts/${part.id.replace(/^part-/, '')}`])
+      await dependencies.afterContentMutation(res, ['/parts', `/parts/${part.id.replace(/^part-/, '')}`])
       return res.status(200).json({ part: { ...part, specifications: JSON.parse(part.specifications) } })
     }
 
     case 'DELETE': {
-      const existing = await prisma.part.findUnique({ where: { id: id as string }, select: { id: true } })
+      const existing = await dependencies.prisma.part.findUnique({ where: { id: id as string }, select: { id: true } })
       if (!existing) return res.status(404).json({ error: 'Part not found' })
-      await archivePart(prisma, id as string)
-      await afterContentMutation(res, ['/parts', `/parts/${String(id).replace(/^part-/, '')}`])
+      await archivePart(dependencies.prisma, id as string)
+      await dependencies.afterContentMutation(res, ['/parts', `/parts/${String(id).replace(/^part-/, '')}`])
       return res.status(200).json({ success: true, archived: true, id })
     }
 
     default:
       return res.status(405).json({ error: 'Method not allowed' })
+    }
   }
 }
+
+export default createPartHandler()

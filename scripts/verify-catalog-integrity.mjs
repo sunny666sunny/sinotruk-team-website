@@ -27,14 +27,20 @@ export function createPrismaClient(databaseUrl = process.env.DATABASE_URL || 'fi
 
 export async function createCatalogSnapshot(prisma) {
   const [categories, subcategories, products, parts] = await Promise.all([
-    prisma.category.findMany({ select: { id: true }, orderBy: { id: 'asc' } }),
-    prisma.subcategory.findMany({ select: { id: true }, orderBy: { id: 'asc' } }),
+    prisma.category.findMany({
+      select: { id: true, name: true, description: true, tagline: true, fullDesc: true, bannerImage: true, image: true, icon: true, sortOrder: true },
+      orderBy: { id: 'asc' },
+    }),
+    prisma.subcategory.findMany({
+      select: { id: true, categoryId: true, name: true, image: true, sortOrder: true },
+      orderBy: { id: 'asc' },
+    }),
     prisma.product.findMany({
-      select: { id: true, image: true, bannerImage: true, galleryImages: true, specifications: true },
+      select: { id: true, categoryId: true, subcategoryId: true, image: true, bannerImage: true, galleryImages: true, specifications: true },
       orderBy: { id: 'asc' },
     }),
     prisma.part.findMany({
-      select: { id: true, image: true, specifications: true },
+      select: { id: true, category: true, image: true, specifications: true },
       orderBy: { id: 'asc' },
     }),
   ])
@@ -54,13 +60,18 @@ export async function createCatalogSnapshot(prisma) {
       parts: parts.map(({ id }) => id),
     },
     protectedFields: {
+      categories: Object.fromEntries(categories.map(({ id, ...fields }) => [id, fields])),
+      subcategories: Object.fromEntries(subcategories.map(({ id, ...fields }) => [id, fields])),
       products: Object.fromEntries(products.map((product) => [product.id, {
+        categoryId: product.categoryId,
+        subcategoryId: product.subcategoryId,
         image: product.image,
         bannerImage: product.bannerImage,
         galleryImages: parseImageList(product.galleryImages),
         specificationsSha256: sha256(product.specifications),
       }])),
       parts: Object.fromEntries(parts.map((part) => [part.id, {
+        category: part.category,
         image: part.image,
         specificationsSha256: sha256(part.specifications),
       }])),
@@ -86,7 +97,7 @@ export function compareCatalogSnapshots(before, after) {
     }
   }
 
-  for (const group of ['products', 'parts']) {
+  for (const group of ['categories', 'subcategories', 'products', 'parts']) {
     for (const [id, protectedValues] of Object.entries(before.protectedFields?.[group] ?? {})) {
       const currentValues = after.protectedFields?.[group]?.[id]
       if (!currentValues) throw new Error(`${group} 记录 ${id} 缺失受保护字段`)

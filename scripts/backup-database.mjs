@@ -1,7 +1,8 @@
-import { copyFile, mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { createCatalogSnapshot, createPrismaClient } from './verify-catalog-integrity.mjs'
+import { createConsistentCatalogBackup, relativeBackupPath } from './consistent-sqlite-backup.mjs'
 
 function resolveLocalDatabase(databaseUrl) {
   if (!databaseUrl.startsWith('file:')) {
@@ -18,23 +19,30 @@ async function main() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
   const databaseCopyName = `${timestamp}-${path.basename(sourceDatabase)}`
   const snapshotCopyName = `${timestamp}-catalog-snapshot.json`
-  const prisma = createPrismaClient(databaseUrl)
 
   await mkdir(outputDirectory, { recursive: true })
-  try {
-    const snapshot = await createCatalogSnapshot(prisma)
-    const manifest = { ...snapshot, databaseCopy: databaseCopyName }
-    const serialized = `${JSON.stringify(manifest, null, 2)}\n`
+  const destinationPath = path.join(outputDirectory, databaseCopyName)
+  const relativeDestination = relativeBackupPath(destinationPath)
+  const snapshot = await createConsistentCatalogBackup({
+    sourceUrl: databaseUrl,
+    destinationPath: relativeDestination,
+    snapshotFromDatabase: async (backupUrl) => {
+      const backupPrisma = createPrismaClient(backupUrl)
+      try {
+        return await createCatalogSnapshot(backupPrisma)
+      } finally {
+        await backupPrisma.$disconnect()
+      }
+    },
+  })
+  const manifest = { ...snapshot, databaseCopy: databaseCopyName, sourceDatabase: path.basename(sourceDatabase) }
+  const serialized = `${JSON.stringify(manifest, null, 2)}\n`
 
-    await copyFile(sourceDatabase, path.join(outputDirectory, databaseCopyName))
-    await writeFile(path.join(outputDirectory, snapshotCopyName), serialized, 'utf8')
-    await writeFile(path.join(outputDirectory, 'catalog-snapshot.json'), serialized, 'utf8')
+  await writeFile(path.join(outputDirectory, snapshotCopyName), serialized, 'utf8')
+  await writeFile(path.join(outputDirectory, 'catalog-snapshot.json'), serialized, 'utf8')
 
-    process.stdout.write(`Catalog backup created: ${databaseCopyName}\n`)
-    process.stdout.write(`Snapshot counts: ${JSON.stringify(snapshot.counts)}\n`)
-  } finally {
-    await prisma.$disconnect()
-  }
+  process.stdout.write(`Catalog backup created: ${databaseCopyName}\n`)
+  process.stdout.write(`Snapshot counts: ${JSON.stringify(snapshot.counts)}\n`)
 }
 
 main().catch((error) => {

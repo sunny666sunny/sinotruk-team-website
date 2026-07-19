@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
+import { createIfMissing, runSeedCli } from '../scripts/seed-preservation.mjs'
 
 const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL || 'file:admin.db' })
 const prisma = new PrismaClient({ adapter })
@@ -22,20 +23,20 @@ const subcategoryMap: Record<string, string> = {}
 async function importCategories() {
   process.stdout.write('Importing categories...\n')
   for (const cat of categories) {
-    // Upsert category
-    await prisma.category.upsert({
-      where: { id: cat.id },
-      update: { name: cat.name, description: cat.description, image: cat.image, bannerImage: cat.bannerImage },
-      create: { id: cat.id, name: cat.name, description: cat.description, image: cat.image, bannerImage: cat.bannerImage },
-    })
-    // Upsert subcategories individually
+    // Existing catalog records are immutable during seed; only create missing defaults.
+    await createIfMissing(
+      prisma.category,
+      { id: cat.id },
+      { id: cat.id, name: cat.name, description: cat.description, image: cat.image, bannerImage: cat.bannerImage },
+    )
+    // Missing subcategories may be added, but existing relationships are preserved.
     for (const sub of cat.subcategories) {
       const scopedSubcategoryId = `${cat.id}:${sub.id}`
-      await prisma.subcategory.upsert({
-        where: { id: scopedSubcategoryId },
-        update: { name: sub.name, categoryId: cat.id },
-        create: { id: scopedSubcategoryId, name: sub.name, categoryId: cat.id },
-      })
+      await createIfMissing(
+        prisma.subcategory,
+        { id: scopedSubcategoryId },
+        { id: scopedSubcategoryId, name: sub.name, categoryId: cat.id },
+      )
     }
   }
   process.stdout.write('  ' + categories.length + ' categories imported\n')
@@ -43,95 +44,60 @@ async function importCategories() {
 
 async function importProducts() {
   process.stdout.write('Importing products...\n')
-  try {
-    const { dumpTrucks, tractorTrucks, cargoTrucks, lightCargoTrucks, lightTipperTrucks, waterTankers, oilTankers, mixerTrucks, otherSpecialVehicles, lightVehicles, semiTrailers, newEnergyVehicles } = require('../data/products')
-    const all = [...dumpTrucks, ...tractorTrucks, ...cargoTrucks, ...lightCargoTrucks, ...lightTipperTrucks, ...waterTankers, ...oilTankers, ...mixerTrucks, ...otherSpecialVehicles, ...lightVehicles, ...semiTrailers, ...newEnergyVehicles]
-    let count = 0, failed = 0
-    for (const p of all) {
-      const mappedCategory = categoryMap[p.category] || p.category
-      const subMapKey = p.category + ':' + p.subcategory
-      const mappedSubcategory = subcategoryMap[subMapKey] || p.subcategory
-      try {
-        const scopedSubcategory = `${mappedCategory}:${mappedSubcategory}`
-        await prisma.product.upsert({
-          where: { id: p.id },
-          update: {
-            name: p.name, categoryId: mappedCategory, subcategoryId: scopedSubcategory,
-            description: p.description, image: p.image, bannerImage: p.bannerImage || '',
-            specifications: JSON.stringify(p.specifications || {}),
-            features: JSON.stringify(p.features || []),
-            detailedFeatures: JSON.stringify(p.detailedFeatures || {}),
-            galleryImages: JSON.stringify(p.galleryImages || []),
-            isActive: true,
-          },
-          create: {
-            id: p.id, name: p.name, categoryId: mappedCategory, subcategoryId: scopedSubcategory,
-            description: p.description, image: p.image, bannerImage: p.bannerImage || '',
-            specifications: JSON.stringify(p.specifications || {}),
-            features: JSON.stringify(p.features || []),
-            detailedFeatures: JSON.stringify(p.detailedFeatures || {}),
-            galleryImages: JSON.stringify(p.galleryImages || []),
-            isActive: true, sortOrder: 0,
-          },
-        })
-        count++
-      } catch (e) {
-        failed++
-        process.stdout.write('  FAIL[' + failed + ']: ' + p.id + ' cat=' + mappedCategory + ' sub=' + mappedSubcategory + '\n')
-      }
-    }
-    process.stdout.write('  ' + count + ' products imported, ' + failed + ' failed\n')
-  } catch (err) { process.stdout.write('  Products import failed: ' + err + '\n') }
+  const { dumpTrucks, tractorTrucks, cargoTrucks, lightCargoTrucks, lightTipperTrucks, waterTankers, oilTankers, mixerTrucks, otherSpecialVehicles, lightVehicles, semiTrailers, newEnergyVehicles } = require('../data/products')
+  const all = [...dumpTrucks, ...tractorTrucks, ...cargoTrucks, ...lightCargoTrucks, ...lightTipperTrucks, ...waterTankers, ...oilTankers, ...mixerTrucks, ...otherSpecialVehicles, ...lightVehicles, ...semiTrailers, ...newEnergyVehicles]
+  for (const p of all) {
+    const mappedCategory = categoryMap[p.category] || p.category
+    const subMapKey = p.category + ':' + p.subcategory
+    const mappedSubcategory = subcategoryMap[subMapKey] || p.subcategory
+    const scopedSubcategory = `${mappedCategory}:${mappedSubcategory}`
+    await createIfMissing(prisma.product, { id: p.id }, {
+      id: p.id, name: p.name, categoryId: mappedCategory, subcategoryId: scopedSubcategory,
+      description: p.description, image: p.image, bannerImage: p.bannerImage || '',
+      specifications: JSON.stringify(p.specifications || {}),
+      features: JSON.stringify(p.features || []),
+      detailedFeatures: JSON.stringify(p.detailedFeatures || {}),
+      galleryImages: JSON.stringify(p.galleryImages || []),
+      isActive: true, sortOrder: 0,
+    })
+  }
+  process.stdout.write('  ' + all.length + ' products checked\n')
 }
 
 async function importNews() {
   process.stdout.write('Importing news...\n')
-  try {
-    const { newsItems } = require('../data/news')
-    for (const n of newsItems) {
-      await prisma.news.upsert({
-        where: { slug: n.slug },
-        update: {
-          title: n.title, excerpt: n.excerpt || '', content: n.content || '',
-          image: n.image || '', category: n.category || 'news',
-          tags: JSON.stringify(n.tags || []),
-          seoTitle: n.seoTitle || n.title, seoDescription: n.seoDescription || n.excerpt || '',
-          isPublished: true, date: n.date || '2025-01-01',
-        },
-        create: {
-          slug: n.slug, title: n.title, excerpt: n.excerpt || '', content: n.content || '',
-          image: n.image || '', category: n.category || 'news',
-          tags: JSON.stringify(n.tags || []),
-          keywords: '[]', internalLinks: '[]', externalLinks: '[]',
-          seoTitle: n.seoTitle || n.title, seoDescription: n.seoDescription || n.excerpt || '',
-          isPublished: true, date: n.date || '2025-01-01',
-        },
-      })
-    }
-    process.stdout.write('  ' + newsItems.length + ' news articles imported\n')
-  } catch (err) { process.stdout.write('  News import failed: ' + err + '\n') }
+  const { newsItems } = require('../data/news')
+  for (const n of newsItems) {
+    await createIfMissing(prisma.news, { slug: n.slug }, {
+      slug: n.slug, title: n.title, excerpt: n.excerpt || '', content: n.content || '',
+      image: n.image || '', category: n.category || 'news',
+      tags: JSON.stringify(n.tags || []),
+      keywords: '[]', internalLinks: '[]', externalLinks: '[]',
+      seoTitle: n.seoTitle || n.title, seoDescription: n.seoDescription || n.excerpt || '',
+      isPublished: true, date: n.date || '2025-01-01',
+    })
+  }
+  process.stdout.write('  ' + newsItems.length + ' news articles checked\n')
 }
 
 async function importParts() {
   process.stdout.write('Importing parts...\n')
-  try {
-    const { parts } = require('../data/parts')
-    for (const p of parts) {
-      await prisma.part.upsert({
-        where: { id: 'part-' + p.id },
-        update: { name: p.name, partNumber: p.partNumber, category: p.category, description: p.description || '', image: p.image || '', specifications: JSON.stringify(p.specifications || {}), isActive: true, sortOrder: 0 },
-        create: { id: 'part-' + p.id, name: p.name, partNumber: p.partNumber, category: p.category, description: p.description || '', image: p.image || '', specifications: JSON.stringify(p.specifications || {}), isActive: true, sortOrder: 0 },
-      })
-    }
-    process.stdout.write('  ' + parts.length + ' parts imported\n')
-  } catch (err) { process.stdout.write('  Parts import failed: ' + err + '\n') }
+  const { parts } = require('../data/parts')
+  for (const p of parts) {
+    await createIfMissing(prisma.part, { id: 'part-' + p.id }, {
+      id: 'part-' + p.id, name: p.name, partNumber: p.partNumber, category: p.category,
+      description: p.description || '', image: p.image || '',
+      specifications: JSON.stringify(p.specifications || {}), isActive: true, sortOrder: 0,
+    })
+  }
+  process.stdout.write('  ' + parts.length + ' parts checked\n')
 }
 
 async function importSettings() {
   process.stdout.write('Importing settings...\n')
-  await prisma.setting.upsert({ where: { key: 'site_name' }, update: { value: 'SINOTRUK' }, create: { key: 'site_name', value: 'SINOTRUK' } })
-  await prisma.setting.upsert({ where: { key: 'site_description' }, update: { value: 'SINOTRUK International Trade' }, create: { key: 'site_description', value: 'SINOTRUK International Trade' } })
-  await prisma.setting.upsert({ where: { key: 'database_initialized' }, update: {}, create: { key: 'database_initialized', value: new Date().toISOString() } })
+  await createIfMissing(prisma.setting, { key: 'site_name' }, { key: 'site_name', value: 'SINOTRUK' })
+  await createIfMissing(prisma.setting, { key: 'site_description' }, { key: 'site_description', value: 'SINOTRUK International Trade' })
+  await createIfMissing(prisma.setting, { key: 'database_initialized' }, { key: 'database_initialized', value: new Date().toISOString() })
   process.stdout.write('  Settings imported\n')
 }
 
@@ -145,4 +111,6 @@ async function main() {
   process.stdout.write('\n=== Seed Complete ===\n\n')
 }
 
-main().catch(e => process.stdout.write('ERROR: ' + e + '\n')).finally(() => prisma.$disconnect())
+runSeedCli(main, () => prisma.$disconnect()).then((exitCode) => {
+  process.exitCode = exitCode
+})

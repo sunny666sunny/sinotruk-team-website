@@ -13,14 +13,30 @@ export function archiveProduct(client: ProductArchiveClient, id: string) {
   return client.product.update({ where: { id }, data: { isActive: false } })
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!getAdminSession(req)) return res.status(401).json({ error: 'Unauthorized' })
+type ProductHandlerDependencies = {
+  getAdminSession: typeof getAdminSession
+  prisma: any
+  afterContentMutation: typeof afterContentMutation
+  productPublicPath: typeof productPublicPath
+}
+
+export function createProductHandler(overrides: Partial<ProductHandlerDependencies> = {}) {
+  const dependencies: ProductHandlerDependencies = {
+    getAdminSession,
+    prisma,
+    afterContentMutation,
+    productPublicPath,
+    ...overrides,
+  }
+
+  return async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (!dependencies.getAdminSession(req)) return res.status(401).json({ error: 'Unauthorized' })
 
   const { id } = req.query
 
   switch (req.method) {
     case 'GET': {
-      const product = await prisma.product.findUnique({
+      const product = await dependencies.prisma.product.findUnique({
         where: { id: id as string },
         include: { performanceItems: { orderBy: { sortOrder: 'asc' } }, category: true, subcategory: true },
       })
@@ -35,13 +51,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     case 'PUT': {
-      const previous = await prisma.product.findUnique({ where: { id: id as string }, select: { categoryId: true, subcategoryId: true } })
+      const previous = await dependencies.prisma.product.findUnique({ where: { id: id as string }, select: { categoryId: true, subcategoryId: true } })
       const { name, categoryId, subcategoryId, description, image, bannerImage, specifications, features, detailedFeatures, galleryImages, isActive, sortOrder, performanceItems } = req.body
       // Delete existing performance items and recreate
       if (performanceItems) {
-        await prisma.performanceItem.deleteMany({ where: { productId: id as string } })
+        await dependencies.prisma.performanceItem.deleteMany({ where: { productId: id as string } })
       }
-      const product = await prisma.product.update({
+      const product = await dependencies.prisma.product.update({
         where: { id: id as string },
         data: {
           ...(name !== undefined && { name }),
@@ -68,22 +84,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }),
         },
       })
-      await afterContentMutation(res, [
-        '/products', `/products/${product.categoryId}`, productPublicPath(product.categoryId, product.subcategoryId, product.id),
-        ...(previous ? [productPublicPath(previous.categoryId, previous.subcategoryId, product.id)] : []),
+      await dependencies.afterContentMutation(res, [
+        '/products', `/products/${product.categoryId}`, dependencies.productPublicPath(product.categoryId, product.subcategoryId, product.id),
+        ...(previous ? [dependencies.productPublicPath(previous.categoryId, previous.subcategoryId, product.id)] : []),
       ])
       return res.status(200).json({ product })
     }
 
     case 'DELETE': {
-      const previous = await prisma.product.findUnique({ where: { id: id as string }, select: { categoryId: true, subcategoryId: true } })
+      const previous = await dependencies.prisma.product.findUnique({ where: { id: id as string }, select: { categoryId: true, subcategoryId: true } })
       if (!previous) return res.status(404).json({ error: 'Product not found' })
-      await archiveProduct(prisma, id as string)
-      await afterContentMutation(res, ['/products', ...(previous ? [`/products/${previous.categoryId}`, productPublicPath(previous.categoryId, previous.subcategoryId, id as string)] : [])])
+      await archiveProduct(dependencies.prisma, id as string)
+      await dependencies.afterContentMutation(res, ['/products', ...(previous ? [`/products/${previous.categoryId}`, dependencies.productPublicPath(previous.categoryId, previous.subcategoryId, id as string)] : [])])
       return res.status(200).json({ success: true, archived: true, id })
     }
 
     default:
       return res.status(405).json({ error: 'Method not allowed' })
+    }
   }
 }
+
+export default createProductHandler()
