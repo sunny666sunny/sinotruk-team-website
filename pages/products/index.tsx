@@ -1,151 +1,39 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import { ArrowRight } from 'lucide-react'
-import { productCategories, allProductsByCategory } from '@/data/siteConfig'
+import Head from 'next/head';
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import ProductCard from '@/components/product/ProductCard';
+import ProductFilters from '@/components/procurement/ProductFilters';
+import CompareTray from '@/components/procurement/CompareTray';
+import { createComparison } from '@/lib/procurement/compare-products';
+import { filterProducts } from '@/lib/procurement/filter-products';
+import type { ProductFilterState } from '@/lib/procurement/types';
+import { getPublishedProducts } from '@/lib/content/repository';
+import type { ProcurementProduct } from '@/lib/content/serializers';
 
-export default function Products() {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Head>
-        <title>Products - SINOTRUK</title>
-        <meta name="description" content="SINOTRUK offers a complete range of customized solutions for every transportation need – from long-haul or short-haul transportation, urban or intercity logistics, or specialized work scenarios" />
-      </Head>
+const fromQuery = (value: string | string[] | undefined) => typeof value === 'string' ? value.split(',').filter(Boolean) : [];
 
-      <Header />
-
-      <main className="flex-grow">
-        {/* Banner Section */}
-        <section className="relative bg-gray-900 text-white">
-          <div className="absolute inset-0 overflow-hidden">
-            <img
-              src="/images/products/banner-pro.webp"
-              alt="Products Banner"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-900/30 via-gray-900/20 to-gray-900/30"></div>
-          </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[400px] md:h-[500px] flex flex-col">
-            {/* Breadcrumb */}
-            <div className="pt-6">
-              <nav className="flex items-center space-x-2 text-sm">
-                <Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
-                <span className="text-gray-500">/</span>
-                <span className="text-gray-400">Products</span>
-              </nav>
-            </div>
-            
-            {/* Title */}
-            <div className="flex-1 flex items-center justify-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide">PRODUCTS</h1>
-            </div>
-          </div>
-        </section>
-
-        {/* Product Category Cards */}
-        <section className="py-16 md:py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section Header */}
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Customized Transportation Solutions</h2>
-              <p className="text-gray-600 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
-                SINOTRUK offers a complete range of customized solutions for every transportation need – from long-haul or short-haul transportation, urban or intercity logistics, or specialized work scenarios
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {productCategories.map((category) => (
-                <div
-                  key={category.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group"
-                >
-                  {/* Category Header with Icon */}
-                  <div className="p-6 pb-0">
-                    <div className="flex items-center space-x-3 mb-4">
-                      {category.icon && (
-                        <img
-                          src={category.icon}
-                          alt={category.name}
-                          className="w-10 h-10 object-contain"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none'
-                          }}
-                        />
-                      )}
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Product Image */}
-                  <div className="px-6">
-                    <div className="h-48 bg-gray-100 rounded-lg overflow-hidden">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.src = '/images/products/banner-pro.webp'
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6 pt-4">
-                    <p className="text-primary font-semibold text-sm mb-2">{category.tagline}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">{category.fullDescription}</p>
-                    <Link
-                      href={`/products/${category.id}`}
-                      className="inline-flex items-center text-sm font-semibold text-gray-900 hover:text-primary transition-colors group/link"
-                    >
-                      <span>All Vehicle Details</span>
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Product Categories List Section */}
-        <section className="py-16 md:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Product Categories</h2>
-              <p className="text-gray-600 text-lg">Browse our complete range of vehicle categories</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {allProductsByCategory.map((cat) => (
-                <div key={cat.category} className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b-2 border-primary">
-                    {cat.category}
-                  </h3>
-                  <ul className="space-y-2">
-                    {cat.products.map((product, idx) => (
-                      <li key={idx}>
-                        <Link
-                          href={product.href}
-                          className="text-sm text-gray-600 hover:text-primary transition-colors hover:underline underline-offset-2"
-                        >
-                          {product.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
-  )
+export default function Products({ products }: { products: ProcurementProduct[] }) {
+  const router = useRouter();
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const filters: ProductFilterState = { drive: fromQuery(router.query.drive), applications: fromQuery(router.query.application), powerMin: typeof router.query.powerMin === 'string' ? Number(router.query.powerMin) : undefined, powerMax: typeof router.query.powerMax === 'string' ? Number(router.query.powerMax) : undefined };
+  const drives = useMemo(() => [...new Set(products.map((item) => item.normalizedSpecs.drive || item.normalizedSpecs['Drive type']).filter(Boolean))].sort(), [products]);
+  const applications = useMemo(() => [...new Set(products.flatMap((item) => item.applicationTags))].sort(), [products]);
+  const visible = filterProducts(products, filters);
+  const updateFilters = (next: ProductFilterState) => {
+    const query: Record<string, string> = {};
+    if (next.drive.length) query.drive = next.drive.join(',');
+    if (next.applications.length) query.application = next.applications.join(',');
+    if (next.powerMin !== undefined) query.powerMin = String(next.powerMin);
+    if (next.powerMax !== undefined) query.powerMax = String(next.powerMax);
+    void router.push({ pathname: '/products', query }, undefined, { shallow: true });
+  };
+  const toggleCompare = (id: string) => setCompareIds((current) => {
+    const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+    try { return createComparison(next); } catch { return current; }
+  });
+  return <div className="flex min-h-screen flex-col"><Head><title>Commercial Truck Catalogue | SINOTRUK TEAM</title><meta name="description" content="Filter commercial trucks by drive form, application and power range. Build a procurement shortlist or compare up to four vehicles." /></Head><Header /><main className="flex-grow bg-[var(--color-canvas)] pt-16 lg:pt-[72px]"><section className="border-b border-[var(--color-line)] bg-white"><div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"><p className="text-xs font-bold uppercase tracking-[.12em] text-[var(--color-signal)]">Product catalogue</p><h1 className="mt-2 text-4xl font-extrabold text-[var(--color-ink)]">Compare vehicle requirements before you enquire.</h1><p className="mt-4 max-w-3xl leading-7 text-[var(--color-steel)]">Use available technical data to narrow the range. If a specification is not shown, include it in your RFQ for confirmation.</p></div></section><section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[260px_1fr] lg:px-8"><ProductFilters drives={drives} applications={applications} value={filters} onChange={updateFilters} /><div><div className="mb-5 flex items-center justify-between"><p className="text-sm text-[var(--color-steel)]">{visible.length} vehicles match your filters</p><p className="text-xs text-[var(--color-steel)]">Select up to four to compare</p></div>{visible.length ? <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{visible.map((product) => <ProductCard key={product.id} product={product} compareSelected={compareIds.includes(product.id)} onCompareChange={toggleCompare} />)}</div> : <div className="border border-dashed border-[var(--color-line)] bg-white p-10 text-center"><p className="font-bold text-[var(--color-ink)]">No vehicles match these filters.</p><button type="button" onClick={() => updateFilters({ drive: [], applications: [] })} className="mt-4 text-sm font-bold text-[var(--color-signal)]">Reset filters</button></div>}</div></section><CompareTray count={compareIds.length} onClear={() => setCompareIds([])} /></main><Footer /></div>;
 }
+
+export async function getStaticProps() { return { props: { products: await getPublishedProducts() }, revalidate: 300 }; }
