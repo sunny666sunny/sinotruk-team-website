@@ -1,9 +1,11 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Send, ChevronRight, User, Phone, Mail, Globe, MessageSquare, Lock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { readRfqSelection } from '@/lib/procurement/rfq'
+import { SHORTLIST_KEY } from '@/lib/procurement/shortlist'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -12,9 +14,12 @@ export default function ContactPage() {
     email: '',
     country: '',
     message: '',
+    selections: [] as string[], quantity: '', useCase: '', destinationPort: '', consent: false,
   })
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+
+  useEffect(() => setFormData((current) => ({ ...current, selections: readRfqSelection(window.localStorage.getItem(SHORTLIST_KEY)) })), [])
 
   const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/0a8ca31f-bcd9-4079-8085-514663ae7ddd'
 
@@ -67,7 +72,7 @@ export default function ContactPage() {
       const resData = await res.json()
       if (resData.code === 0 || resData.success) {
         setSubmitState('success')
-        setFormData({ name: '', phone: '', email: '', country: '', message: '' })
+        setFormData({ name: '', phone: '', email: '', country: '', message: '', selections: [], quantity: '', useCase: '', destinationPort: '', consent: false })
       } else {
         throw new Error(resData.error || 'Submission failed')
       }
@@ -215,6 +220,10 @@ export default function ContactPage() {
                     <MessageSquare className="absolute right-3 top-4 w-5 h-5 text-[#26807d]/60" />
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div><label className="block text-gray-700 font-medium mb-2">Quantity</label><input type="number" min="1" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50" /></div><div><label className="block text-gray-700 font-medium mb-2">Use case</label><input value={formData.useCase} onChange={(e) => setFormData({ ...formData, useCase: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50" placeholder="Mining, logistics…" /></div><div><label className="block text-gray-700 font-medium mb-2">Destination port</label><input value={formData.destinationPort} onChange={(e) => setFormData({ ...formData, destinationPort: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50" /></div></div>
+                {formData.selections.length > 0 && <p className="text-sm text-gray-600">{formData.selections.length} shortlisted item(s) will be included in this RFQ.</p>}
+                <label className="flex items-start gap-3 text-sm text-gray-600"><input type="checkbox" required checked={formData.consent} onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} className="mt-1" />I agree that SINOTRUK TEAM may contact me about this enquiry.</label>
 
                 <div className="text-center">
                   {submitState === 'success' ? (
