@@ -4,38 +4,43 @@ import Footer from '@/components/layout/Footer'
 
 import HeroBanner from '@/components/home/HeroBanner'
 import CategorySection from '@/components/home/CategorySection'
-import AboutSection from '@/components/home/AboutSection'
-import TechAdvantages from '@/components/home/TechAdvantages'
-import GlobalBusiness from '@/components/home/GlobalBusiness'
 import IndustryApplications from '@/components/home/IndustryApplications'
 import NewsSection from '@/components/home/NewsSection'
-import AllProducts from '@/components/home/AllProducts'
 import CTASection from '@/components/home/CTASection'
-import { siteConfig } from '@/data/siteConfig'
+import ProcurementPaths from '@/components/home/ProcurementPaths'
+import { productCategories } from '@/data/siteConfig'
+import { getPublishedCategory } from '@/lib/content/repository'
 
-export default function Home() {
+type HomeProps = { categories: { id: string; name: string; description: string }[] };
+
+export default function Home({ categories }: HomeProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Head>
-        <title>{siteConfig.title}</title>
-        <meta name="description" content={siteConfig.description} />
+        <title>SINOTRUK TEAM | Commercial Truck Export Procurement</title>
+        <meta name="description" content="Explore commercial truck and parts categories, compare requirements and start an export procurement enquiry with SINOTRUK TEAM." />
       </Head>
       
       <Header />
       
       <main className="flex-grow">
         <HeroBanner />
-        <CategorySection />
-        <AboutSection />
-        <TechAdvantages />
-        <GlobalBusiness />
+        <CategorySection categories={categories} />
+        <ProcurementPaths />
         <IndustryApplications />
         <NewsSection />
-        <AllProducts />
         <CTASection />
       </main>
       
       <Footer />
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const categories = await Promise.all(productCategories.map(async ({ id, name, description }) => {
+    const record = await getPublishedCategory(id);
+    return { id, name: record?.name ?? name, description: record?.description || description };
+  }));
+  return { props: { categories }, revalidate: 300 };
 }

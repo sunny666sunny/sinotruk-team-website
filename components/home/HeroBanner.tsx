@@ -1,42 +1,25 @@
-import Link from 'next/link'
-import { ArrowRight, Play } from 'lucide-react'
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function HeroBanner() {
   return (
-    <section className="relative h-[700px] md:h-[800px] lg:h-[900px] overflow-hidden">
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: 'url("/images/products/Heavy-Truck.webp")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      ></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/60 via-gray-800/40 to-gray-800/30"></div>
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-        <div className="text-white max-w-2xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Welcome to <span className="text-primary">SINOTRUK</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed">
-            SINOTRUK&apos;s products cover multiple fields, dedicated to meeting the needs of various users. 
-            From heavy-duty trucks to light commercial vehicles – we deliver the optimal solution for every scenario.
-          </p>
-          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link href="/products" className="btn-primary inline-flex items-center justify-center space-x-2 text-lg px-8 py-4">
-              <span>Browse Products</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link href="/contact" className="border-2 border-white text-white hover:bg-white hover:text-primary transition-colors inline-flex items-center justify-center space-x-2 text-lg px-8 py-4 rounded font-semibold">
-              <Play className="w-5 h-5" />
-              <span>Get Quote</span>
-            </Link>
+    <section className="relative isolate overflow-hidden bg-[var(--color-ink)] py-24 text-white md:py-32">
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(110deg,rgba(17,24,32,.98),rgba(17,24,32,.78)),url('/images/products/Heavy-Truck.webp')] bg-cover bg-center" />
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.25fr_.75fr] lg:px-8">
+        <div className="max-w-3xl">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-slate-300">Commercial truck export procurement</p>
+          <h1 className="mt-4 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-6xl">Specify the right truck. Build the right shipment.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">SINOTRUK TEAM helps overseas buyers navigate vehicle selection, configuration questions, spare parts and RFQ coordination without publishing unverified prices or promises.</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link href="/products" className="inline-flex items-center justify-center gap-2 rounded-sm bg-[var(--color-signal)] px-5 py-3.5 text-sm font-bold transition-colors hover:bg-[var(--color-signal-dark)]">Explore Product Range <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/contact" className="inline-flex items-center justify-center rounded-sm border border-white/70 px-5 py-3.5 text-sm font-bold transition-colors hover:bg-white hover:text-[var(--color-ink)]">Request a Quote</Link>
           </div>
         </div>
+        <aside className="self-end border border-white/20 bg-black/20 p-5 backdrop-blur-sm">
+          <p className="text-xs font-bold uppercase tracking-[.12em] text-slate-300">Start with your requirement</p>
+          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-100"><li>01 — Select a vehicle or part family</li><li>02 — Share application, drive form and destination</li><li>03 — Receive a configuration-focused response</li></ul>
+        </aside>
       </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-primary-light to-primary"></div>
     </section>
-  )
+  );
 }
