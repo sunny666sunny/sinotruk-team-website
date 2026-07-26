@@ -1,12 +1,12 @@
 :root {
-  --color-ink: #111820;
-  --color-steel: #53606d;
-  --color-canvas: #f4f6f7;
-  --color-panel: #ffffff;
-  --color-line: #d8dee3;
-  --color-signal: #d71920;
-  --color-signal-dark: #a90f15;
-  --color-signal-soft: rgb(215 25 32 / 10%);
+  --color-ink: #17282c;
+  --color-steel: #4a625f;
+  --color-canvas: #e8eeef;
+  --color-panel: #f8fafa;
+  --color-line: rgb(23 40 44 / 12%);
+  --color-signal: #16a39d;
+  --color-signal-dark: #0b7479;
+  --color-signal-soft: rgb(22 163 157 / 12%);
   --space-1: .25rem;
   --space-2: .5rem;
   --space-3: .75rem;
@@ -15,7 +15,7 @@
   --space-6: 2rem;
   --radius-control: .25rem;
   --radius-panel: .375rem;
-  --shadow-focus: 0 0 0 3px rgb(215 25 32 / 18%);
+  --shadow-focus: 0 0 0 3px rgb(22 163 157 / 24%);
   --transition-fast: 120ms ease-out;
   --transition-base: 160ms ease-out;
   --transition-slow: 200ms ease-out;
@@ -43,7 +43,7 @@
 
 .ui-button:active { transform: translateY(1px); }
 .ui-button:disabled { cursor: not-allowed; opacity: .5; }
-.ui-button--primary { background: var(--color-signal); color: #fff; }
+.ui-button--primary { background: var(--color-signal); color: var(--color-panel); }
 .ui-button--primary:hover:not(:disabled) { background: var(--color-signal-dark); }
 .ui-button--secondary { background: var(--color-panel); border-color: var(--color-line); color: var(--color-ink); }
 .ui-button--secondary:hover:not(:disabled) { border-color: var(--color-steel); }
@@ -52,7 +52,7 @@
 
 .ui-filter-drawer {
   align-items: stretch;
-  background: rgb(17 24 32 / 45%);
+  background: rgb(23 40 44 / 45%);
   display: flex;
   inset: 0;
   justify-content: flex-end;
@@ -63,7 +63,7 @@
 
 .ui-filter-drawer__panel {
   background: var(--color-panel);
-  box-shadow: -16px 0 40px rgb(17 24 32 / 18%);
+  box-shadow: -16px 0 40px rgb(23 40 44 / 18%);
   max-width: 28rem;
   outline: 0;
   overflow-y: auto;

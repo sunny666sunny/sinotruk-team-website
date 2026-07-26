@@ -10,20 +10,21 @@ test('采购设计令牌使用已确认的精确颜色与反馈值', async () =>
   const css = await readFile(new URL('../styles/tokens.css', import.meta.url), 'utf8');
 
   for (const [token, value] of Object.entries({
-    '--color-ink': '#111820',
-    '--color-steel': '#53606d',
-    '--color-canvas': '#f4f6f7',
-    '--color-panel': '#ffffff',
-    '--color-line': '#d8dee3',
-    '--color-signal': '#d71920',
-    '--color-signal-dark': '#a90f15',
+    '--color-ink': '#17282c',
+    '--color-steel': '#4a625f',
+    '--color-canvas': '#e8eeef',
+    '--color-panel': '#f8fafa',
+    '--color-line': 'rgb(23 40 44 / 12%)',
+    '--color-signal': '#16a39d',
+    '--color-signal-dark': '#0b7479',
     '--space-3': '.75rem',
     '--radius-panel': '.375rem',
   })) {
-    assert.match(css, new RegExp(`${token}\\s*:\\s*${value.replace('.', '\\.')}`));
+    const escapedValue = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    assert.match(css, new RegExp(`${token}\\s*:\\s*${escapedValue}`));
   }
 
-  assert.match(css, /--shadow-focus:\s*0 0 0 3px rgb\(215 25 32 \/ 18%\)/);
+  assert.match(css, /--shadow-focus:\s*0 0 0 3px rgb\(22 163 157 \/ 24%\)/);
   assert.match(css, /120ms/);
   assert.match(css, /200ms/);
 });
