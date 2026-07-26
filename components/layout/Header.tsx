@@ -1,190 +1,85 @@
-import Link from 'next/link'
-import { Menu, X, ChevronDown } from 'lucide-react'
-import { useState, useRef, useCallback } from 'react'
-import { siteConfig, productCategories, partCategories } from '@/data/siteConfig'
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import ShortlistButton from '@/components/procurement/ShortlistButton';
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navLinks = [
+    { name: 'Products', href: '/products' },
+    { name: 'Parts', href: '/parts' },
+    { name: 'Solutions', href: '/service' },
+    { name: 'News', href: '/news' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+  ];
 
-  const handleMouseEnter = useCallback((name: string) => {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current)
-      closeTimerRef.current = null
-    }
-    setActiveDropdown(name)
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    closeTimerRef.current = setTimeout(() => {
-      setActiveDropdown(null)
-    }, 200)
-  }, [])
-
-  const renderProductDropdown = () => (
-    <div 
-      className="fixed top-[80px] md:top-[88px] left-0 right-0 bg-white text-gray-800 shadow-2xl py-8 z-50"
-      onMouseEnter={() => handleMouseEnter('products')}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-6 gap-0">
-          {productCategories.map((category, idx) => (
-            <div 
-              key={category.id} 
-              className={`px-4 ${idx < productCategories.length - 1 ? 'border-r border-gray-100' : ''}`}
-            >
-              <Link
-                href={`/products/${category.id}`}
-                className="block text-primary font-bold text-base mb-5 pb-2 border-b-2 border-primary hover:opacity-80 transition-opacity"
-              >
-                {category.name}
-              </Link>
-              <ul className="space-y-3">
-                {category.subcategories.map((sub) => (
-                  <li key={sub.id}>
-                    <Link
-                      href={`/products/${category.id}`}
-                      className="flex items-center justify-between hover:bg-gray-50 rounded p-2 transition-colors"
-                    >
-                      <span className="text-sm text-gray-600 whitespace-nowrap">{sub.name}</span>
-                      <img
-                        src={sub.image}
-                        alt={sub.name}
-                        className="w-14 h-10 object-cover rounded ml-3"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderPartsDropdown = () => (
-    <div 
-      className="absolute top-full left-0 bg-white text-gray-800 shadow-2xl py-4 px-6 min-w-[250px] z-50"
-      onMouseEnter={() => handleMouseEnter('parts')}
-      onMouseLeave={handleMouseLeave}
-    >
-      <ul className="space-y-1">
-        {partCategories.map((category) => (
-          <li key={category.id}>
-            <Link
-              href={`/parts?tab=${category.id}`}
-              className="block text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors py-3 px-4 rounded"
-            >
-              {category.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-[80px] md:h-[88px]">
-          <Link href="/" className="flex items-center space-x-3">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--color-line)] bg-white/95 shadow-sm backdrop-blur">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between lg:h-[72px]">
+          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="SINOTRUK TEAM home">
             <img
               src="/images/logo-cnhtc.webp"
-              alt="SINOTRUK"
-              className="h-12 md:h-14 w-auto"
+              alt=""
+              className="h-10 w-auto lg:h-11"
             />
-            <span className="text-[#006b7a] font-bold text-xl md:text-2xl tracking-tight">
-              SINOTRUK
+            <span className="text-base font-extrabold tracking-[0.08em] text-[var(--color-ink)] sm:text-lg">
+              SINOTRUK TEAM
             </span>
           </Link>
-          
-          <nav className="hidden lg:flex items-center space-x-0">
-            {siteConfig.navLinks.map((link) => {
-              if (link.name === 'Products') {
-                return (
-                  <div
-                    key={link.name}
-                    className="relative"
-                    onMouseEnter={() => handleMouseEnter('products')}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-gray-700 hover:text-primary font-medium transition-colors py-2 px-4 relative group flex items-center uppercase text-sm tracking-wide"
-                    >
-                      {link.name}
-                      <ChevronDown className="w-4 h-4 ml-1" />
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
-                    {activeDropdown === 'products' && renderProductDropdown()}
-                  </div>
-                )
-              }
-              if (link.name === 'Parts') {
-                return (
-                  <div
-                    key={link.name}
-                    className="relative"
-                    onMouseEnter={() => handleMouseEnter('parts')}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-gray-700 hover:text-primary font-medium transition-colors py-2 px-4 relative group flex items-center uppercase text-sm tracking-wide"
-                    >
-                      {link.name}
-                      <ChevronDown className="w-4 h-4 ml-1" />
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
-                    {activeDropdown === 'parts' && renderPartsDropdown()}
-                  </div>
-                )
-              }
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-700 hover:text-primary font-medium transition-colors py-2 px-4 relative group uppercase text-sm tracking-wide"
-                >
-                  {link.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              )
-            })}
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+            {navLinks.map((link) => (
+              <Link key={link.name} href={link.href} className="rounded px-3 py-2 text-sm font-semibold text-[var(--color-steel)] transition-colors hover:bg-[var(--color-canvas)] hover:text-[var(--color-signal)]">
+                {link.name}
+              </Link>
+            ))}
           </nav>
-          
-          <div className="flex items-center space-x-4">
-            <Link href="/contact" className="btn-primary hidden sm:inline-flex">
-              GET QUOTE
+          <div className="flex items-center gap-3">
+            <ShortlistButton className="hidden sm:inline-flex" />
+            <Link href="/contact" className="hidden rounded-sm bg-[var(--color-signal)] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[var(--color-signal-dark)] sm:inline-flex">
+              Request a Quote
             </Link>
             <button
-              className="lg:hidden p-2"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="rounded p-2 text-[var(--color-ink)] lg:hidden"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-primary-navigation"
+              aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
-      
+
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-t">
-          <nav className="flex flex-col p-4 space-y-2">
-            {siteConfig.navLinks.map((link) => (
+        <div className="border-t border-[var(--color-line)] bg-white lg:hidden">
+          <nav id="mobile-primary-navigation" className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6" aria-label="Mobile navigation">
+            <Link href="/products" className="rounded bg-[var(--color-canvas)] px-4 py-3 text-sm font-bold text-[var(--color-ink)]" onClick={() => setIsMenuOpen(false)}>
+              Browse the catalogue
+            </Link>
+            {navLinks.slice(1).map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-700 hover:text-primary font-medium py-3 px-4 rounded hover:bg-gray-50 uppercase text-sm tracking-wide"
+                className="rounded px-4 py-3 text-sm font-semibold text-[var(--color-steel)] hover:bg-[var(--color-canvas)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-            <Link href="/contact" className="btn-primary text-center mt-4">
-              GET QUOTE
+            <ShortlistButton className="px-4 py-3" onNavigate={() => setIsMenuOpen(false)} />
+            <Link href="/contact" className="mt-2 rounded-sm bg-[var(--color-signal)] px-4 py-3 text-center text-sm font-bold text-white" onClick={() => setIsMenuOpen(false)}>
+              Request a Quote
             </Link>
           </nav>
         </div>

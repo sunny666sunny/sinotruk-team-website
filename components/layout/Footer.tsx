@@ -3,68 +3,56 @@ import { siteConfig, productCategories, partCategories } from '@/data/siteConfig
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Products */}
+    <footer className="mt-16 bg-[var(--color-ink)] text-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h4 className="font-semibold text-lg mb-6">PRODUCTS</h4>
-            <ul className="space-y-3 text-gray-400">
+            <p className="text-sm font-bold tracking-[0.12em] text-white">BUSINESS SCOPE</p>
+            <p className="mt-4 max-w-xs text-sm leading-6 text-slate-300">Vehicle selection, export-oriented configuration support, spare-parts sourcing and RFQ coordination for commercial-truck buyers.</p>
+            <Link href="/contact" className="mt-5 inline-flex text-sm font-bold text-white underline decoration-[var(--color-signal)] decoration-2 underline-offset-4 hover:text-slate-200">Start an enquiry</Link>
+          </div>
+          <div>
+            <h4 className="text-sm font-bold tracking-[0.12em] text-white">PRODUCTS</h4>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
               {productCategories.map((category) => (
                 <li key={category.id}>
-                  <Link href={`/products/${category.id}`} className="hover:text-[#26807d] transition-colors">
+                  <Link href={`/products/${category.id}`} className="transition-colors hover:text-white">
                     {category.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          
-          {/* Parts */}
           <div>
-            <h4 className="font-semibold text-lg mb-6">PARTS</h4>
-            <ul className="space-y-3 text-gray-400">
+            <h4 className="text-sm font-bold tracking-[0.12em] text-white">QUICK LINKS</h4>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <li><Link href="/products" className="transition-colors hover:text-white">All products</Link></li>
+              <li><Link href="/parts" className="transition-colors hover:text-white">Parts centre</Link></li>
+              <li><Link href="/service" className="transition-colors hover:text-white">Solutions</Link></li>
+              <li><Link href="/news" className="transition-colors hover:text-white">News</Link></li>
+              <li><Link href="/about" className="transition-colors hover:text-white">About SINOTRUK TEAM</Link></li>
+              <li><Link href="/contact" className="transition-colors hover:text-white">Contact</Link></li>
+            </ul>
+            <h4 className="mt-7 text-sm font-bold tracking-[0.12em] text-white">PARTS</h4>
+            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-slate-300">
               {partCategories.map((category) => (
                 <li key={category.id}>
-                  <Link href={`/parts?tab=${category.id}`} className="hover:text-[#26807d] transition-colors">
+                  <Link href={`/parts?tab=${category.id}`} className="transition-colors hover:text-white">
                     {category.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          
-          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-lg mb-6">QUICK LINKS</h4>
-            <ul className="space-y-3 text-gray-400">
-              <li><Link href="/" className="hover:text-[#26807d] transition-colors">Home</Link></li>
-              <li><Link href="/products" className="hover:text-[#26807d] transition-colors">All Products</Link></li>
-              <li><Link href="/parts" className="hover:text-[#26807d] transition-colors">Parts Center</Link></li>
-              <li><Link href="/about" className="hover:text-[#26807d] transition-colors">About Us</Link></li>
-              <li><Link href="/news" className="hover:text-[#26807d] transition-colors">News & Events</Link></li>
-              <li><Link href="/service" className="hover:text-[#26807d] transition-colors">Service</Link></li>
-              <li><Link href="/contact" className="hover:text-[#26807d] transition-colors">Contact Us</Link></li>
-            </ul>
-          </div>
-          
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-semibold text-lg mb-6">CONTACT INFO</h4>
-            <ul className="space-y-3 text-gray-400">
+            <h4 className="text-sm font-bold tracking-[0.12em] text-white">CONTACT</h4>
+            <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
               <li>
-                <span className="text-white font-medium">Hong Kong Office</span>
-                <p className="text-sm mt-1">Chinamerchant Tower Shuntak Centre</p>
-                <p className="text-sm">168-200 Connaught Road Central, Hong Kong</p>
+                <p>{siteConfig.contactInfo.address}</p>
               </li>
-              <li className="pt-3">
-                <span className="text-white font-medium">Main Headquarters</span>
-                <p className="text-sm mt-1">China National Heavy Duty Truck Group Co., Ltd.</p>
-                <p className="text-sm">No. 777 Hua&apos;ao Road, High-tech Zone</p>
-                <p className="text-sm">Jinan, Shandong, China</p>
-              </li>
-              <li className="pt-3">
-                <Link href={`mailto:${siteConfig.contactInfo.email}`} className="hover:text-[#26807d] transition-colors">
+              <li><a href={`tel:${siteConfig.contactInfo.phone.replace(/[^+\\d]/g, '')}`} className="transition-colors hover:text-white">{siteConfig.contactInfo.phone}</a></li>
+              <li>
+                <Link href={`mailto:${siteConfig.contactInfo.email}`} className="transition-colors hover:text-white">
                   {siteConfig.contactInfo.email}
                 </Link>
               </li>
@@ -72,8 +60,13 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} SINOTRUK International. All rights reserved.</p>
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/15 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} SINOTRUK TEAM. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-white">Privacy</Link>
+            <Link href="/terms" className="hover:text-white">Terms</Link>
+            <a href="/sitemap.xml" className="hover:text-white">Sitemap</a>
+          </div>
         </div>
       </div>
     </footer>
