@@ -4,13 +4,15 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import { parts, partCategories, getPartsByCategory } from '@/data/parts'
+import { parts, partCategories } from '@/data/parts'
+import { filterParts } from '@/lib/procurement/filter-parts'
 import { ArrowRight, ChevronRight } from 'lucide-react'
 
 export default function PartsPage() {
   const router = useRouter()
   const { tab } = router.query
   const [activeTab, setActiveTab] = useState('engine')
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     if (tab && typeof tab === 'string' && partCategories.some(c => c.id === tab)) {
@@ -18,7 +20,7 @@ export default function PartsPage() {
     }
   }, [tab])
 
-  const filteredParts = getPartsByCategory(activeTab)
+  const filteredParts = filterParts(parts, { category: activeTab, query })
 
   return (
     <>
@@ -73,6 +75,7 @@ export default function PartsPage() {
       {/* Product Grid */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="pb-4"><label className="sr-only" htmlFor="parts-search">Search parts</label><input id="parts-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by part number, model or application" className="w-full border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-sm text-[var(--color-ink)] sm:max-w-md" /></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredParts.map((part) => (
