@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { Product } from '@/data/products'
 import { ChevronRight, Check } from 'lucide-react'
+import SpecificationTable from '@/components/product/SpecificationTable'
+import { addToShortlist, readShortlist, saveShortlist } from '@/lib/procurement/shortlist'
 
 interface ProductDetailProps {
   product: Product
@@ -10,6 +12,7 @@ interface ProductDetailProps {
 
 export default function ProductDetail({ product }: ProductDetailProps) {
   const bannerImage = product.bannerImage || product.image
+  const addProductToShortlist = () => saveShortlist(addToShortlist(readShortlist(), product.id))
 
   return (
     <div className="min-h-screen bg-white">
@@ -50,20 +53,8 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Models</h2>
-            <div className="space-y-3">
-              {Object.entries(product.specifications).map(([key, value]) => (
-                <div key={key} className="text-sm text-gray-600">
-                  <span className="font-medium text-gray-900">{key}:</span>{' '}
-                  <span>{value}</span>
-                </div>
-              ))}
-            </div>
-            <Link
-              href="/contact"
-              className="inline-flex items-center mt-6 px-6 py-3 bg-primary text-white font-semibold rounded-md hover:bg-primary/90 transition-colors"
-            >
-              Request a Quote
-            </Link>
+            <SpecificationTable specifications={product.specifications} />
+            <div className="mt-6 flex flex-wrap gap-3"><button type="button" onClick={addProductToShortlist} className="border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-3 text-sm font-bold text-[var(--color-ink)]">Add to shortlist</button><Link href="/contact" className="bg-[var(--color-signal)] px-5 py-3 text-sm font-bold text-[var(--color-panel)] hover:bg-[var(--color-signal-dark)]">Request a Quote</Link></div>
           </div>
           <div className="bg-gray-50 rounded-lg p-8 flex items-center justify-center">
             <img
@@ -78,18 +69,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         {product.detailedFeatures && Object.keys(product.detailedFeatures).length > 0 && (
           <div className="mb-16">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Features</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
-                <tbody>
-                  {Object.entries(product.detailedFeatures).map(([key, value]) => (
-                    <tr key={key} className="border-b border-gray-200">
-                      <td className="py-3 px-4 bg-gray-50 font-medium text-gray-700 w-2/5">{key}</td>
-                      <td className="py-3 px-4 text-gray-600">{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <SpecificationTable specifications={product.detailedFeatures} />
           </div>
         )}
       </div>
