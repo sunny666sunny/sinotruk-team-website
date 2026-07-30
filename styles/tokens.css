@@ -1,12 +1,12 @@
 :root {
-  --color-ink: #17282c;
-  --color-steel: #4a625f;
-  --color-canvas: #e8eeef;
-  --color-panel: #f8fafa;
-  --color-line: rgb(23 40 44 / 12%);
-  --color-signal: #16a39d;
-  --color-signal-dark: #0b7479;
-  --color-signal-soft: rgb(22 163 157 / 12%);
+  --color-ink: #07111f;
+  --color-steel: #607188;
+  --color-canvas: #e8eef5;
+  --color-panel: #f6f8fb;
+  --color-line: rgb(99 127 159 / 22%);
+  --color-signal: #27a8ff;
+  --color-signal-dark: #0876cf;
+  --color-signal-soft: rgb(39 168 255 / 14%);
   --space-1: .25rem;
   --space-2: .5rem;
   --space-3: .75rem;
@@ -15,7 +15,7 @@
   --space-6: 2rem;
   --radius-control: .25rem;
   --radius-panel: .375rem;
-  --shadow-focus: 0 0 0 3px rgb(22 163 157 / 24%);
+  --shadow-focus: 0 0 0 3px rgb(39 168 255 / 32%);
   --transition-fast: 120ms ease-out;
   --transition-base: 160ms ease-out;
   --transition-slow: 200ms ease-out;
@@ -80,4 +80,7 @@
 .ui-empty-state__description { margin: 0; }
 .ui-skeleton { animation: ui-skeleton-pulse var(--transition-slow) ease-in-out infinite alternate; background: var(--color-canvas); border-radius: var(--radius-control); }
 @keyframes ui-skeleton-pulse { from { opacity: .62; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .ui-button, .ui-skeleton { animation: none; transition-duration: .01ms; } }
+.hero-light-track { animation: hero-light-track 6s cubic-bezier(.16, 1, .3, 1) infinite; transform-origin: right center; }
+.hero-light-track--late { animation-delay: -3s; }
+@keyframes hero-light-track { 0%, 100% { opacity: .12; transform: translateX(12%) rotate(-18deg); } 50% { opacity: .8; transform: translateX(-7%) rotate(-18deg); } }
+@media (prefers-reduced-motion: reduce) { .ui-button, .ui-skeleton, .hero-light-track { animation: none; transition-duration: .01ms; } }
