@@ -9,11 +9,12 @@ import NewsSection from '@/components/home/NewsSection'
 import CTASection from '@/components/home/CTASection'
 import ProcurementPaths from '@/components/home/ProcurementPaths'
 import { productCategories } from '@/data/siteConfig'
-import { getPublishedCategory } from '@/lib/content/repository'
+import type { NewsItem } from '@/data/news'
+import { getPublishedCategory, getPublishedNews } from '@/lib/content/repository'
 
-type HomeProps = { categories: { id: string; name: string; description: string }[] };
+type HomeProps = { categories: { id: string; name: string; description: string }[]; news: NewsItem[] };
 
-export default function Home({ categories }: HomeProps) {
+export default function Home({ categories, news }: HomeProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Head>
@@ -28,7 +29,7 @@ export default function Home({ categories }: HomeProps) {
         <CategorySection categories={categories} />
         <ProcurementPaths />
         <IndustryApplications />
-        <NewsSection />
+        <NewsSection items={news} />
         <CTASection />
       </main>
       
@@ -42,5 +43,6 @@ export async function getStaticProps() {
     const record = await getPublishedCategory(id);
     return { id, name: record?.name ?? name, description: record?.description || description };
   }));
-  return { props: { categories }, revalidate: 300 };
+  const news = (await getPublishedNews()).slice(0, 3)
+  return { props: { categories, news }, revalidate: 300 };
 }
