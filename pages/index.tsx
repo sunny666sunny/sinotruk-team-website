@@ -4,6 +4,9 @@ import Footer from '@/components/layout/Footer'
 
 import HeroBanner from '@/components/home/HeroBanner'
 import CategorySection from '@/components/home/CategorySection'
+import AboutSection from '@/components/home/AboutSection'
+import TechAdvantages from '@/components/home/TechAdvantages'
+import GlobalBusiness from '@/components/home/GlobalBusiness'
 import IndustryApplications from '@/components/home/IndustryApplications'
 import NewsSection from '@/components/home/NewsSection'
 import CTASection from '@/components/home/CTASection'
@@ -27,9 +30,12 @@ export default function Home({ categories, news }: HomeProps) {
       <main className="flex-grow">
         <HeroBanner />
         <CategorySection categories={categories} />
-        <ProcurementPaths />
+        <AboutSection />
+        <TechAdvantages />
+        <GlobalBusiness />
         <IndustryApplications />
         <NewsSection items={news} />
+        <ProcurementPaths />
         <CTASection />
       </main>
       
