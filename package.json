@@ -12,7 +12,8 @@
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
     "db:backup": "node scripts/backup-database.mjs",
-    "db:verify-catalog": "node scripts/verify-catalog-integrity.mjs"
+    "db:verify-catalog": "node scripts/verify-catalog-integrity.mjs",
+    "content:worker:once": "tsx scripts/content-worker.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
