@@ -26,7 +26,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="rounded-lg overflow-hidden shadow-xl">
               <img
-                src="/images/about/img29.webp"
+                src="/images/reference/about-SINOTRUK.webp"
                 alt="SINOTRUK Facility"
                 className="w-full h-auto object-cover"
               />
