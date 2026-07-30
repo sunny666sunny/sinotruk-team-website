@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { AlertCircle, CheckCircle, ChevronRight, ClipboardList, Globe, Loader2, Lock, Mail, MessageSquare, Phone, Send, User } from 'lucide-react'
+import { AlertCircle, CheckCircle, ClipboardList, Globe, Loader2, Lock, Mail, MessageSquare, Phone, Send, User } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { readRfqSelection } from '@/lib/procurement/rfq'
@@ -70,19 +69,6 @@ export default function ContactPage() {
     <Header />
     <main className="bg-[var(--color-panel)]">
       <PageHero eyebrow="Procurement enquiry" title="Prepare a clear truck or parts RFQ." description="Tell us what you need, where it will operate and where it needs to go. We will use your details to review suitable configurations or compatibility questions." />
-      <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-          <nav className="flex items-center gap-2 text-sm text-[var(--color-steel)]" aria-label="Breadcrumb">
-            <Link href="/">Home</Link><ChevronRight className="h-4 w-4" aria-hidden="true" /><span>Request an RFQ</span>
-          </nav>
-          <div className="mt-8 max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[.12em] text-[var(--color-signal-dark)]">Procurement enquiry</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-[-.04em] text-[var(--color-ink)] sm:text-5xl">Prepare a clear truck or parts RFQ.</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--color-steel)]">Tell us what you need, where it will operate and where it needs to go. We will use your details to review suitable configurations or compatibility questions.</p>
-          </div>
-        </div>
-      </section>
-
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_19rem] lg:px-8 lg:py-14">
         <form onSubmit={handleSubmit} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-6 sm:p-8">
           <div className="flex items-start gap-4 border-b border-[var(--color-line)] pb-6">
