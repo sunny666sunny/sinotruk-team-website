@@ -50,6 +50,10 @@ export async function getPublishedNews(): Promise<NewsItem[]> {
     content: row.content,
     seoTitle: row.seoTitle || row.title,
     seoDescription: row.seoDescription || row.excerpt,
+    category: row.category,
+    sourceUrl: row.sourceUrl,
+    sourceTitle: row.sourceTitle,
+    sourceDate: row.sourceDate,
   }))
 }
 
@@ -60,6 +64,10 @@ export async function getPublishedNewsItem(slug: string): Promise<NewsItem | nul
     excerpt: row.excerpt, content: row.content,
     seoTitle: row.seoTitle || row.title,
     seoDescription: row.seoDescription || row.excerpt,
+    category: row.category,
+    sourceUrl: row.sourceUrl,
+    sourceTitle: row.sourceTitle,
+    sourceDate: row.sourceDate,
   } : null
 }
 

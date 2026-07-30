@@ -1,160 +1,64 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '@/components/layout/Header'
+import type { GetStaticProps } from 'next'
+import { ArrowRight, Calendar, ChevronRight } from 'lucide-react'
 import Footer from '@/components/layout/Footer'
-import { newsItems } from '@/data/news'
-import { ChevronRight, Calendar, ArrowRight } from 'lucide-react'
+import Header from '@/components/layout/Header'
+import { SiteImage } from '@/components/SiteImage'
+import type { NewsItem } from '@/data/news'
+import { getPublishedNews } from '@/lib/content/repository'
+import { getNewsCategory, NEWS_CATEGORIES } from '@/lib/content/news-presentation'
 
 const ITEMS_PER_PAGE = 9
+const formatDate = (date: string) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
-export default function NewsPage() {
+export default function NewsPage({ items }: { items: NewsItem[] }) {
+  const [activeCategory, setActiveCategory] = useState<'All' | (typeof NEWS_CATEGORIES)[number]>('All')
   const [currentPage, setCurrentPage] = useState(1)
-  
-  const totalPages = Math.ceil(newsItems.length / ITEMS_PER_PAGE)
-  
-  const paginatedItems = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE
-    return newsItems.slice(start, start + ITEMS_PER_PAGE)
-  }, [currentPage])
+  const filteredItems = useMemo(() => items.filter((item) => activeCategory === 'All' || getNewsCategory(item) === activeCategory), [activeCategory, items])
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE))
+  const paginatedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  const selectCategory = (category: typeof activeCategory) => {
+    setActiveCategory(category)
+    setCurrentPage(1)
   }
 
-  return (
-    <>
-      <Head>
-        <title>News & Events - SINOTRUK International</title>
-        <meta name="description" content="Stay updated with the latest SINOTRUK news, product launches, industry insights, and heavy-duty truck information. Read about HOWO trucks, dump trucks, and commercial vehicle solutions." />
-      </Head>
-      <Header />
-
-      {/* Banner */}
-      <section className="relative w-full h-[280px] sm:h-[350px] md:h-[400px] lg:h-[480px] overflow-hidden">
-        <img
-          src="/images/news/banner-news.webp"
-          alt="SINOTRUK News & Events"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="flex items-center justify-center space-x-2 text-white/80 text-sm mb-4">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white">News & Events</span>
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-white">
-              News & Events
-            </h1>
+  return <>
+    <Head>
+      <title>Truck News & Procurement Guides | SINOTRUK TEAM</title>
+      <meta name="description" content="Manufacturer news, industry insights, and practical commercial-truck procurement guides for international buyers." />
+    </Head>
+    <Header />
+    <main id="main">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          <div className="flex items-center gap-2 text-sm text-[var(--color-steel)]"><Link href="/" className="hover:text-[var(--color-signal-dark)]">Home</Link><ChevronRight className="h-4 w-4" /><span>News</span></div>
+          <div className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-end">
+            <div><p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--color-signal-dark)]">Buyer knowledge centre</p><h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-[-0.035em] text-[var(--color-ink)] sm:text-5xl">News and practical procurement guidance</h1></div>
+            <p className="leading-7 text-[var(--color-steel)]">Use current updates and configuration guides to prepare a clearer truck or parts requirement before you request a quotation.</p>
           </div>
         </div>
       </section>
-
-      {/* News Grid */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {paginatedItems.map((news) => (
-              <article key={news.slug} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg hover:border-[#26807d]/30 transition-all duration-300 group">
-                <Link href={`/news/${news.slug}`} className="block">
-                  <div className="aspect-[16/10] overflow-hidden bg-gray-100">
-                    <img
-                      src={news.image}
-                      alt={news.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                </Link>
-                <div className="p-6">
-                  <div className="flex items-center text-gray-500 text-sm mb-3">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    <time dateTime={news.date}>{formatDate(news.date)}</time>
-                  </div>
-                  <Link href={`/news/${news.slug}`} className="block group-hover:text-[#26807d] transition-colors">
-                    <h2 className="text-lg font-bold text-gray-900 line-clamp-2 mb-3">
-                      {news.title}
-                    </h2>
-                  </Link>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {news.excerpt}
-                  </p>
-                  <Link
-                    href={`/news/${news.slug}`}
-                    className="inline-flex items-center text-[#26807d] font-semibold text-sm hover:text-[#1e6663] transition-colors"
-                  >
-                    Read More
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+      <section className="bg-[var(--color-panel)] py-10 lg:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-2" aria-label="News category filters">
+            {(['All', ...NEWS_CATEGORIES] as const).map((category) => <button key={category} type="button" onClick={() => selectCategory(category)} className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-signal)] ${activeCategory === category ? 'border-[var(--color-signal-dark)] bg-[var(--color-signal-dark)] text-white' : 'border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-ink)] hover:border-[var(--color-signal)]'}`}>{category}</button>)}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center space-x-2 mt-12">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${
-                    currentPage === page
-                      ? 'bg-[#26807d] text-white'
-                      : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Next
-              </button>
-            </div>
-          )}
+          {paginatedItems.length ? <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{paginatedItems.map((item) => <article key={item.slug} className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] shadow-[0_12px_32px_rgb(23_40_44_/_0.06)]">
+            <Link href={`/news/${item.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-[var(--color-canvas)]"><SiteImage src={item.image} alt={item.title} fill sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-300 hover:scale-[1.02]" /></Link>
+            <div className="flex flex-1 flex-col p-6"><div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--color-signal-dark)]"><span>{getNewsCategory(item)}</span><span className="h-1 w-1 rounded-full bg-[var(--color-steel)]" /><time dateTime={item.date} className="normal-case tracking-normal text-[var(--color-steel)]">{formatDate(item.date)}</time></div>
+              <h2 className="mt-4 text-xl font-bold tracking-[-0.02em] text-[var(--color-ink)]"><Link href={`/news/${item.slug}`} className="hover:text-[var(--color-signal-dark)]">{item.title}</Link></h2><p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--color-steel)]">{item.excerpt}</p>
+              <Link href={`/news/${item.slug}`} className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--color-signal-dark)] hover:text-[var(--color-ink)]">Read article <ArrowRight className="h-4 w-4" /></Link></div>
+          </article>)}</div> : <div className="mt-8 rounded-2xl border border-dashed border-[var(--color-line)] p-10 text-center text-[var(--color-steel)]">No articles are available in this category yet.</div>}
+          {totalPages > 1 && <nav className="mt-10 flex items-center justify-center gap-2" aria-label="News pages"><button onClick={() => setCurrentPage((page) => Math.max(1, page - 1))} disabled={currentPage === 1} className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 text-sm font-semibold text-[var(--color-ink)] disabled:opacity-40">Previous</button>{Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => <button key={page} onClick={() => setCurrentPage(page)} aria-current={currentPage === page ? 'page' : undefined} className={`min-h-11 min-w-11 rounded-lg px-3 text-sm font-semibold ${currentPage === page ? 'bg-[var(--color-signal-dark)] text-white' : 'border border-[var(--color-line)] text-[var(--color-ink)]'}`}>{page}</button>)}<button onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))} disabled={currentPage === totalPages} className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 text-sm font-semibold text-[var(--color-ink)] disabled:opacity-40">Next</button></nav>}
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-[#26807d]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Find Your Ideal Truck?
-          </h2>
-          <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            Explore our complete range of HOWO heavy-duty trucks, dump trucks, tractors, and special vehicles. Contact our team for expert guidance and competitive pricing.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/products"
-              className="inline-flex items-center px-8 py-3 bg-white text-[#26807d] rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              View All Products
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </>
-  )
+      <section className="bg-[var(--color-ink)] py-12"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-8"><div><h2 className="text-2xl font-bold text-[var(--color-panel)]">Need a configuration recommendation?</h2><p className="mt-2 text-[var(--color-canvas)]">Share your operating conditions and destination port. We will help you structure the RFQ.</p></div><Link href="/contact" className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--color-signal)] px-5 font-semibold text-[var(--color-ink)] hover:bg-[var(--color-panel)]">Start an RFQ <ArrowRight className="h-4 w-4" /></Link></div></section>
+    </main>
+    <Footer />
+  </>
 }
+
+export const getStaticProps: GetStaticProps<{ items: NewsItem[] }> = async () => ({ props: { items: await getPublishedNews() } })

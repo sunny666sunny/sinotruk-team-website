@@ -7,6 +7,10 @@ export interface NewsItem {
   content: string
   seoTitle: string
   seoDescription: string
+  category?: string | null
+  sourceUrl?: string | null
+  sourceTitle?: string | null
+  sourceDate?: string | null
 }
 
 export const newsItems: NewsItem[] = [
