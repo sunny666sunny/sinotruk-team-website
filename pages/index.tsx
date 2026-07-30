@@ -12,7 +12,7 @@ import { productCategories } from '@/data/siteConfig'
 import type { NewsItem } from '@/data/news'
 import { getPublishedCategory, getPublishedNews } from '@/lib/content/repository'
 
-type HomeProps = { categories: { id: string; name: string; description: string }[]; news: NewsItem[] };
+type HomeProps = { categories: { id: string; name: string; description: string; image: string }[]; news: NewsItem[] };
 
 export default function Home({ categories, news }: HomeProps) {
   return (
@@ -39,9 +39,9 @@ export default function Home({ categories, news }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  const categories = await Promise.all(productCategories.map(async ({ id, name, description }) => {
+  const categories = await Promise.all(productCategories.map(async ({ id, name, description, image }) => {
     const record = await getPublishedCategory(id);
-    return { id, name: record?.name ?? name, description: record?.description || description };
+    return { id, name: record?.name ?? name, description: record?.description || description, image: record?.bannerImage || image };
   }));
   const news = (await getPublishedNews()).slice(0, 3)
   return { props: { categories, news }, revalidate: 300 };
