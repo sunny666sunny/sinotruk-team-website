@@ -1,0 +1,5 @@
+import Link from 'next/link'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
+import { SeoHead } from '@/components/seo/SeoHead'
+export default function NotFound(){return <><SeoHead input={{path:'/404',pageType:'website',name:'Page not found',description:'The requested SINOTRUK TEAM page could not be found.'}}/><Header/><main id="main" className="flex min-h-[70vh] items-center bg-[var(--color-canvas)]"><div className="mx-auto max-w-2xl px-4 sm:px-6"><p className="font-mono text-sm text-[var(--color-signal-dark)]">404</p><h1 className="mt-3 text-5xl font-bold tracking-[-.04em] text-[var(--color-ink)]">This page is not available.</h1><p className="mt-5 leading-7 text-[var(--color-steel)]">The link may be outdated. Browse the catalogue or return to the home page.</p><div className="mt-8 flex gap-4"><Link href="/products" className="rounded-lg bg-[var(--color-signal)] px-5 py-3 font-semibold text-[var(--color-ink)]">Browse products</Link><Link href="/" className="rounded-lg border border-[var(--color-line)] px-5 py-3 font-semibold text-[var(--color-ink)]">Home</Link></div></div></main><Footer/></>}
