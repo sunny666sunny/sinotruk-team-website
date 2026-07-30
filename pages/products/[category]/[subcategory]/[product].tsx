@@ -1,9 +1,9 @@
-import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ProductDetail from '@/components/product/ProductDetail'
 import { allProducts, getProductById, Product } from '@/data/products'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 interface ProductDetailPageProps {
   product: Product | null
@@ -27,10 +27,7 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Head>
-        <title>{product.name} - SINOTRUK</title>
-        <meta name="description" content={product.description} />
-      </Head>
+      <SeoHead input={{ path: `/products/${product.category}/${product.subcategory}/${product.id}`, pageType: 'product', name: product.name, description: product.description, image: product.image, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: product.name, path: `/products/${product.category}/${product.subcategory}/${product.id}` }] }} />
 
       <Header />
 

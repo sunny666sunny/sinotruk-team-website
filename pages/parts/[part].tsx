@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Head from 'next/head'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { getPartById, parts } from '@/data/parts'
 import { ChevronRight, ArrowLeft, ShieldCheck, Package, Truck, RefreshCw } from 'lucide-react'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 export default function PartDetailPage() {
   const router = useRouter()
@@ -31,10 +31,7 @@ export default function PartDetailPage() {
 
   return (
     <>
-      <Head>
-        <title>{partData.name} - {partData.partNumber} - SINOTRUK Parts</title>
-        <meta name="description" content={partData.description} />
-      </Head>
+      <SeoHead input={{ path: `/parts/${part}`, pageType: 'part', name: `${partData.name} ${partData.partNumber}`, description: partData.description, image: partData.image, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Parts', path: '/parts' }, { name: partData.name, path: `/parts/${part}` }] }} />
       <Header />
 
       {/* Banner */}
