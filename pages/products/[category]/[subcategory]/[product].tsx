@@ -2,11 +2,12 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ProductDetail from '@/components/product/ProductDetail'
-import { allProducts, getProductById, Product } from '@/data/products'
+import type { ProcurementProduct } from '@/lib/content/serializers'
+import { getPublishedProduct, getPublishedProducts } from '@/lib/content/repository'
 import { SeoHead } from '@/components/seo/SeoHead'
 
 interface ProductDetailPageProps {
-  product: Product | null
+  product: ProcurementProduct | null
 }
 
 export default function ProductDetailPage({ product }: ProductDetailPageProps) {
@@ -41,7 +42,7 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = allProducts.map((product) => ({
+  const paths = (await getPublishedProducts()).map((product) => ({
     params: {
       category: product.category,
       subcategory: product.subcategory,
@@ -57,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<ProductDetailPageProps> = async ({ params }) => {
   const productId = params?.product as string
-  const product = getProductById(productId) || null
+  const product = await getPublishedProduct(productId)
 
   return {
     props: {
