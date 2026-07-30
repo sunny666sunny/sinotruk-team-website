@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Send, ChevronRight, User, Phone, Mail, Globe, MessageSquare, Lock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
@@ -6,6 +5,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { readRfqSelection } from '@/lib/procurement/rfq'
 import { SHORTLIST_KEY } from '@/lib/procurement/shortlist'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -84,10 +84,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <Head>
-        <title>Contact Us - SINOTRUK International</title>
-        <meta name="description" content="Get in touch with SINOTRUK. Contact our global headquarters in Jinan, China or Hong Kong office. Reach out for product inquiries, parts, service, and support." />
-      </Head>
+      <SeoHead input={{ path: '/contact', pageType: 'website', name: 'Request a Truck or Parts RFQ', description: 'Send your truck or parts requirements, shortlisted items, destination details and compatibility information to SINOTRUK TEAM.' }} />
       <Header />
 
       {/* Banner */}
@@ -108,7 +105,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-white/80 mt-4 max-w-2xl mx-auto">
-              Get in touch with SINOTRUK - we&apos;ll respond to your inquiry as soon as possible
+              Send the information needed to prepare a commercial-truck or parts RFQ.
             </p>
           </div>
         </div>
@@ -124,10 +121,10 @@ export default function ContactPage() {
                 <Send className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                Get in touch with Sinotruk
+                Prepare your RFQ
               </h2>
               <p className="text-white/80">
-                We&apos;ll respond to your inquiry as soon as possible
+                Include your selected items, requirements, destination and compatibility questions.
               </p>
             </div>
 
