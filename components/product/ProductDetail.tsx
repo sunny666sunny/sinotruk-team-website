@@ -1,152 +1,142 @@
 'use client'
 
 import Link from 'next/link'
-import { Product } from '@/data/products'
-import { ChevronRight, Check } from 'lucide-react'
+import { ArrowRight, ChevronRight, ClipboardPlus, FileText } from 'lucide-react'
+import type { Product } from '@/data/products'
 import SpecificationTable from '@/components/product/SpecificationTable'
 import { addToShortlist, readShortlist, saveShortlist } from '@/lib/procurement/shortlist'
 
-interface ProductDetailProps {
-  product: Product
-}
-
-export default function ProductDetail({ product }: ProductDetailProps) {
-  const bannerImage = product.bannerImage || product.image
-  const addProductToShortlist = () => saveShortlist(addToShortlist(readShortlist(), product.id))
+export default function ProductDetail({ product }: { product: Product }) {
+  const addToProcurementShortlist = () => saveShortlist(addToShortlist(readShortlist(), product.id))
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Full-width Banner */}
-      <section className="relative w-full">
-        <img
-          src={bannerImage}
-          alt={product.name}
-          className="w-full object-cover max-h-[500px]"
-        />
-      </section>
-
-      {/* Breadcrumb */}
-      <div className="bg-gray-100 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center text-sm text-gray-500">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4 mx-2" />
-            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <ChevronRight className="w-4 h-4 mx-2" />
-            <Link href={`/products/${product.category}`} className="hover:text-primary transition-colors">
-              {product.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-            </Link>
-            <ChevronRight className="w-4 h-4 mx-2" />
-            <span className="text-gray-900">{product.name}</span>
+    <div className="bg-[var(--color-panel)]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
+        <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+          <nav className="flex items-center gap-2 text-sm text-[var(--color-steel)]" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            <Link href="/products">Products</Link>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            <Link href={`/products/${product.category}`}>{product.category.replaceAll('-', ' ')}</Link>
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            <span className="truncate">{product.name}</span>
           </nav>
         </div>
-      </div>
+      </section>
 
-      {/* Title & Description */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">{product.name}</h1>
-          <p className="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed">{product.description}</p>
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,.9fr)] lg:px-8 lg:py-14">
+        <div className="flex min-h-[24rem] items-center justify-center rounded-2xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-8">
+          <img
+            src={product.bannerImage || product.image}
+            alt={product.name}
+            className="max-h-[32rem] max-w-full object-contain"
+          />
         </div>
 
-        {/* Models Section - Image + Specs */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Models</h2>
-            <SpecificationTable specifications={product.specifications} />
-            <div className="mt-6 flex flex-wrap gap-3"><button type="button" onClick={addProductToShortlist} className="border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-3 text-sm font-bold text-[var(--color-ink)]">Add to shortlist</button><Link href="/contact" className="bg-[var(--color-signal)] px-5 py-3 text-sm font-bold text-[var(--color-panel)] hover:bg-[var(--color-signal-dark)]">Request a Quote</Link></div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-8 flex items-center justify-center">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-auto object-contain max-h-[400px]"
-            />
-          </div>
-        </div>
-
-        {/* Detailed Features Section - Table */}
-        {product.detailedFeatures && Object.keys(product.detailedFeatures).length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Features</h2>
-            <SpecificationTable specifications={product.detailedFeatures} />
-          </div>
-        )}
-      </div>
-
-      {/* Performance Section */}
-      {product.performanceItems && product.performanceItems.length > 0 && (
-        <section className="bg-gray-50 py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Performance</h2>
-            <p className="text-gray-600 mb-10 max-w-3xl">
-              {product.performanceItems[0]?.description?.split('.')[0]}.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {product.performanceItems.map((item, index) => (
-                <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Gallery Section */}
-      {product.galleryImages && product.galleryImages.length > 0 && (
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Gallery</h2>
-            <p className="text-gray-600 mb-10 max-w-3xl">
-              {product.name} always adheres to the customer-centered approach and continues to create value for customers.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {product.galleryImages.map((img, index) => (
-                <div key={index} className="aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
-                  <img
-                    src={img}
-                    alt={`${product.name} gallery ${index + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA Section */}
-      <section className="bg-[#26807d] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to find your perfect truck?</h2>
-          <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            Contact us for the latest product information and professional consultation, our sales team will provide you with the most suitable solution
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <p className="text-sm font-semibold uppercase tracking-[.12em] text-[var(--color-signal-dark)]">
+            {product.subcategory.replaceAll('-', ' ')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <h1 className="mt-3 text-4xl font-bold tracking-[-.04em] text-[var(--color-ink)]">{product.name}</h1>
+          <p className="mt-5 leading-7 text-[var(--color-steel)]">{product.description}</p>
+
+          <div className="mt-7 rounded-xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-5">
+            <h2 className="font-semibold text-[var(--color-ink)]">Configuration confirmation</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-steel)]">
+              Use the listed data as a starting point. Confirm operating conditions, destination requirements and any
+              unlisted specification through your RFQ.
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={addToProcurementShortlist}
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--color-line)] px-5 text-sm font-semibold text-[var(--color-ink)]"
+            >
+              <ClipboardPlus className="h-4 w-4" />
+              Add to shortlist
+            </button>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-[#26807d] font-semibold rounded-md hover:bg-gray-100 transition-colors"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--color-signal)] px-5 text-sm font-semibold text-[var(--color-ink)]"
             >
-              Request Quote
-            </Link>
-            <Link
-              href="/products"
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-md hover:bg-white/10 transition-colors"
-            >
-              Browse Products
+              Prepare an RFQ
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[var(--color-line)] bg-[var(--color-canvas)]">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold tracking-[-.025em] text-[var(--color-ink)]">Available specifications</h2>
+          <div className="mt-6 max-w-4xl">
+            <SpecificationTable specifications={product.specifications} />
+          </div>
+
+          {product.detailedFeatures && Object.keys(product.detailedFeatures).length > 0 && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold tracking-[-.025em] text-[var(--color-ink)]">Configuration details</h2>
+              <div className="mt-6 max-w-4xl">
+                <SpecificationTable specifications={product.detailedFeatures} />
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {product.performanceItems?.length ? (
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-[var(--color-ink)]">Available product information</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {product.performanceItems.map((item, index) => (
+              <article key={index} className="overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)]">
+                <img src={item.image} alt={item.title} className="h-48 w-full object-cover" />
+                <div className="p-5">
+                  <h3 className="font-semibold text-[var(--color-ink)]">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--color-steel)]">{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {product.galleryImages?.length ? (
+        <section className="border-t border-[var(--color-line)] bg-[var(--color-canvas)]">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold text-[var(--color-ink)]">Product gallery</h2>
+            <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+              {product.galleryImages.map((image, index) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt={`${product.name}, view ${index + 1}`}
+                  className="aspect-[4/3] w-full rounded-xl object-cover"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="bg-[var(--color-ink)] py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-4 sm:px-6 md:flex-row md:items-center lg:px-8">
+          <div>
+            <h2 className="text-2xl font-bold text-[var(--color-panel)]">Need help comparing configurations?</h2>
+            <p className="mt-2 text-[var(--color-canvas)]">
+              Add products to the shortlist or send your operating requirements for review.
+            </p>
+          </div>
+          <Link
+            href="/shortlist"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--color-signal)] px-5 font-semibold text-[var(--color-ink)]"
+          >
+            View shortlist
+            <FileText className="h-4 w-4" />
+          </Link>
         </div>
       </section>
     </div>
