@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { LayoutDashboard, Package, Newspaper, FileText, Image, Mail, Search, Settings, LogOut, ChevronLeft, ChevronRight, Truck, Layers, Sparkles, Wrench } from 'lucide-react'
+import { LayoutDashboard, Package, Newspaper, FileText, Image, Mail, Search, Settings, LogOut, ChevronLeft, ChevronRight, Truck, Layers, Sparkles, Wrench, Rss, ListChecks } from 'lucide-react'
 
 const menuItems = [
   { href: '/admin', label: '仪表盘', icon: LayoutDashboard },
@@ -14,6 +14,8 @@ const menuItems = [
   { href: '/admin/inquiries', label: '询盘管理', icon: Mail },
   { href: '/admin/seo', label: 'SEO 优化', icon: Search },
   { href: '/admin/ai', label: 'AI 工具', icon: Sparkles },
+  { href: '/admin/content-sources', label: '内容来源', icon: Rss },
+  { href: '/admin/content-jobs', label: '内容任务', icon: ListChecks },
   { href: '/admin/settings', label: '系统设置', icon: Settings },
 ]
 
