@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer'
 import { readRfqSelection } from '@/lib/procurement/rfq'
 import { SHORTLIST_KEY } from '@/lib/procurement/shortlist'
 import { SeoHead } from '@/components/seo/SeoHead'
+import PageHero from '@/components/layout/PageHero'
 
 const fieldClassName = 'mt-2 min-h-11 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-panel)] px-3 text-[var(--color-ink)] outline-none transition focus:border-[var(--color-signal-dark)] focus:ring-2 focus:ring-[var(--color-signal-soft)]'
 const labelClassName = 'text-sm font-semibold text-[var(--color-ink)]'
@@ -68,6 +69,7 @@ export default function ContactPage() {
     <SeoHead input={{ path: '/contact', pageType: 'website', name: 'Request a Truck or Parts RFQ', description: 'Send your truck or parts requirements, shortlisted items, destination details and compatibility information to SINOTRUK TEAM.' }} />
     <Header />
     <main className="bg-[var(--color-panel)]">
+      <PageHero eyebrow="Procurement enquiry" title="Prepare a clear truck or parts RFQ." description="Tell us what you need, where it will operate and where it needs to go. We will use your details to review suitable configurations or compatibility questions." />
       <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <nav className="flex items-center gap-2 text-sm text-[var(--color-steel)]" aria-label="Breadcrumb">

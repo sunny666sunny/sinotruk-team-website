@@ -57,7 +57,7 @@ function ProductsDropdown() {
               </Link>
               <div className="mt-2 space-y-1">
                 {category.subcategories.map((subcategory) => (
-                  <Link key={subcategory.id} href={`/products/${category.id}?tab=${subcategory.id}`} className="block py-1 text-xs font-medium text-[var(--color-steel)] hover:text-[var(--color-signal)]">
+                  <Link key={subcategory.id} href={`/products/${category.id}/${subcategory.id}`} className="block py-1 text-xs font-medium text-[var(--color-steel)] hover:text-[var(--color-signal)]">
                     {subcategory.name}
                   </Link>
                 ))}
@@ -171,7 +171,7 @@ function MobileProducts({ onNavigate }: { onNavigate: () => void }) {
         {productCategories.map((category) => (
           <div key={category.id}>
             <Link href={`/products/${category.id}`} className="block py-1 text-sm font-bold text-[var(--color-ink)]" onClick={onNavigate}>{category.name}</Link>
-            {category.subcategories.map((subcategory) => <Link key={subcategory.id} href={`/products/${category.id}?tab=${subcategory.id}`} className="block py-1 text-xs text-[var(--color-steel)] hover:text-[var(--color-signal)]" onClick={onNavigate}>{subcategory.name}</Link>)}
+            {category.subcategories.map((subcategory) => <Link key={subcategory.id} href={`/products/${category.id}/${subcategory.id}`} className="block py-1 text-xs text-[var(--color-steel)] hover:text-[var(--color-signal)]" onClick={onNavigate}>{subcategory.name}</Link>)}
           </div>
         ))}
       </div>

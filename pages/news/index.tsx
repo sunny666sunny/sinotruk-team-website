@@ -32,6 +32,7 @@ export default function NewsPage({ items }: { items: NewsItem[] }) {
     </Head>
     <Header />
     <main id="main">
+      <section className="relative isolate min-h-[300px] overflow-hidden bg-[var(--color-ink)] text-white"><SiteImage src="/images/news/banner-news.webp" alt="Commercial truck news" fill priority sizes="100vw" className="-z-20 object-cover" /><div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(16,35,39,.86),rgba(16,35,39,.25))]" /><div className="mx-auto flex min-h-[300px] max-w-7xl flex-col justify-end px-4 py-10 sm:px-6 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[.14em] text-teal-100">News</p><h1 className="mt-3 text-4xl font-extrabold sm:text-5xl">News and practical procurement guidance</h1><p className="mt-3 max-w-2xl text-lg leading-7 text-slate-100">Manufacturer news, industry insights and commercial-truck procurement guides for international buyers.</p></div></section>
       <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="flex items-center gap-2 text-sm text-[var(--color-steel)]"><Link href="/" className="hover:text-[var(--color-signal-dark)]">Home</Link><ChevronRight className="h-4 w-4" /><span>News</span></div>

@@ -25,6 +25,16 @@ export default function ProductDetail({ product }: { product: Product }) {
         </div>
       </section>
 
+      <section className="relative isolate min-h-[360px] overflow-hidden bg-[var(--color-ink)] text-white sm:min-h-[440px]">
+        <img src={product.bannerImage || product.image} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(16,35,39,.88),rgba(16,35,39,.43),rgba(16,35,39,.12))]" />
+        <div className="mx-auto flex min-h-[360px] max-w-7xl flex-col justify-end px-4 py-12 sm:min-h-[440px] sm:px-6 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[.14em] text-teal-100">{product.subcategory.replaceAll('-', ' ')}</p>
+          <h1 className="mt-4 max-w-4xl text-4xl font-extrabold tracking-[-.04em] sm:text-5xl">{product.name}</h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-100">{product.description}</p>
+        </div>
+      </section>
+
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,.9fr)] lg:px-8 lg:py-14">
         <div className="flex min-h-[24rem] items-center justify-center rounded-2xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-8">
           <img
@@ -38,8 +48,8 @@ export default function ProductDetail({ product }: { product: Product }) {
           <p className="text-sm font-semibold uppercase tracking-[.12em] text-[var(--color-signal-dark)]">
             {product.subcategory.replaceAll('-', ' ')}
           </p>
-          <h1 className="mt-3 text-4xl font-bold tracking-[-.04em] text-[var(--color-ink)]">{product.name}</h1>
-          <p className="mt-5 leading-7 text-[var(--color-steel)]">{product.description}</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-[-.04em] text-[var(--color-ink)]">Product Details</h2>
+          <p className="mt-5 leading-7 text-[var(--color-steel)]">Use the images, available product information and parameters below as the starting point for configuration review.</p>
 
           <div className="mt-7 rounded-xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-5">
             <h2 className="font-semibold text-[var(--color-ink)]">Configuration confirmation</h2>
