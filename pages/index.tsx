@@ -6,18 +6,19 @@ import HeroBanner from '@/components/home/HeroBanner'
 import CategorySection from '@/components/home/CategorySection'
 import AboutSection from '@/components/home/AboutSection'
 import TechAdvantages from '@/components/home/TechAdvantages'
-import GlobalBusiness from '@/components/home/GlobalBusiness'
 import IndustryApplications from '@/components/home/IndustryApplications'
 import NewsSection from '@/components/home/NewsSection'
 import CTASection from '@/components/home/CTASection'
-import ProcurementPaths from '@/components/home/ProcurementPaths'
+import AllProducts from '@/components/home/AllProducts'
 import { productCategories } from '@/data/siteConfig'
 import type { NewsItem } from '@/data/news'
-import { getPublishedCategory, getPublishedNews } from '@/lib/content/repository'
+import type { ProcurementProduct } from '@/lib/content/serializers'
+import { getPublishedCategory, getPublishedNews, getPublishedProducts } from '@/lib/content/repository'
 
-type HomeProps = { categories: { id: string; name: string; description: string; image: string }[]; news: NewsItem[] };
+type CatalogueCategory = { id: string; name: string; description: string; image: string }
+type HomeProps = { categories: CatalogueCategory[]; news: NewsItem[]; products: ProcurementProduct[] }
 
-export default function Home({ categories, news }: HomeProps) {
+export default function Home({ categories, news, products }: HomeProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Head>
@@ -32,10 +33,9 @@ export default function Home({ categories, news }: HomeProps) {
         <CategorySection categories={categories} />
         <AboutSection />
         <TechAdvantages />
-        <GlobalBusiness />
         <IndustryApplications />
         <NewsSection items={news} />
-        <ProcurementPaths />
+        <AllProducts categories={categories} products={products} />
         <CTASection />
       </main>
       
@@ -45,10 +45,13 @@ export default function Home({ categories, news }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  const categories = await Promise.all(productCategories.map(async ({ id, name, description, image }) => {
-    const record = await getPublishedCategory(id);
-    return { id, name: record?.name ?? name, description: record?.description || description, image: record?.bannerImage || image };
-  }));
-  const news = (await getPublishedNews()).slice(0, 3)
-  return { props: { categories, news }, revalidate: 300 };
+  const [categories, publishedNews, products] = await Promise.all([
+    Promise.all(productCategories.map(async ({ id, name, description, image }) => {
+      const record = await getPublishedCategory(id)
+      return { id, name: record?.name ?? name, description: record?.description || description, image: record?.bannerImage || image }
+    })),
+    getPublishedNews(),
+    getPublishedProducts(),
+  ])
+  return { props: { categories, news: publishedNews.slice(0, 3), products }, revalidate: 300 }
 }

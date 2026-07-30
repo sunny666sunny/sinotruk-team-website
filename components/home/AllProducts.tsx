@@ -1,15 +1,14 @@
 import Link from 'next/link'
-import { productCategories } from '@/data/siteConfig'
-import { allProducts } from '@/data/products'
+import type { ProcurementProduct } from '@/lib/content/serializers'
 
-export default function AllProducts() {
-  const productsByCategory: Record<string, typeof allProducts> = {}
-  allProducts.forEach((product) => {
-    if (!productsByCategory[product.category]) {
-      productsByCategory[product.category] = []
-    }
-    productsByCategory[product.category].push(product)
-  })
+type CatalogueCategory = { id: string; name: string }
+
+export default function AllProducts({ categories, products }: { categories: CatalogueCategory[]; products: ProcurementProduct[] }) {
+  const productsByCategory = products.reduce<Record<string, ProcurementProduct[]>>((groups, product) => {
+    groups[product.category] ??= []
+    groups[product.category].push(product)
+    return groups
+  }, {})
 
   return (
     <section className="py-20 bg-white">
@@ -24,7 +23,7 @@ export default function AllProducts() {
         </div>
         
         <div className="space-y-8">
-          {productCategories.map((category) => (
+          {categories.map((category) => (
             <div key={category.id} className="bg-gray-50 rounded-lg p-6">
               <Link 
                 href={`/products/${category.id}`}

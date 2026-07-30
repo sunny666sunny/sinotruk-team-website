@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import ShortlistButton from '@/components/procurement/ShortlistButton';
 import { partCategories, productCategories } from '@/data/siteConfig';
 
 type MenuLink = { name: string; href: string };
@@ -120,11 +119,7 @@ export default function Header() {
             <Link href="/contact" className="rounded px-3 py-6 text-sm font-semibold text-[var(--color-steel)] transition-colors hover:text-[var(--color-signal)]">Contact Us</Link>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <ShortlistButton className="hidden xl:inline-flex" />
-            <Link href="/contact" className="hidden rounded-sm bg-[var(--color-signal)] px-3 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[var(--color-signal-dark)] xl:inline-flex">
-              Request a Quote
-            </Link>
+          <div className="flex items-center lg:hidden">
             <button className="rounded p-2 text-[var(--color-ink)] lg:hidden" onClick={() => setIsMenuOpen((open) => !open)} aria-expanded={isMenuOpen} aria-controls="mobile-primary-navigation" aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}>
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -143,8 +138,6 @@ export default function Header() {
             <Link href="/video" className="rounded px-4 py-3 text-sm font-semibold text-[var(--color-steel)] hover:bg-[var(--color-canvas)]" onClick={closeMobileMenu}>Video</Link>
             <MobileGroup label="Service" links={serviceLinks} onNavigate={closeMobileMenu} />
             <Link href="/contact" className="rounded px-4 py-3 text-sm font-semibold text-[var(--color-steel)] hover:bg-[var(--color-canvas)]" onClick={closeMobileMenu}>Contact Us</Link>
-            <ShortlistButton className="px-4 py-3" onNavigate={closeMobileMenu} />
-            <Link href="/contact" className="mt-2 rounded-sm bg-[var(--color-signal)] px-4 py-3 text-center text-sm font-bold text-white" onClick={closeMobileMenu}>Request a Quote</Link>
           </nav>
         </div>
       )}
