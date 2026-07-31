@@ -15,3 +15,1030 @@ body.industrial-site {
   color: var(--industrial-text);
   font-family: var(--industrial-body);
 }
+
+.industrial-page {
+  overflow: clip;
+  background: var(--industrial-bg);
+  color: var(--industrial-text);
+}
+
+.industrial-page h1,
+.industrial-page h2,
+.industrial-page h3 {
+  font-family: var(--industrial-display);
+}
+
+.industrial-page a:focus-visible {
+  outline: 3px solid var(--industrial-accent);
+  outline-offset: 4px;
+}
+
+.industrial-home-cover {
+  object-fit: cover;
+  transition: transform 650ms cubic-bezier(.16, 1, .3, 1), filter 350ms ease;
+}
+
+.industrial-home-kicker {
+  margin: 0;
+  color: var(--industrial-accent);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+.industrial-home-section {
+  padding: clamp(5rem, 8vw, 8rem) clamp(1rem, 4vw, 4rem);
+}
+
+.industrial-home-section-heading {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto clamp(2.5rem, 4.5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+}
+
+.industrial-home-section-heading h2,
+.industrial-home-engineering-intro h2,
+.industrial-home-procurement-heading h2 {
+  max-width: 48rem;
+  margin: .8rem 0 0;
+  font-size: clamp(2.8rem, 5vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: .94;
+}
+
+.industrial-home-text-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 44px;
+  align-items: center;
+  gap: .65rem;
+  border-bottom: 1px solid var(--industrial-accent);
+  color: var(--industrial-text);
+  font-size: .82rem;
+  font-weight: 600;
+}
+
+.industrial-home-text-link svg,
+.industrial-home-action svg,
+.industrial-home-vehicle-copy > span svg,
+.industrial-home-procurement li a svg,
+.industrial-home-article-copy > span svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  transition: transform 180ms ease;
+}
+
+.industrial-home-text-link:hover svg,
+.industrial-home-action:hover svg,
+.industrial-home-vehicle-card a:hover .industrial-home-vehicle-copy > span svg,
+.industrial-home-procurement li a:hover svg,
+.industrial-home-article-grid a:hover .industrial-home-article-copy > span svg {
+  transform: translateX(4px);
+}
+
+.industrial-home-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: max(46rem, 100dvh);
+  overflow: hidden;
+  background: var(--industrial-bg);
+}
+
+.industrial-home-hero-image {
+  z-index: -3;
+  object-position: 64% center;
+  animation: industrial-home-camera 12s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.industrial-home-hero-shade {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 45%, transparent 0 22%, rgb(2 8 9 / .3) 72%),
+    linear-gradient(90deg, rgb(3 13 15 / .96) 0%, rgb(5 16 18 / .76) 40%, rgb(5 16 18 / .1) 75%),
+    linear-gradient(0deg, rgb(3 10 12 / .72), transparent 42%);
+}
+
+.industrial-home-hero-content {
+  display: flex;
+  width: min(calc(100% - 8rem), 1400px);
+  min-height: max(46rem, 100dvh);
+  margin: 0 auto;
+  padding: 6rem 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.industrial-home-hero h1 {
+  max-width: 50rem;
+  margin: 1rem 0 0;
+  font-size: clamp(4.5rem, 8.8vw, 8.8rem);
+  font-weight: 700;
+  letter-spacing: -.06em;
+  line-height: .82;
+}
+
+.industrial-home-hero-content > p:not(.industrial-home-kicker) {
+  max-width: 31rem;
+  margin: 1.8rem 0 0;
+  color: rgb(237 243 241 / .78);
+  font-size: 1.03rem;
+  line-height: 1.65;
+}
+
+.industrial-home-actions {
+  display: flex;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.industrial-home-action {
+  display: inline-flex;
+  min-height: 50px;
+  padding: 0 1.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  border: 1px solid transparent;
+  font-size: .8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.industrial-home-action:active {
+  transform: translateY(1px);
+}
+
+.industrial-home-action-primary {
+  background: var(--industrial-accent);
+  color: #061314;
+}
+
+.industrial-home-action-primary:hover {
+  background: #56c9c3;
+}
+
+.industrial-home-action-secondary {
+  border-color: rgb(255 255 255 / .58);
+  background: rgb(8 17 19 / .24);
+  color: var(--industrial-text);
+}
+
+.industrial-home-action-secondary:hover {
+  border-color: var(--industrial-text);
+  background: rgb(237 243 241 / .1);
+}
+
+.industrial-home-catalogue {
+  background:
+    linear-gradient(125deg, rgb(32 170 164 / .035), transparent 38%),
+    var(--industrial-bg);
+}
+
+.industrial-home-catalogue-grid {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  grid-template-rows: repeat(2, 21rem);
+  gap: .75rem;
+}
+
+.industrial-home-category {
+  position: relative;
+  isolation: isolate;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--industrial-panel);
+}
+
+.industrial-home-category-primary {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.industrial-home-category-wide {
+  grid-column: span 2;
+}
+
+.industrial-home-category .industrial-home-cover {
+  z-index: -2;
+  filter: saturate(.75) contrast(1.05);
+}
+
+.industrial-home-image-shade {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(3 11 13 / .94), transparent 70%);
+}
+
+.industrial-home-category-copy {
+  position: absolute;
+  right: 1.35rem;
+  bottom: 1.35rem;
+  left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.industrial-home-category-copy strong {
+  font-family: var(--industrial-display);
+  font-size: clamp(1.5rem, 2vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1;
+}
+
+.industrial-home-category-copy small {
+  max-width: 28rem;
+  margin-top: .55rem;
+  overflow: hidden;
+  color: rgb(237 243 241 / .66);
+  display: -webkit-box;
+  font-size: .72rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.industrial-home-card-arrow {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: .7rem;
+  border: 1px solid rgb(255 255 255 / .34);
+  color: var(--industrial-text);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.industrial-home-category:hover .industrial-home-cover {
+  transform: scale(1.045);
+  filter: saturate(.92) contrast(1.04);
+}
+
+.industrial-home-category:hover .industrial-home-card-arrow {
+  background: rgb(8 17 19 / .56);
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.industrial-home-vehicles {
+  border-top: 1px solid var(--industrial-line);
+  background: var(--industrial-surface);
+}
+
+.industrial-home-section-heading-compact {
+  grid-template-columns: 1fr;
+}
+
+.industrial-home-vehicle-rail {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  grid-auto-columns: minmax(19rem, 1fr);
+  grid-auto-flow: column;
+  gap: .75rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding-bottom: 1.25rem;
+  scroll-snap-type: inline mandatory;
+  scrollbar-color: var(--industrial-accent) var(--industrial-panel);
+}
+
+.industrial-home-vehicle-card {
+  min-width: 0;
+  border: 1px solid var(--industrial-line);
+  background: var(--industrial-panel);
+  scroll-snap-align: start;
+}
+
+.industrial-home-vehicle-card > a {
+  display: block;
+}
+
+.industrial-home-vehicle-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #e4e9e7;
+}
+
+.industrial-home-vehicle-card:hover .industrial-home-cover {
+  transform: scale(1.035);
+}
+
+.industrial-home-vehicle-copy {
+  display: flex;
+  min-height: 12rem;
+  padding: 1.4rem;
+  flex-direction: column;
+}
+
+.industrial-home-vehicle-copy small {
+  color: var(--industrial-accent);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.industrial-home-vehicle-copy strong {
+  margin-top: .75rem;
+  font-family: var(--industrial-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+
+.industrial-home-vehicle-copy > span {
+  display: inline-flex;
+  margin-top: auto;
+  align-items: center;
+  gap: .55rem;
+  color: var(--industrial-muted);
+  font-size: .76rem;
+  font-weight: 600;
+}
+
+.industrial-home-empty {
+  display: grid;
+  width: min(100%, 1400px);
+  min-height: 18rem;
+  margin: 0 auto;
+  place-items: center;
+  align-content: center;
+  gap: .75rem;
+  border: 1px solid var(--industrial-line);
+  color: var(--industrial-muted);
+}
+
+.industrial-home-empty svg {
+  width: 2rem;
+  height: 2rem;
+  color: var(--industrial-accent);
+}
+
+.industrial-home-empty a {
+  min-height: 44px;
+  padding-top: .7rem;
+  border-bottom: 1px solid var(--industrial-accent);
+  color: var(--industrial-text);
+  font-size: .8rem;
+}
+
+.industrial-home-brand,
+.industrial-home-parts {
+  display: grid;
+  min-height: 46rem;
+  grid-template-columns: minmax(0, 1.45fr) minmax(22rem, .85fr);
+  background: var(--industrial-bg);
+}
+
+.industrial-home-brand-image,
+.industrial-home-parts-image {
+  position: relative;
+  min-height: 38rem;
+  overflow: hidden;
+}
+
+.industrial-home-brand-image .industrial-home-cover {
+  filter: saturate(.72) contrast(1.06);
+}
+
+.industrial-home-brand-copy,
+.industrial-home-parts-copy {
+  display: flex;
+  padding: clamp(3rem, 6vw, 6rem);
+  border-left: 1px solid var(--industrial-line);
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.industrial-home-brand-copy h2,
+.industrial-home-parts-copy h2 {
+  max-width: 32rem;
+  margin: 1rem 0 0;
+  font-size: clamp(3rem, 5vw, 5.7rem);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: .9;
+}
+
+.industrial-home-brand-copy > p:not(.industrial-home-kicker),
+.industrial-home-parts-copy > p:not(.industrial-home-kicker) {
+  max-width: 32rem;
+  margin: 2rem 0 0;
+  color: var(--industrial-muted);
+  font-size: .92rem;
+  line-height: 1.75;
+}
+
+.industrial-home-brand-copy .industrial-home-text-link {
+  margin-top: 2rem;
+}
+
+.industrial-home-engineering {
+  display: grid;
+  grid-template-columns: minmax(17rem, .65fr) minmax(0, 1.7fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  border-top: 1px solid var(--industrial-line);
+  background: var(--industrial-surface);
+}
+
+.industrial-home-engineering-intro {
+  align-self: center;
+}
+
+.industrial-home-engineering-intro h2 {
+  font-size: clamp(2.8rem, 4.5vw, 4.8rem);
+}
+
+.industrial-home-engineering-intro > p:not(.industrial-home-kicker) {
+  max-width: 30rem;
+  margin: 1.5rem 0 0;
+  color: var(--industrial-muted);
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+.industrial-home-engineering-intro .industrial-home-text-link {
+  margin-top: 1.6rem;
+}
+
+.industrial-home-engineering-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.industrial-home-engineering-grid figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.industrial-home-engineering-grid figure:nth-child(2) {
+  transform: translateY(2.5rem);
+}
+
+.industrial-home-engineering-grid figure > span {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--industrial-panel);
+}
+
+.industrial-home-engineering-grid img {
+  filter: saturate(.65) contrast(1.08);
+}
+
+.industrial-home-engineering-grid figure:hover img {
+  transform: scale(1.035);
+  filter: saturate(.85) contrast(1.05);
+}
+
+.industrial-home-engineering-grid figcaption {
+  padding-top: .9rem;
+  color: var(--industrial-muted);
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.industrial-home-applications {
+  background:
+    linear-gradient(135deg, transparent 60%, rgb(32 170 164 / .035)),
+    var(--industrial-bg);
+}
+
+.industrial-home-application-grid {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 19rem;
+  gap: .75rem;
+}
+
+.industrial-home-application-grid a {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--industrial-panel);
+}
+
+.industrial-home-application-grid a:first-child,
+.industrial-home-application-grid a:nth-child(6) {
+  grid-column: span 2;
+}
+
+.industrial-home-application-grid img {
+  z-index: -2;
+  filter: saturate(.7) contrast(1.06);
+}
+
+.industrial-home-application-grid strong {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  font-family: var(--industrial-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.industrial-home-application-grid a:hover img {
+  transform: scale(1.04);
+  filter: saturate(.9) contrast(1.04);
+}
+
+.industrial-home-procurement {
+  border-top: 1px solid var(--industrial-line);
+  background: var(--industrial-surface);
+}
+
+.industrial-home-procurement-heading {
+  width: min(100%, 1400px);
+  margin: 0 auto 3.5rem;
+}
+
+.industrial-home-procurement ol {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  padding: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+}
+
+.industrial-home-procurement li {
+  display: flex;
+  min-height: 25rem;
+  padding: 2rem;
+  border-top: 1px solid var(--industrial-line);
+  border-right: 1px solid var(--industrial-line);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.industrial-home-procurement li:last-child {
+  border-right: 0;
+}
+
+.industrial-home-step-number {
+  align-self: flex-end;
+  color: rgb(237 243 241 / .34);
+  font-family: var(--industrial-display);
+  font-size: .8rem;
+  letter-spacing: .12em;
+}
+
+.industrial-home-procurement li > svg {
+  width: 2rem;
+  height: 2rem;
+  margin-top: 2rem;
+  color: var(--industrial-accent);
+  stroke-width: 1.5;
+}
+
+.industrial-home-procurement h3 {
+  margin: 1.5rem 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+
+.industrial-home-procurement li p {
+  max-width: 23rem;
+  margin: .9rem 0 0;
+  color: var(--industrial-muted);
+  font-size: .85rem;
+  line-height: 1.65;
+}
+
+.industrial-home-procurement li a {
+  display: inline-flex;
+  min-height: 44px;
+  margin-top: auto;
+  padding-top: .7rem;
+  align-items: center;
+  gap: .6rem;
+  border-bottom: 1px solid var(--industrial-accent);
+  color: var(--industrial-text);
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.industrial-home-parts {
+  grid-template-columns: minmax(22rem, .85fr) minmax(0, 1.45fr);
+  border-top: 1px solid var(--industrial-line);
+}
+
+.industrial-home-parts-image {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.industrial-home-parts-image .industrial-home-cover {
+  filter: saturate(.65) contrast(1.08);
+}
+
+.industrial-home-parts-copy {
+  grid-column: 1;
+  grid-row: 1;
+  border-right: 1px solid var(--industrial-line);
+  border-left: 0;
+}
+
+.industrial-home-parts-copy ul {
+  display: grid;
+  width: 100%;
+  margin: 2rem 0 0;
+  padding: 0;
+  gap: .85rem;
+  list-style: none;
+}
+
+.industrial-home-parts-copy li {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: .8rem;
+  color: var(--industrial-muted);
+  font-size: .8rem;
+}
+
+.industrial-home-parts-copy li svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--industrial-accent);
+  stroke-width: 1.5;
+}
+
+.industrial-home-parts-copy .industrial-home-action {
+  margin-top: 2rem;
+}
+
+.industrial-home-editorial {
+  background: var(--industrial-surface);
+}
+
+.industrial-home-article-grid {
+  display: grid;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.industrial-home-article-grid article {
+  min-width: 0;
+  border: 1px solid var(--industrial-line);
+  background: var(--industrial-panel);
+}
+
+.industrial-home-article-grid article:not(.industrial-home-article-featured) > a {
+  display: grid;
+  grid-template-columns: minmax(8rem, .85fr) minmax(0, 1.15fr);
+}
+
+.industrial-home-article-featured {
+  grid-row: span 3;
+}
+
+.industrial-home-article-featured > a {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.industrial-home-article-image {
+  position: relative;
+  display: block;
+  min-height: 13.5rem;
+  overflow: hidden;
+}
+
+.industrial-home-article-featured .industrial-home-article-image {
+  min-height: 30rem;
+  flex: 1;
+}
+
+.industrial-home-article-copy {
+  display: flex;
+  min-width: 0;
+  padding: 1.35rem;
+  flex-direction: column;
+}
+
+.industrial-home-article-copy time {
+  color: var(--industrial-accent);
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+.industrial-home-article-copy h3 {
+  margin: .75rem 0 0;
+  font-size: clamp(1.45rem, 2.3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+}
+
+.industrial-home-article-grid article:not(.industrial-home-article-featured) h3 {
+  overflow: hidden;
+  display: -webkit-box;
+  font-size: 1.45rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.industrial-home-article-copy > span {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 1.5rem;
+  align-items: center;
+  gap: .5rem;
+  color: var(--industrial-muted);
+  font-size: .73rem;
+  font-weight: 600;
+}
+
+.industrial-home-article-grid a:hover img {
+  transform: scale(1.035);
+}
+
+.industrial-home-rfq {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 42rem;
+  padding: clamp(5rem, 9vw, 9rem) clamp(1rem, 4vw, 4rem);
+  place-items: center;
+  overflow: hidden;
+  background: var(--industrial-bg);
+}
+
+.industrial-home-rfq > img {
+  z-index: -2;
+  object-position: center 58%;
+  filter: saturate(.6) contrast(1.08);
+}
+
+.industrial-home-rfq-shade {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(3 11 13 / .94), rgb(3 11 13 / .56) 58%, rgb(3 11 13 / .8));
+}
+
+.industrial-home-rfq-copy {
+  display: flex;
+  width: min(100%, 1400px);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.industrial-home-rfq-copy > svg {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: var(--industrial-accent);
+  stroke-width: 1.4;
+}
+
+.industrial-home-rfq h2 {
+  max-width: 58rem;
+  margin: 1.4rem 0 0;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: .88;
+}
+
+.industrial-home-rfq p {
+  max-width: 38rem;
+  margin: 1.7rem 0 0;
+  color: rgb(237 243 241 / .76);
+  font-size: .94rem;
+  line-height: 1.7;
+}
+
+.industrial-home-rfq .industrial-home-action {
+  margin-top: 2rem;
+}
+
+@keyframes industrial-home-camera {
+  from { transform: scale(1.035); }
+  to { transform: scale(1); }
+}
+
+@media (max-width: 1023px) {
+  .industrial-home-section-heading {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .industrial-home-hero-content {
+    width: min(calc(100% - 3rem), 1400px);
+  }
+
+  .industrial-home-catalogue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 30rem repeat(3, 18rem);
+  }
+
+  .industrial-home-category-primary,
+  .industrial-home-category-wide {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+
+  .industrial-home-brand,
+  .industrial-home-parts {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-brand-image,
+  .industrial-home-parts-image {
+    min-height: 58vw;
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .industrial-home-brand-copy,
+  .industrial-home-parts-copy {
+    grid-column: 1;
+    grid-row: auto;
+    border-top: 1px solid var(--industrial-line);
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .industrial-home-engineering {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-application-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .industrial-home-application-grid a:first-child,
+  .industrial-home-application-grid a:nth-child(6) {
+    grid-column: span 1;
+  }
+
+  .industrial-home-procurement ol {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-procurement li {
+    min-height: 19rem;
+    border-right: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .industrial-home-section {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .industrial-home-section-heading h2,
+  .industrial-home-engineering-intro h2,
+  .industrial-home-procurement-heading h2 {
+    font-size: clamp(2.6rem, 13vw, 4rem);
+  }
+
+  .industrial-home-hero-content {
+    width: calc(100% - 2rem);
+    padding-top: 7rem;
+    padding-bottom: 4rem;
+    justify-content: flex-end;
+  }
+
+  .industrial-home-hero h1 {
+    font-size: clamp(4rem, 20vw, 6rem);
+  }
+
+  .industrial-home-hero-image {
+    object-position: 66% center;
+  }
+
+  .industrial-home-actions,
+  .industrial-home-action {
+    width: 100%;
+  }
+
+  .industrial-home-catalogue-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .industrial-home-category,
+  .industrial-home-category-primary,
+  .industrial-home-category-wide {
+    min-height: 19rem;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .industrial-home-vehicle-rail {
+    grid-auto-columns: 86vw;
+  }
+
+  .industrial-home-brand,
+  .industrial-home-parts {
+    min-height: 0;
+  }
+
+  .industrial-home-brand-image,
+  .industrial-home-parts-image {
+    min-height: 78vw;
+  }
+
+  .industrial-home-brand-copy,
+  .industrial-home-parts-copy {
+    padding: 4rem 1rem;
+  }
+
+  .industrial-home-brand-copy h2,
+  .industrial-home-parts-copy h2 {
+    font-size: 3.6rem;
+  }
+
+  .industrial-home-engineering-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-engineering-grid figure:nth-child(2) {
+    transform: none;
+  }
+
+  .industrial-home-engineering-grid figure > span {
+    aspect-ratio: 4 / 3;
+  }
+
+  .industrial-home-application-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 17rem;
+  }
+
+  .industrial-home-article-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-article-featured {
+    grid-row: auto;
+  }
+
+  .industrial-home-article-featured .industrial-home-article-image {
+    min-height: 19rem;
+  }
+
+  .industrial-home-article-grid article:not(.industrial-home-article-featured) > a {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-rfq {
+    min-height: 40rem;
+  }
+
+  .industrial-home-rfq h2 {
+    font-size: clamp(3.4rem, 16vw, 5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .industrial-home-hero-image {
+    animation: none;
+  }
+
+  .industrial-page *,
+  .industrial-page *::before,
+  .industrial-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
