@@ -1,154 +1,96 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { ArrowRight, ChevronRight, ClipboardPlus, FileText } from 'lucide-react'
-import type { Product } from '@/data/products'
-import SpecificationTable from '@/components/product/SpecificationTable'
-import { addToShortlist, readShortlist, saveShortlist } from '@/lib/procurement/shortlist'
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
+import type { Product } from '@/data/products';
+import { SiteImage } from '@/components/SiteImage';
+import { GroupedSpecifications } from '@/components/industrial/catalogue/GroupedSpecifications';
+import { KeySpecCluster } from '@/components/industrial/catalogue/KeySpecCluster';
+import { ProductMediaPanel } from '@/components/industrial/catalogue/ProductMediaPanel';
+import { RelatedContent } from '@/components/industrial/catalogue/RelatedContent';
+import { StickyRfqActions } from '@/components/industrial/catalogue/StickyRfqActions';
+import { groupSpecifications } from '@/lib/procurement/group-specifications';
 
 export default function ProductDetail({ product }: { product: Product }) {
-  const addToProcurementShortlist = () => saveShortlist(addToShortlist(readShortlist(), product.id))
+  const groups = groupSpecifications(product.specifications);
+  const galleryImages = [...new Set(
+    [product.image, product.bannerImage, ...(product.galleryImages ?? [])].filter((image): image is string => Boolean(image)),
+  )];
+  const hasUnreviewedDetails = Boolean(product.detailedFeatures && Object.keys(product.detailedFeatures).length);
 
   return (
-    <div className="bg-[var(--color-panel)]">
-      <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
-        <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-[var(--color-steel)]" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            <Link href="/products">Products</Link>
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            <Link href={`/products/${product.category}`}>{product.category.replaceAll('-', ' ')}</Link>
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            <span className="truncate">{product.name}</span>
-          </nav>
+    <div className="industrial-page bg-[var(--industrial-bg)]">
+      <section className="border-b border-[var(--industrial-line)] px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24">
+        <nav className="mx-auto flex max-w-7xl items-center gap-2 overflow-hidden py-5 text-xs text-[var(--industrial-muted)]" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <Link href="/products">Products</Link>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <Link href={`/products/${product.category}`} className="capitalize">{product.category.replaceAll('-', ' ')}</Link>
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          <span className="truncate text-[var(--industrial-text)]">{product.name}</span>
+        </nav>
+      </section>
+
+      <section className="relative isolate min-h-[34rem] overflow-hidden border-b border-[var(--industrial-line)]">
+        <SiteImage
+          src={product.bannerImage || product.image}
+          decorative
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 -z-20 object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(3_11_13/.96),rgb(3_11_13/.62)_58%,rgb(3_11_13/.18)),linear-gradient(0deg,rgb(3_11_13/.82),transparent_55%)]" />
+        <div className="mx-auto flex min-h-[34rem] max-w-7xl flex-col justify-end px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--industrial-accent)]">{product.subcategory.replaceAll('-', ' ')}</p>
+          <h1 className="mt-4 max-w-5xl text-5xl font-bold uppercase leading-[.9] tracking-[-.04em] text-[var(--industrial-text)] sm:text-7xl lg:text-8xl">{product.name}</h1>
+          <p className="mt-6 max-w-3xl text-base leading-7 text-[var(--industrial-muted)] sm:text-lg">{product.description}</p>
         </div>
       </section>
 
-      <section className="relative isolate min-h-[360px] overflow-hidden bg-[var(--color-ink)] text-white sm:min-h-[440px]">
-        <img src={product.bannerImage || product.image} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(16,35,39,.88),rgba(16,35,39,.43),rgba(16,35,39,.12))]" />
-        <div className="mx-auto flex min-h-[360px] max-w-7xl flex-col justify-end px-4 py-12 sm:min-h-[440px] sm:px-6 lg:px-8">
-          <p className="text-sm font-semibold uppercase tracking-[.14em] text-teal-100">{product.subcategory.replaceAll('-', ' ')}</p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-extrabold tracking-[-.04em] sm:text-5xl">{product.name}</h1>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-100">{product.description}</p>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,.9fr)] lg:px-8 lg:py-14">
-        <div className="flex min-h-[24rem] items-center justify-center rounded-2xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-8">
-          <img
-            src={product.bannerImage || product.image}
-            alt={product.name}
-            className="max-h-[32rem] max-w-full object-contain"
-          />
-        </div>
-
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <p className="text-sm font-semibold uppercase tracking-[.12em] text-[var(--color-signal-dark)]">
-            {product.subcategory.replaceAll('-', ' ')}
+      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-8 lg:py-20">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Product Details</p>
+          <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)] sm:text-5xl">Published configuration</h2>
+          <p className="mt-5 max-w-3xl leading-7 text-[var(--industrial-muted)]">
+            Use the published values as the starting point for configuration review. Prepare an RFQ to confirm operating
+            conditions, destination requirements and unlisted specifications.
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-[-.04em] text-[var(--color-ink)]">Product Details</h2>
-          <p className="mt-5 leading-7 text-[var(--color-steel)]">Use the images, available product information and parameters below as the starting point for configuration review.</p>
+          <div className="mt-8">
+            <KeySpecCluster groups={groups} maxItems={5} />
+          </div>
+        </div>
+        <StickyRfqActions productId={product.id} contactHref="/contact" />
+      </section>
 
-          <div className="mt-7 rounded-xl border border-[var(--color-line)] bg-[var(--color-canvas)] p-5">
-            <h2 className="font-semibold text-[var(--color-ink)]">Configuration confirmation</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--color-steel)]">
-              Use the listed data as a starting point. Confirm operating conditions, destination requirements and any
-              unlisted specification through your RFQ.
+      <section className="border-y border-[var(--industrial-line)] bg-[var(--industrial-surface)] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Available specifications</p>
+            <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)] sm:text-5xl">Configuration by system</h2>
+            <p className="mt-5 leading-7 text-[var(--industrial-muted)]">
+              Values below are preserved exactly as published. Missing fields are marked for confirmation.
+              {hasUnreviewedDetails && ' Additional source fields exist and require data review before publication; they are not merged here.'}
             </p>
           </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={addToProcurementShortlist}
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[var(--color-line)] px-5 text-sm font-semibold text-[var(--color-ink)]"
-            >
-              <ClipboardPlus className="h-4 w-4" />
-              Add to shortlist
-            </button>
-            <Link
-              href="/contact"
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--color-signal)] px-5 text-sm font-semibold text-[var(--color-ink)]"
-            >
-              Prepare an RFQ
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+          <div className="mt-8">
+            <GroupedSpecifications groups={groups} />
           </div>
         </div>
       </section>
 
-      <section className="border-y border-[var(--color-line)] bg-[var(--color-canvas)]">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold tracking-[-.025em] text-[var(--color-ink)]">Available specifications</h2>
-          <div className="mt-6 max-w-4xl">
-            <SpecificationTable specifications={product.specifications} />
+      <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Product gallery</p>
+          <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)] sm:text-5xl">Vehicle views</h2>
+          <div className="mt-8">
+            <ProductMediaPanel images={galleryImages} name={product.name} />
           </div>
-
-          {product.detailedFeatures && Object.keys(product.detailedFeatures).length > 0 && (
-            <div className="mt-10">
-              <h2 className="text-2xl font-bold tracking-[-.025em] text-[var(--color-ink)]">Configuration details</h2>
-              <div className="mt-6 max-w-4xl">
-                <SpecificationTable specifications={product.detailedFeatures} />
-              </div>
-            </div>
-          )}
         </div>
       </section>
 
-      {product.performanceItems?.length ? (
-        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-[var(--color-ink)]">Available product information</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {product.performanceItems.map((item, index) => (
-              <article key={index} className="overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)]">
-                <img src={item.image} alt={item.title} className="h-48 w-full object-cover" />
-                <div className="p-5">
-                  <h3 className="font-semibold text-[var(--color-ink)]">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[var(--color-steel)]">{item.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {product.galleryImages?.length ? (
-        <section className="border-t border-[var(--color-line)] bg-[var(--color-canvas)]">
-          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-[var(--color-ink)]">Product gallery</h2>
-            <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
-              {product.galleryImages.map((image, index) => (
-                <img
-                  key={image}
-                  src={image}
-                  alt={`${product.name}, view ${index + 1}`}
-                  className="aspect-[4/3] w-full rounded-xl object-cover"
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className="bg-[var(--color-ink)] py-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-4 sm:px-6 md:flex-row md:items-center lg:px-8">
-          <div>
-            <h2 className="text-2xl font-bold text-[var(--color-panel)]">Need help comparing configurations?</h2>
-            <p className="mt-2 text-[var(--color-canvas)]">
-              Add products to the shortlist or send your operating requirements for review.
-            </p>
-          </div>
-          <Link
-            href="/shortlist"
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[var(--color-signal)] px-5 font-semibold text-[var(--color-ink)]"
-          >
-            View shortlist
-            <FileText className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
+      <RelatedContent category={product.category} performanceItems={product.performanceItems} />
     </div>
-  )
+  );
 }
