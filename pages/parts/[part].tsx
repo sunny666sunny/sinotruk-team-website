@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, ChevronRight, FileText, PackageCheck, Wrench } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { SiteImage } from '@/components/SiteImage';
 import { getPartById, parts } from '@/data/parts';
 import { SeoHead } from '@/components/seo/SeoHead';
 
@@ -12,15 +13,85 @@ export default function PartDetailPage() {
   const router = useRouter();
   const { part } = router.query as { part: string };
   const partData = part ? getPartById(part) : undefined;
-  if (router.isFallback || !partData) return <div className="flex min-h-screen items-center justify-center bg-[var(--color-canvas)]"><div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--color-signal)] border-t-transparent" /></div>;
+  if (router.isFallback || !partData) return <div className="industrial-page flex min-h-screen items-center justify-center"><div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--industrial-accent)] border-t-transparent" /></div>;
+
   const path = `/parts/${part}`;
-  return <><SeoHead input={{ path, pageType: 'part', name: `${partData.name} ${partData.partNumber}`, description: partData.description, image: partData.image, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Parts', path: '/parts' }, { name: partData.name, path }] }} /><Header /><main id="main" className="bg-[var(--color-panel)] pt-16 lg:pt-[72px]">
-    <section className="border-b border-[var(--color-line)] bg-[var(--color-canvas)]"><div className="mx-auto max-w-7xl px-4 py-6 text-sm text-[var(--color-steel)] sm:px-6 lg:px-8"><div className="flex items-center gap-2"><Link href="/">Home</Link><ChevronRight className="h-4 w-4" /><Link href="/parts">Parts</Link><ChevronRight className="h-4 w-4" /><span className="truncate">{partData.name}</span></div></div></section>
-    <section className="relative isolate overflow-hidden bg-[var(--color-ink)] text-white"><img src={partData.image} alt="" aria-hidden="true" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-40" /><div className="absolute inset-0 -z-10 bg-[var(--color-ink)]/75" /><div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"><p className="text-sm font-semibold uppercase tracking-[.14em] text-teal-100">{categoryNames[partData.category] || partData.category}</p><h1 className="mt-3 max-w-4xl text-4xl font-extrabold">{partData.name}</h1><p className="mt-3 font-mono text-sm text-slate-200">Part number: {partData.partNumber}</p></div></section>
-    <section className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,.85fr)] lg:px-8 lg:py-14"><div className="flex min-h-[22rem] items-center justify-center border border-[var(--color-line)] bg-[var(--color-canvas)] p-8"><img src={partData.image} alt={`${partData.name}, part number ${partData.partNumber}`} className="max-h-[28rem] max-w-full object-contain" /></div><div className="lg:sticky lg:top-24 lg:self-start"><h2 className="text-3xl font-bold text-[var(--color-ink)]">Part Details</h2><p className="mt-5 leading-7 text-[var(--color-steel)]">{partData.description}</p><div className="mt-7 border border-[var(--color-line)] bg-[var(--color-canvas)] p-5"><div className="flex gap-3"><Wrench className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-signal-dark)]" /><div><h3 className="font-semibold text-[var(--color-ink)]">Compatibility confirmation</h3><p className="mt-1 text-sm leading-6 text-[var(--color-steel)]">Please provide the truck model or VIN for confirmation when compatibility is not stated in the catalogue.</p></div></div></div><Link href={`/contact?part=${encodeURIComponent(partData.id)}`} className="mt-6 inline-flex min-h-11 items-center gap-2 bg-[var(--color-signal)] px-5 text-sm font-semibold text-[var(--color-ink)] hover:bg-[var(--color-signal-dark)] hover:text-white">Request compatibility review <ChevronRight className="h-4 w-4" /></Link></div></section>
-    <section className="border-y border-[var(--color-line)] bg-[var(--color-canvas)]"><div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:px-8"><div><h2 className="text-2xl font-bold text-[var(--color-ink)]">Product specifications</h2><div className="mt-5 overflow-hidden border border-[var(--color-line)] bg-[var(--color-panel)]">{Object.entries(partData.specifications).map(([key, value]) => <div key={key} className="grid grid-cols-[minmax(9rem,.7fr)_minmax(0,1.3fr)] gap-4 border-b border-[var(--color-line)] px-5 py-4 last:border-0"><span className="text-sm text-[var(--color-steel)]">{key}</span><span className="text-right text-sm font-semibold text-[var(--color-ink)]">{value}</span></div>)}</div></div><aside className="border border-[var(--color-line)] bg-[var(--color-panel)] p-5"><PackageCheck className="h-5 w-5 text-[var(--color-signal-dark)]" /><h2 className="mt-4 font-semibold text-[var(--color-ink)]">Before you enquire</h2><ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--color-steel)]"><li>Part number or product name</li><li>Truck model or VIN</li><li>Required quantity</li><li>Destination country or port</li></ul></aside></div></section>
-    <section className="mx-auto flex max-w-7xl justify-between px-4 py-8 sm:px-6 lg:px-8"><Link href="/parts" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--color-signal-dark)]"><ArrowLeft className="h-4 w-4" />Back to parts catalogue</Link><Link href="/contact" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--color-signal-dark)]">Prepare an RFQ <FileText className="h-4 w-4" /></Link></section>
-  </main><Footer /></>;
+
+  return <>
+    <SeoHead input={{ path, pageType: 'part', name: `${partData.name} ${partData.partNumber}`, description: partData.description, image: partData.image, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Parts', path: '/parts' }, { name: partData.name, path }] }} />
+    <Header />
+    <main id="main" className="industrial-page pt-16 lg:pt-[72px]">
+      <nav aria-label="Breadcrumb" className="border-b border-[var(--industrial-line)] bg-[var(--industrial-surface)]">
+        <div className="mx-auto flex min-w-0 max-w-7xl items-center gap-2 px-4 py-5 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-muted)] sm:px-6 lg:px-8">
+          <Link href="/">Home</Link>
+          <ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+          <Link href="/parts">Parts</Link>
+          <ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+          <span className="truncate text-[var(--industrial-text)]">{partData.name}</span>
+        </div>
+      </nav>
+
+      <section className="border-b border-[var(--industrial-line)] bg-[var(--industrial-bg)]">
+        <div className="mx-auto grid max-w-7xl lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,.85fr)]">
+          <div className="relative flex min-h-[24rem] items-center justify-center bg-[var(--industrial-panel)] p-6 sm:min-h-[32rem] sm:p-10 lg:min-h-[38rem]">
+            <SiteImage src={partData.image} alt={`${partData.name}, part number ${partData.partNumber}`} fill priority sizes="(min-width: 1024px) 58vw, 100vw" className="object-contain p-6 sm:p-10" />
+          </div>
+          <div className="flex min-w-0 flex-col justify-center border-t border-[var(--industrial-line)] px-4 py-10 sm:px-8 lg:border-l lg:border-t-0 lg:px-12">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">{categoryNames[partData.category] || partData.category} part</p>
+            <h1 className="mt-4 break-words text-5xl font-bold uppercase leading-[0.9] text-[var(--industrial-text)] sm:text-6xl">{partData.name}</h1>
+            <div className="mt-8 border-y border-[var(--industrial-line)] py-5">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--industrial-muted)]">Part number:</p>
+              <p className="mt-2 break-all font-mono text-2xl font-bold text-[var(--industrial-accent)] sm:text-3xl">{partData.partNumber}</p>
+            </div>
+            <p className="mt-7 leading-7 text-[var(--industrial-muted)]">{partData.description}</p>
+            <Link href={`/contact?part=${encodeURIComponent(partData.id)}`} className="mt-8 inline-flex min-h-12 w-fit items-center gap-2 bg-[var(--industrial-accent)] px-6 text-xs font-bold uppercase tracking-[0.08em] text-[#081113]">Request compatibility review <ChevronRight aria-hidden="true" className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--industrial-surface)]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_21rem] lg:px-8 lg:py-16">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Published record</p>
+            <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)]">Product specifications</h2>
+            <dl className="mt-7 overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-panel)]">
+              {Object.entries(partData.specifications).map(([key, value]) => (
+                <div key={key} className="grid gap-2 border-b border-[var(--industrial-line)] px-5 py-4 last:border-0 sm:grid-cols-[minmax(9rem,.7fr)_minmax(0,1.3fr)] sm:gap-4">
+                  <dt className="text-sm text-[var(--industrial-muted)]">{key}</dt>
+                  <dd className="break-words text-sm font-bold text-[var(--industrial-text)] sm:text-right">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <aside className="h-fit border border-[var(--industrial-line)] bg-[var(--industrial-panel)] p-6">
+            <Wrench aria-hidden="true" className="h-6 w-6 text-[var(--industrial-accent)]" />
+            <p className="mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[var(--industrial-accent)]">Compatibility confirmation</p>
+            <h2 className="mt-2 text-2xl font-bold uppercase text-[var(--industrial-text)]">Compatibility must be confirmed</h2>
+            <p className="mt-3 text-sm leading-6 text-[var(--industrial-muted)]">Catalogue details help identify a candidate part. Please provide the truck model or VIN so our team can review fitment for your specific vehicle.</p>
+            <div className="mt-7 border-t border-[var(--industrial-line)] pt-6">
+              <PackageCheck aria-hidden="true" className="h-5 w-5 text-[var(--industrial-accent)]" />
+              <h3 className="mt-4 text-lg font-bold uppercase text-[var(--industrial-text)]">Before you enquire</h3>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--industrial-muted)]">
+                <li>Part number or product name</li>
+                <li>Truck model or VIN</li>
+                <li>Required quantity</li>
+                <li>Destination country or port</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--industrial-line)] bg-[var(--industrial-bg)]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <Link href="/parts" className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]"><ArrowLeft aria-hidden="true" className="h-4 w-4" />Back to parts catalogue</Link>
+          <Link href="/contact" className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">Prepare an RFQ <FileText aria-hidden="true" className="h-4 w-4" /></Link>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </>;
 }
 
 export async function getStaticPaths() { return { paths: parts.map((part) => ({ params: { part: part.id } })), fallback: false }; }
