@@ -1,10 +1,15 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { CatalogueMatrix } from '@/components/industrial/home/CatalogueMatrix'
 import { productCategories } from '@/data/siteConfig'
+
+test('approved prototype is removed after production promotion', () => {
+  assert.equal(existsSync('pages/prototype/industrial-home.tsx'), false)
+  assert.equal(existsSync('styles/industrial-home-prototype.module.css'), false)
+})
 
 test('industrial public theme is loaded without changing catalogue records', () => {
   const app = readFileSync('pages/_app.tsx', 'utf8')
