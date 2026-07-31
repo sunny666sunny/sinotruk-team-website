@@ -19,7 +19,7 @@ export default function NewsDetailPage({ item, previous, next, related, relatedP
   const paragraphs = item.content.split('\n\n').filter((paragraph) => paragraph.trim())
 
   return <div className="industrial-page">
-    <SeoHead input={{ path: `/news/${item.slug}`, pageType: 'article', name: item.seoTitle, description: item.seoDescription, image: item.image, datePublished: item.date, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'News', path: '/news' }, { name: item.title, path: `/news/${item.slug}` }] }} />
+    <SeoHead input={{ path: `/news/${item.slug}`, pageType: 'article', name: item.seoTitle, description: item.seoDescription, image: item.image, datePublished: item.date, source: { title: item.sourceTitle, url: item.sourceUrl, datePublished: item.sourceDate }, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'News', path: '/news' }, { name: item.title, path: `/news/${item.slug}` }] }} />
     <Header />
     <main id="main" className="pt-16 lg:pt-[72px]">
       <section className="border-b border-[var(--industrial-line)] bg-[var(--industrial-surface)]">

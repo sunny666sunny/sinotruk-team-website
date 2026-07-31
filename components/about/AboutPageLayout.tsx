@@ -14,7 +14,7 @@ export default function AboutPageLayout({ title, description, children, gallery 
   const isFacilities = title === 'Our Facilities'
 
   return <div className="industrial-page flex min-h-screen flex-col">
-    <Head><title>{title} | SINOTRUK TEAM</title><meta name="description" content={description} /></Head>
+    <Head><title>{`${title} | SINOTRUK TEAM`}</title><meta name="description" content={description} /></Head>
     <Header />
     <main id="main" className="flex-grow pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[360px] overflow-hidden border-b border-[var(--industrial-line)]">

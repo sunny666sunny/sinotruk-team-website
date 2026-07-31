@@ -47,7 +47,7 @@ export default function ProductSubcategoryPage({ category, subcategory, products
 
   return (
     <div className="flex min-h-screen flex-col">
-      <SeoHead input={{ path, pageType: 'website', name: `${subcategory.name} | ${category.name}`, description: `Browse ${subcategory.name} products in the ${category.name} range, including available images and technical parameters.`, image: subcategory.image || category.bannerImage, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: category.name, path: `/products/${category.id}` }, { name: subcategory.name, path }] }} />
+      <SeoHead input={{ path, pageType: 'collection', name: `${subcategory.name} | ${category.name}`, description: `Browse ${subcategory.name} products in the ${category.name} range, including available images and technical parameters.`, image: subcategory.image || category.bannerImage, items: products.map((product) => ({ name: product.name, url: `/products/${product.category}/${product.subcategory}/${product.id}` })), breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: category.name, path: `/products/${category.id}` }, { name: subcategory.name, path }] }} />
       <Header />
       <main id="main" className="industrial-page flex-grow pt-16 lg:pt-[72px]">
         <PageHero

@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { SeoHead } from '@/components/seo/SeoHead'
 import { CatalogueMatrix } from '@/components/industrial/home/CatalogueMatrix'
 import {
   ApplicationMatrix,
@@ -25,10 +25,7 @@ export default function Home({ news, products }: HomeProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Head>
-        <title>SINOTRUK TEAM | Commercial Truck Export Procurement</title>
-        <meta name="description" content="Explore commercial truck and parts categories, compare requirements and start an export procurement enquiry with SINOTRUK TEAM." />
-      </Head>
+      <SeoHead input={{ path: '/', pageType: 'website', name: 'SINOTRUK TEAM', description: 'Explore commercial truck and parts categories, compare requirements and start an export procurement enquiry with SINOTRUK TEAM.', image: '/images/products/Heavy-Truck.webp' }} />
 
       <Header transparent />
 

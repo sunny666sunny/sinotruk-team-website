@@ -90,7 +90,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         </div>
       </section>
 
-      <RelatedContent category={product.category} performanceItems={product.performanceItems} />
+      <RelatedContent currentPath={`/products/${product.category}/${product.subcategory}/${product.id}`} category={product.category} performanceItems={product.performanceItems} />
     </div>
   );
 }

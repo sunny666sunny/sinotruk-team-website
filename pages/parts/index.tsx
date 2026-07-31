@@ -23,7 +23,7 @@ export default function PartsPage() {
   const visible = filterParts(parts, { category: active, query });
 
   return <>
-    <SeoHead input={{ path: '/parts', pageType: 'website', name: 'Truck Parts Catalogue', description: 'Search available truck parts by part number, model and application, then submit your compatibility question.', image: '/images/parts/banner-parts.webp' }} />
+    <SeoHead input={{ path: '/parts', pageType: 'collection', name: 'Truck Parts Catalogue', description: 'Search available truck parts by part number, model and application, then submit your compatibility question.', image: '/images/parts/banner-parts.webp', items: parts.map((part) => ({ name: `${part.name} ${part.partNumber}`, url: `/parts/${part.id}` })) }} />
     <Header />
     <main id="main" className="industrial-page pt-16 lg:pt-[72px]">
       <PageHero

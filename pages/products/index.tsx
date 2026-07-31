@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from '@/components/layout/Header';
@@ -16,6 +15,7 @@ import { filterProducts } from '@/lib/procurement/filter-products';
 import type { ProductFilterState } from '@/lib/procurement/types';
 import { getPublishedProducts } from '@/lib/content/repository';
 import type { ProcurementProduct } from '@/lib/content/serializers';
+import { SeoHead } from '@/components/seo/SeoHead';
 
 const fromQuery = (value: string | string[] | undefined) => typeof value === 'string' ? value.split(',').filter(Boolean) : [];
 const sortProducts = (products: ProcurementProduct[], sort: string) => sort === 'name-asc'
@@ -56,10 +56,7 @@ export default function Products({ products }: { products: ProcurementProduct[] 
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Head>
-        <title>Commercial Truck Catalogue | SINOTRUK TEAM</title>
-        <meta name="description" content="Filter commercial trucks by drive form, application and power range. Build a procurement shortlist or compare up to four vehicles." />
-      </Head>
+      <SeoHead input={{ path: '/products', pageType: 'collection', name: 'Commercial Truck Catalogue', description: 'Filter commercial trucks by drive form, application and power range. Build a procurement shortlist or compare up to four vehicles.', image: '/images/products/Heavy-Truck.webp', items: products.map((product) => ({ name: product.name, url: `/products/${product.category}/${product.subcategory}/${product.id}` })) }} />
       <Header />
       <main id="main" className="industrial-page flex-grow pt-16 lg:pt-[72px]">
         <PageHero

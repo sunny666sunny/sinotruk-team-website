@@ -3,14 +3,16 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ProductDetail from '@/components/product/ProductDetail'
 import type { ProcurementProduct } from '@/lib/content/serializers'
-import { getPublishedProduct, getPublishedProducts } from '@/lib/content/repository'
+import { getPublishedProducts } from '@/lib/content/repository'
 import { SeoHead } from '@/components/seo/SeoHead'
 
 interface ProductDetailPageProps {
   product: ProcurementProduct | null
+  seoTitle: string
+  seoDescription: string
 }
 
-export default function ProductDetailPage({ product }: ProductDetailPageProps) {
+export default function ProductDetailPage({ product, seoTitle, seoDescription }: ProductDetailPageProps) {
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -28,7 +30,7 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SeoHead input={{ path: `/products/${product.category}/${product.subcategory}/${product.id}`, pageType: 'product', name: product.name, description: product.description, image: product.image, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: product.name, path: `/products/${product.category}/${product.subcategory}/${product.id}` }] }} />
+      <SeoHead input={{ path: `/products/${product.category}/${product.subcategory}/${product.id}`, pageType: 'product', name: product.name, description: seoDescription, image: product.image, override: { title: seoTitle }, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: product.name, path: `/products/${product.category}/${product.subcategory}/${product.id}` }] }} />
 
       <Header />
 
@@ -58,11 +60,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<ProductDetailPageProps> = async ({ params }) => {
   const productId = params?.product as string
-  const product = await getPublishedProduct(productId)
+  const products = await getPublishedProducts()
+  const product = products.find((item) => item.id === productId) || null
+  const matchingProducts = product ? products.filter((item) => item.name === product.name) : []
+  const recordNumber = product ? matchingProducts.findIndex((item) => item.id === product.id) + 1 : 0
+  const recordLabel = matchingProducts.length > 1 ? `catalogue record ${recordNumber} of ${matchingProducts.length}` : ''
 
   return {
     props: {
       product,
+      seoTitle: product ? `${product.name}${recordLabel ? ` — ${recordLabel}` : ''} | SINOTRUK TEAM` : 'Product not found | SINOTRUK TEAM',
+      seoDescription: product ? `${product.name}${recordLabel ? ` — ${recordLabel}` : ''}: ${product.description}` : 'The requested product could not be found.',
     },
   }
 }

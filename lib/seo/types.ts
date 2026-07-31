@@ -1,4 +1,4 @@
-export type SeoPageType = 'website' | 'product' | 'article' | 'part'
+export type SeoPageType = 'website' | 'collection' | 'product' | 'article' | 'part'
 
 export interface SeoOverride {
   title?: string | null
@@ -19,6 +19,8 @@ export interface SeoInput {
   override?: SeoOverride | null
   datePublished?: string | null
   dateModified?: string | null
+  source?: { title?: string | null; url?: string | null; datePublished?: string | null } | null
+  items?: Array<{ name: string; url: string }>
   breadcrumbs?: Array<{ name: string; path: string }>
 }
 

@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import Head from 'next/head'
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
 import { ArrowRight } from 'lucide-react'
@@ -9,6 +8,7 @@ import { SiteImage } from '@/components/SiteImage'
 import type { NewsItem } from '@/data/news'
 import { getPublishedNews } from '@/lib/content/repository'
 import { getNewsCategory, getNewsSourceLabel, NEWS_CATEGORIES } from '@/lib/content/news-presentation'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 const formatDate = (date: string) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
@@ -17,7 +17,7 @@ export default function NewsPage({ items }: { items: NewsItem[] }) {
   const filteredItems = useMemo(() => items.filter((item) => activeCategory === 'All' || getNewsCategory(item) === activeCategory), [activeCategory, items])
 
   return <div className="industrial-page">
-    <Head><title>Truck News & Procurement Guides | SINOTRUK TEAM</title><meta name="description" content="Manufacturer news, industry insights, and practical commercial-truck procurement guides for international buyers." /></Head>
+    <SeoHead input={{ path: '/news', pageType: 'collection', name: 'Truck News & Procurement Guides', description: 'Manufacturer news, industry insights, and practical commercial-truck procurement guides for international buyers.', image: '/images/news/banner-news.webp', items: items.map((item) => ({ name: item.title, url: `/news/${item.slug}` })) }} />
     <Header />
     <main id="main" className="pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[330px] overflow-hidden border-b border-[var(--industrial-line)]">

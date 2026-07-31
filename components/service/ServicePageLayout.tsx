@@ -15,7 +15,7 @@ type ServiceSection = {
 
 export default function ServicePageLayout({ title, description, sections }: { title: string; description: string; sections: ServiceSection[] }) {
   return <div className="industrial-page flex min-h-screen flex-col">
-    <Head><title>{title} | SINOTRUK TEAM</title><meta name="description" content={description} /></Head>
+    <Head><title>{`${title} | SINOTRUK TEAM`}</title><meta name="description" content={description} /></Head>
     <Header />
     <main id="main" className="flex-grow pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[380px] overflow-hidden border-b border-[var(--industrial-line)]">
