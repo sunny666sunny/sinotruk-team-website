@@ -45,3 +45,12 @@ Every matrix entry also had exactly one `main#main`, one valid skip link, and a 
 - Protected untracked `.codex-local-dev-4318.log`, `admin.db`, `pages/prototype/`, and `styles/industrial-home-prototype.module.css` remain untouched.
 - No new abstraction or dependency was added; responsive edits are mechanical breakpoint and image-hint changes tied directly to the browser/preflight findings.
 - The internal featured-vehicle rail remains intentionally scrollable; page-level overflow is not hidden and all 36 page/viewport checks reported equal document and client widths.
+
+## Review Fix Follow-up
+
+- The shared header logo link now owns a 44x44 minimum target while its image keeps `h-10 w-auto` / `lg:h-11` aspect-ratio sizing.
+- Desktop product mega-menu category and subcategory anchors now use the same 44px minimum-height contract; no global anchor rule was added.
+- A mounted JSDOM test renders the real `IndustrialHeader`, checks the skip-link/main contract and 44px class contract, opens the mobile drawer, and verifies Escape closure plus scroll-lock restoration. The focused test was observed RED on the missing logo target class, then GREEN 3/3 after the header fix.
+- Browser evidence is machine-readable at `task-9-browser-matrix.json` in this plan directory. It contains all 36 route/viewport rows. Every desktop row keyboard-focuses the Products mega menu and waits for it to become visible; every mobile row opens and inspects the drawer.
+- Browser result: 36/36 passed with equal client/scroll widths, zero broken images, one `main`, a valid skip target, no visible header control under 44px, no application console errors, and the expected expanded header surface.
+- Final verification: focused header test 3/3; `npm test` 121/121; lint 0 errors with the same nine untouched admin warnings; production build passed with 204 generated pages.
