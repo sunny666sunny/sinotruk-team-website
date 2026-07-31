@@ -1,9 +1,33 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { SeoHead } from '../components/seo/SeoHead'
+import { createRequire } from 'node:module'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { HeadManagerContext } from 'next/dist/shared/lib/head-manager-context.shared-runtime'
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
+import type { NextRouter } from 'next/router'
 import AboutPageLayout from '../components/about/AboutPageLayout'
 import ServicePageLayout from '../components/service/ServicePageLayout'
+import { SeoHead } from '../components/seo/SeoHead'
 import { resolveSeo } from '../lib/seo/resolve'
+import { absoluteUrl } from '../lib/seo/site-url'
+import ProductsPage, { getStaticProps as getProductsStaticProps } from '../pages/products'
+import { getStaticPaths as getProductStaticPaths } from '../pages/products/[category]/[subcategory]/[product]'
+
+const router = {
+  basePath: '', pathname: '/products', route: '/products', query: {}, asPath: '/products?drive=6x4',
+  push: async () => true, replace: async () => true, reload: () => undefined, back: () => undefined, forward: () => undefined,
+  prefetch: async () => undefined, beforePopState: () => undefined,
+  events: { on: () => undefined, off: () => undefined, emit: () => undefined },
+  isFallback: false, isLocaleDomain: false, isReady: true, isPreview: false,
+} as NextRouter
+
+function captureHead(element: React.ReactNode) {
+  let head: any[] = []
+  const manager = { mountedInstances: new Set(), updateHead: (next: any[]) => { head = next } }
+  renderToStaticMarkup(createElement(RouterContext.Provider, { value: router }, createElement(HeadManagerContext.Provider, { value: manager }, element)))
+  return head
+}
 
 test('homepage emits Organization, WebSite and WebPage schema', () => {
   const seo = resolveSeo({ path: '/', pageType: 'website', name: 'SINOTRUK TEAM' }, 'https://sinotrukteam.com')
@@ -31,6 +55,18 @@ test('catalogue schema contains only the supplied real product URLs', () => {
       'https://sinotrukteam.com/products/heavy-truck/tractor-truck/howo-max',
     ],
   )
+})
+
+test('published catalogue CollectionPage URLs equal the actual product static paths', async () => {
+  const productProps = await getProductsStaticProps() as any
+  const productPaths = await getProductStaticPaths({} as any) as any
+  const head = captureHead(createElement(ProductsPage, productProps.props))
+  const schemas = head.filter((item) => item.type === 'script' && item.props.type === 'application/ld+json').map((item) => JSON.parse(item.props.dangerouslySetInnerHTML.__html))
+  const collection = schemas.find((item) => item['@type'] === 'CollectionPage')
+  const collectionUrls = collection.mainEntity.itemListElement.map((item: { url: string }) => item.url).sort()
+  const routeUrls = productPaths.paths.map(({ params }: any) => absoluteUrl(`/products/${params.category}/${params.subcategory}/${params.product}`)).sort()
+
+  assert.deepEqual(collectionUrls, routeUrls)
 })
 
 test('product schema does not invent commercial or review fields', () => {
@@ -87,6 +123,27 @@ test('shared SEO head replaces the app canonical fallback with one keyed canonic
 
   assert.equal(canonicals.length, 1)
   assert.equal(canonicals[0].key, 'canonical')
+})
+
+test('app fallback and page SEO resolve to one final canonical through Next head manager', async () => {
+  const require = createRequire(import.meta.url)
+  const extensions = (require as any).extensions
+  const previousCssLoader = extensions['.css']
+  extensions['.css'] = () => undefined
+  let appModule: any
+  try {
+    appModule = await import('../pages/_app')
+  } finally {
+    if (previousCssLoader) extensions['.css'] = previousCssLoader
+    else delete extensions['.css']
+  }
+  const App = (appModule.default as any).default || appModule.default
+  const Page = () => createElement(SeoHead, { input: { path: '/products', pageType: 'collection', name: 'Products' } })
+  const head = captureHead(createElement(App, { Component: Page, pageProps: {}, router } as any))
+  const canonicals = head.filter((item) => item.type === 'link' && item.props.rel === 'canonical')
+
+  assert.equal(canonicals.length, 1)
+  assert.equal(canonicals[0].props.href, absoluteUrl('/products'))
 })
 
 test('social metadata falls back to a real site image without adding it to JSON-LD', () => {

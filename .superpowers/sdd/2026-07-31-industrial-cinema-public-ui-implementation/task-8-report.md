@@ -27,3 +27,9 @@ Implemented the shared frontend SEO layout and schema without changing catalogue
 
 - The brief referenced `tests/seo.test.ts` and `tests/seo-submission.test.ts`, but this baseline names their existing equivalents `tests/seo-automation.test.ts` and `tests/seo-submission-handler.test.ts`; no duplicate alias tests were added.
 - Protected untracked prototype/database/log files were not touched.
+
+## Test Evidence Follow-up
+
+- Strengthened the submission-handler regression with an attempted `baidu` and unsupported `bing` provider. The executable assertion proves only `indexnow` and `google` run, persist and appear in the response; adding another production branch now fails the test.
+- Rendered the real published Products page through Next's head manager, parsed its CollectionPage JSON-LD and proved its item URLs exactly equal the actual product-detail `getStaticPaths` output.
+- Rendered the actual `_app` together with page `SeoHead` through Next's head manager and proved the final integrated head contains exactly one query-free canonical. Removing either shared canonical key now fails the test.
