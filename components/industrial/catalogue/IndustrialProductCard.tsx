@@ -83,6 +83,7 @@ export function IndustrialProductCard({ product, compareSelected = false, onComp
           type="button"
           onClick={add}
           disabled={shortlisted}
+          aria-label={shortlisted ? `${product.name} is on shortlist` : `Add ${product.name} to shortlist`}
           className="inline-flex min-h-12 items-center justify-center gap-2 border-r border-[var(--industrial-line)] px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)] disabled:text-[var(--industrial-muted)]"
         >
           {shortlisted ? <Check className="h-4 w-4" aria-hidden="true" /> : <Plus className="h-4 w-4" aria-hidden="true" />}
@@ -93,19 +94,20 @@ export function IndustrialProductCard({ product, compareSelected = false, onComp
             type="button"
             onClick={() => onCompareChange(product.id)}
             aria-pressed={compareSelected}
+            aria-label={compareSelected ? `Remove ${product.name} from comparison` : `Compare ${product.name}`}
             className="inline-flex min-h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)]"
           >
             <GitCompareArrows className="h-4 w-4" aria-hidden="true" />
             {compareSelected ? 'Selected' : 'Compare'}
           </button>
         ) : (
-          <Link href="/contact" className="inline-flex min-h-12 items-center justify-center px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)]">
+          <Link href="/contact" aria-label={`Prepare RFQ for ${product.name}`} className="inline-flex min-h-12 items-center justify-center px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)]">
             Prepare RFQ
           </Link>
         )}
       </div>
       {onCompareChange && (
-        <Link href="/contact" className="flex min-h-11 items-center justify-center border-t border-[var(--industrial-line)] text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">
+        <Link href="/contact" aria-label={`Prepare RFQ for ${product.name}`} className="flex min-h-11 items-center justify-center border-t border-[var(--industrial-line)] text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">
           Prepare RFQ
         </Link>
       )}

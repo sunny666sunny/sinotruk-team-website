@@ -6,8 +6,8 @@ import Footer from '@/components/layout/Footer';
 import PageHero from '@/components/layout/PageHero';
 import ProductFilters from '@/components/procurement/ProductFilters';
 import CompareTray from '@/components/procurement/CompareTray';
-import ComparisonTable from '@/components/procurement/ComparisonTable';
 import { CatalogueToolbar } from '@/components/industrial/catalogue/CatalogueToolbar';
+import { CompareDialog } from '@/components/industrial/catalogue/CompareDialog';
 import { IndustrialProductCard, toCatalogueProduct } from '@/components/industrial/catalogue/IndustrialProductCard';
 import { FilterDrawer } from '@/components/ui/FilterDrawer';
 import { SeoHead } from '@/components/seo/SeoHead';
@@ -120,17 +120,7 @@ export default function ProductCategoryPage({ category, products }: Props) {
           {filtersPanel}
         </FilterDrawer>
         <CompareTray count={compareIds.length} onClear={() => setCompareIds([])} onCompare={() => setShowComparison(true)} />
-        {showComparison && (
-          <div className="fixed inset-0 z-[60] overflow-y-auto bg-black/70 p-4" role="dialog" aria-modal="true" aria-label="Vehicle comparison">
-            <div className="mx-auto mt-10 max-w-6xl border border-[var(--industrial-line)] bg-[var(--industrial-panel)] p-5">
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <h2 className="text-3xl font-bold uppercase text-[var(--industrial-text)]">Compare specifications</h2>
-                <button type="button" onClick={() => setShowComparison(false)} className="min-h-11 text-sm font-bold uppercase text-[var(--industrial-text)]">Close</button>
-              </div>
-              <ComparisonTable products={products.filter((product) => compareIds.includes(product.id))} />
-            </div>
-          </div>
-        )}
+        <CompareDialog open={showComparison} onClose={() => setShowComparison(false)} products={products.filter((product) => compareIds.includes(product.id))} />
       </main>
       <Footer />
     </div>

@@ -1,7 +1,60 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { toCatalogueProduct } from '../components/industrial/catalogue/IndustrialProductCard';
+import { JSDOM } from 'jsdom';
+import { act, createElement, Fragment, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { CompareDialog } from '../components/industrial/catalogue/CompareDialog';
+import { CatalogueToolbar } from '../components/industrial/catalogue/CatalogueToolbar';
+import { IndustrialProductCard, toCatalogueProduct } from '../components/industrial/catalogue/IndustrialProductCard';
+import PageHero from '../components/layout/PageHero';
+import ProductFilters from '../components/procurement/ProductFilters';
+import { SHORTLIST_KEY } from '../lib/procurement/shortlist';
+import type { ProductFilterState } from '../lib/procurement/types';
+
+const installDom = () => {
+  const dom = new JSDOM('<div id="root"></div>', { url: 'https://www.sinotrukteam.com/products' });
+  const values: Record<string, unknown> = {
+    window: dom.window,
+    self: dom.window,
+    document: dom.window.document,
+    navigator: dom.window.navigator,
+    HTMLElement: dom.window.HTMLElement,
+    Element: dom.window.Element,
+    Node: dom.window.Node,
+    Event: dom.window.Event,
+    MouseEvent: dom.window.MouseEvent,
+    KeyboardEvent: dom.window.KeyboardEvent,
+    CustomEvent: dom.window.CustomEvent,
+    getComputedStyle: dom.window.getComputedStyle.bind(dom.window),
+    IS_REACT_ACT_ENVIRONMENT: true,
+  };
+  const descriptors = new Map<string, PropertyDescriptor | undefined>();
+  for (const [key, value] of Object.entries(values)) {
+    descriptors.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
+    Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
+  }
+  return {
+    document: dom.window.document,
+    restore() {
+      dom.window.close();
+      for (const [key, descriptor] of descriptors) {
+        if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+        else Reflect.deleteProperty(globalThis, key);
+      }
+    },
+  };
+};
+
+const runtimeProduct = toCatalogueProduct({
+  id: 'truck-1',
+  name: 'Truck 1',
+  category: 'heavy-truck',
+  subcategory: 'dump-truck',
+  description: 'Published description',
+  image: '/images/products/truck.jpg',
+  specifications: { 'Drive type': '6x4', 'Engine Power': '380 hp', Cab: 'HW76' },
+});
 
 test('product catalogue exposes the complete procurement toolbar and card actions', async () => {
   const [catalogue, toolbar, card] = await Promise.all([
@@ -11,6 +64,7 @@ test('product catalogue exposes the complete procurement toolbar and card action
   ]);
 
   assert.match(catalogue, /<CatalogueToolbar/);
+  assert.match(catalogue, /<CompareDialog/);
   assert.match(catalogue, /<ProductFilters/);
   assert.match(catalogue, /<FilterDrawer/);
   assert.match(toolbar, /Showing \{count\} vehicles/);
@@ -32,6 +86,7 @@ test('category catalogue routes keep every product visible through the shared pr
   for (const source of [category, subcategory]) {
     assert.match(source, /<PageHero/);
     assert.match(source, /<CatalogueToolbar/);
+    assert.match(source, /<CompareDialog/);
     assert.match(source, /<ProductFilters/);
     assert.match(source, /<FilterDrawer/);
     assert.match(source, /useState<ProductFilterState>\(\{ drive: \[\], applications: \[\] \}\)/);
@@ -45,18 +100,113 @@ test('category catalogue routes keep every product visible through the shared pr
 });
 
 test('catalogue view mapping only normalizes specifications that are actually published', () => {
-  const product = toCatalogueProduct({
-    id: 'truck-1',
-    name: 'Truck 1',
-    category: 'heavy-truck',
-    subcategory: 'dump-truck',
-    description: 'Published description',
-    image: '/images/products/truck.jpg',
-    specifications: { 'Drive type': '6x4', 'Engine Power': '380 hp', Cab: 'HW76' },
-  });
+  assert.equal(runtimeProduct.normalizedSpecs.drive, '6x4');
+  assert.equal(runtimeProduct.normalizedSpecs.power, '380 hp');
+  assert.deepEqual(runtimeProduct.applicationTags, []);
+  assert.equal(runtimeProduct.normalizedSpecs.Cab, 'HW76');
+});
 
-  assert.equal(product.normalizedSpecs.drive, '6x4');
-  assert.equal(product.normalizedSpecs.power, '380 hp');
-  assert.deepEqual(product.applicationTags, []);
-  assert.equal(product.normalizedSpecs.Cab, 'HW76');
+test('rendered catalogue controls preserve product routes and dispatch procurement interactions', async () => {
+  const dom = installDom();
+  const container = dom.document.querySelector('#root') as HTMLElement;
+  const root = createRoot(container);
+  let filtersOpened = 0;
+  let selectedSort = '';
+  let comparedId = '';
+  let latestFilters: ProductFilterState = { drive: [], applications: [] };
+
+  function Harness() {
+    const [sort, setSort] = useState('featured');
+    const [filters, setFilters] = useState<ProductFilterState>({ drive: [], applications: [] });
+    return createElement('main', null,
+      createElement(PageHero, { eyebrow: 'Products', title: 'Catalogue', description: 'Published vehicles.' }),
+      createElement(CatalogueToolbar, {
+        count: 1,
+        onOpenFilters: () => { filtersOpened += 1; },
+        sort,
+        onSort: (value) => { selectedSort = value; setSort(value); },
+      }),
+      createElement(ProductFilters, {
+        drives: ['6x4'],
+        applications: ['mining'],
+        value: filters,
+        onChange: (value) => { latestFilters = value; setFilters(value); },
+      }),
+      createElement(IndustrialProductCard, {
+        product: runtimeProduct,
+        onCompareChange: (id) => { comparedId = id; },
+      }),
+    );
+  }
+
+  try {
+    await act(async () => { root.render(createElement(Harness)); });
+    assert.equal(container.querySelectorAll('h1').length, 1);
+    assert.equal(container.querySelector('article a')?.getAttribute('href'), '/products/heavy-truck/dump-truck/truck-1');
+
+    await act(async () => { (container.querySelector('[aria-label="Open product filters"]') as HTMLButtonElement).click(); });
+    assert.equal(filtersOpened, 1);
+
+    const sort = container.querySelector('[aria-label="Sort products"]') as HTMLSelectElement;
+    sort.value = 'name-desc';
+    await act(async () => { sort.dispatchEvent(new dom.document.defaultView!.Event('change', { bubbles: true })); });
+    assert.equal(selectedSort, 'name-desc');
+
+    await act(async () => { (container.querySelector('input[type="checkbox"]') as HTMLInputElement).click(); });
+    assert.deepEqual(latestFilters.drive, ['6x4']);
+    await act(async () => { (container.querySelector('aside button') as HTMLButtonElement).click(); });
+    assert.deepEqual(latestFilters, { drive: [], applications: [] });
+
+    const shortlist = container.querySelector('[aria-label="Add Truck 1 to shortlist"]') as HTMLButtonElement;
+    await act(async () => { shortlist.click(); });
+    assert.deepEqual(JSON.parse(dom.document.defaultView!.localStorage.getItem(SHORTLIST_KEY) || '[]'), ['truck-1']);
+
+    await act(async () => { (container.querySelector('[aria-label="Compare Truck 1"]') as HTMLButtonElement).click(); });
+    assert.equal(comparedId, 'truck-1');
+    assert.equal(container.querySelector('[aria-label="Prepare RFQ for Truck 1"]')?.getAttribute('href'), '/contact');
+  } finally {
+    await act(async () => { root.unmount(); });
+    dom.restore();
+  }
+});
+
+test('compare dialog traps focus, closes on Escape, restores focus and unlocks scrolling', async () => {
+  const dom = installDom();
+  const container = dom.document.querySelector('#root') as HTMLElement;
+  const root = createRoot(container);
+
+  function Harness() {
+    const [open, setOpen] = useState(false);
+    return createElement(Fragment, null,
+      createElement('button', { id: 'compare-trigger', type: 'button', onClick: () => setOpen(true) }, 'Open comparison'),
+      createElement(CompareDialog, { open, onClose: () => setOpen(false), products: [runtimeProduct] }),
+    );
+  }
+
+  try {
+    await act(async () => { root.render(createElement(Harness)); });
+    const trigger = container.querySelector('#compare-trigger') as HTMLButtonElement;
+    trigger.focus();
+    dom.document.body.style.overflow = 'auto';
+    await act(async () => { trigger.click(); });
+
+    const dialog = container.querySelector('[role="dialog"]') as HTMLElement;
+    const close = container.querySelector('[aria-label="Close vehicle comparison"]') as HTMLButtonElement;
+    assert.equal(dom.document.activeElement, close);
+    assert.equal(dom.document.body.style.overflow, 'hidden');
+
+    const tabEvent = new dom.document.defaultView!.KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+    await act(async () => { close.dispatchEvent(tabEvent); });
+    assert.equal(tabEvent.defaultPrevented, true);
+    assert.equal(dom.document.activeElement, close);
+
+    const escapeEvent = new dom.document.defaultView!.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    await act(async () => { dialog.dispatchEvent(escapeEvent); });
+    assert.equal(container.querySelector('[role="dialog"]'), null);
+    assert.equal(dom.document.body.style.overflow, 'auto');
+    assert.equal(dom.document.activeElement, trigger);
+  } finally {
+    await act(async () => { root.unmount(); });
+    dom.restore();
+  }
 });
