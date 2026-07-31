@@ -162,6 +162,20 @@ test('shared public layouts give Next a single resolved title string', () => {
   assert.equal(service.props.children[0].props.children[0].props.children, 'After-sales Service | SINOTRUK TEAM')
 })
 
+test('public page hero uses a responsive Next image with decorative alternative text', () => {
+  const pageHero = require('../components/layout/PageHero').default
+  const markup = renderToStaticMarkup(createElement(pageHero, {
+    eyebrow: 'Catalogue',
+    title: 'Products',
+    description: 'Published vehicle catalogue.',
+    image: '/images/products/Heavy-Truck.webp',
+  }))
+
+  assert.match(markup, /data-nimg="fill"/)
+  assert.match(markup, /sizes="100vw"/)
+  assert.match(markup, /alt=""/)
+})
+
 test('duplicate product records receive unique honest metadata', async () => {
   const { getStaticProps } = await import('../pages/products/[category]/[subcategory]/[product]')
   const first = await getStaticProps({ params: { product: 'sinotruck-howo-garbage-truck' } } as any) as any

@@ -17,7 +17,7 @@ export function KeySpecCluster({ groups, maxItems = 5 }: KeySpecClusterProps) {
   }
 
   return (
-    <dl className="grid border-l border-t border-[var(--industrial-line)] sm:grid-cols-2">
+    <dl className="grid border-l border-t border-[var(--industrial-line)] md:grid-cols-2">
       {specifications.map(([label, value]) => (
         <div key={label} className="min-w-0 border-b border-r border-[var(--industrial-line)] p-4">
           <dt className="text-[0.68rem] font-bold uppercase tracking-[0.1em] text-[var(--industrial-muted)]">{label}</dt>

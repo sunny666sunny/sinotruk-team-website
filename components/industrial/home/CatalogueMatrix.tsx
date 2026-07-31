@@ -19,21 +19,21 @@ export function CatalogueMatrix({ categories }: CatalogueMatrixProps) {
       </div>
 
       <div className="industrial-home-catalogue-grid">
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <Link
             key={category.id}
             href={`/products/${category.id}`}
             className={[
               'industrial-home-category',
-              index === 0 ? 'industrial-home-category-primary' : '',
-              index === 1 ? 'industrial-home-category-wide' : '',
+              category.id === 'heavy-truck' ? 'industrial-home-category-primary' : '',
+              category.id === 'light-truck' ? 'industrial-home-category-wide' : '',
             ].filter(Boolean).join(' ')}
           >
             <Image
               src={category.image}
               alt={`${category.name} vehicle range`}
               fill
-              sizes={index === 0 ? '(min-width: 1024px) 40vw, 100vw' : '(min-width: 1024px) 20vw, 50vw'}
+              sizes={category.id === 'heavy-truck' ? '(min-width: 1024px) 40vw, (min-width: 768px) 100vw, 100vw' : '(min-width: 1024px) 20vw, (min-width: 768px) 50vw, 100vw'}
               className="industrial-home-cover"
             />
             <span className="industrial-home-image-shade" aria-hidden="true" />

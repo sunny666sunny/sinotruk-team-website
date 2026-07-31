@@ -17,7 +17,7 @@ export default function ProductDetailPage({ product, seoTitle, seoDescription }:
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow flex items-center justify-center">
+        <main id="main" className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
             <p className="text-xl text-gray-600">Product not found</p>
@@ -34,7 +34,7 @@ export default function ProductDetailPage({ product, seoTitle, seoDescription }:
 
       <Header />
 
-      <main className="flex-grow">
+      <main id="main" className="flex-grow">
         <ProductDetail product={product} />
       </main>
 

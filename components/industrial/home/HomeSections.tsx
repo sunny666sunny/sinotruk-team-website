@@ -141,7 +141,7 @@ export function EngineeringSection() {
         {stages.map((stage) => (
           <figure key={stage.title}>
             <span>
-              <Image src={stage.image} alt={stage.title} fill sizes="(min-width: 1024px) 22vw, 50vw" className="industrial-home-cover" />
+              <Image src={stage.image} alt={stage.title} fill sizes="(min-width: 1024px) 22vw, (min-width: 768px) 50vw, 100vw" className="industrial-home-cover" />
             </span>
             <figcaption>{stage.title}</figcaption>
           </figure>
@@ -174,7 +174,7 @@ export function ApplicationMatrix() {
       <div className="industrial-home-application-grid">
         {applications.map((application) => (
           <Link href="/products" key={application.name}>
-            <Image src={application.image} alt={`${application.name} application`} fill sizes="(min-width: 1024px) 24vw, 50vw" className="industrial-home-cover" />
+            <Image src={application.image} alt={`${application.name} application`} fill sizes="(min-width: 1024px) 24vw, (min-width: 768px) 50vw, 100vw" className="industrial-home-cover" />
             <span className="industrial-home-image-shade" aria-hidden="true" />
             <strong>{application.name}</strong>
           </Link>
@@ -279,13 +279,13 @@ export function EditorialSection({ articles }: EditorialSectionProps) {
           <article className={index === 0 ? 'industrial-home-article-featured' : ''} key={article.slug}>
             <Link href={`/news/${article.slug}`}>
               <span className="industrial-home-article-image">
-                <Image src={article.image} alt="" fill sizes={index === 0 ? '(min-width: 1024px) 48vw, 100vw' : '(min-width: 1024px) 24vw, 50vw'} className="industrial-home-cover" />
+                <Image src={article.image} alt="" fill sizes={index === 0 ? '(min-width: 1024px) 48vw, 100vw' : '(min-width: 1024px) 24vw, (min-width: 768px) 50vw, 100vw'} className="industrial-home-cover" />
               </span>
-              <span className="industrial-home-article-copy">
+              <div className="industrial-home-article-copy">
                 <time dateTime={article.date}>{article.date}</time>
                 <h3>{article.title}</h3>
                 <span>Read article <ArrowUpRight aria-hidden="true" /></span>
-              </span>
+              </div>
             </Link>
           </article>
         ))}

@@ -55,7 +55,9 @@ export function IndustrialHeader({ transparent = false }: { transparent?: boolea
   const isSolid = !transparent || isScrolled || isMenuOpen
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 h-[72px] border-b transition-colors duration-200 ${isSolid ? 'border-[var(--industrial-line)] bg-[var(--industrial-bg)]' : 'border-transparent bg-transparent'}`}>
+    <>
+      <a href="#main" className="industrial-skip-link">Skip to main content</a>
+      <header className={`fixed inset-x-0 top-0 z-50 h-[72px] border-b transition-colors duration-200 ${isSolid ? 'border-[var(--industrial-line)] bg-[var(--industrial-bg)]' : 'border-transparent bg-transparent'}`}>
       <div className="mx-auto flex h-full max-w-[1440px] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--industrial-accent)]" aria-label="SINOTRUK TEAM home">
           <Image src="/images/logo-cnhtc.webp" alt="" width={800} height={795} className="h-10 w-auto brightness-0 invert lg:h-11" />
@@ -121,7 +123,8 @@ export function IndustrialHeader({ transparent = false }: { transparent?: boolea
           </nav>
         </div>
       )}
-    </header>
+      </header>
+    </>
   )
 }
 

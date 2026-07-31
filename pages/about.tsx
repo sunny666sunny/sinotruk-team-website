@@ -30,7 +30,7 @@ export default function AboutPage() {
       </section>
       <section className="border-t border-[var(--industrial-line)] bg-[var(--industrial-surface)] py-14 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-end"><span className="industrial-home-kicker">Four chapters</span><h2 className="[font-family:var(--industrial-display)] text-4xl font-semibold uppercase tracking-[-.035em] sm:text-6xl">Explore About Us</h2></div>
+          <div className="grid gap-4 md:grid-cols-[auto_1fr] md:items-end"><span className="industrial-home-kicker">Four chapters</span><h2 className="[font-family:var(--industrial-display)] text-4xl font-semibold uppercase tracking-[-.035em] sm:text-6xl">Explore About Us</h2></div>
           <ol aria-label="About chapters" className="mt-10 space-y-3">
             {aboutPages.map((page, index) => <li key={page.href}><Link href={page.href} className="group grid overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-bg)] md:grid-cols-[6rem_minmax(16rem,.8fr)_1.2fr_auto] md:items-center">
               <span className="p-5 [font-family:var(--industrial-display)] text-3xl text-[var(--industrial-accent)]">0{index + 1}</span>

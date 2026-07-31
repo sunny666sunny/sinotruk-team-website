@@ -38,16 +38,16 @@ export function IndustrialFooter() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-4">
             <FooterColumn title="ABOUT US" links={aboutLinks} />
             <FooterColumn title="PRODUCTS" links={productCategories.map((category) => ({ name: category.name, href: `/products/${category.id}` }))} />
             <FooterColumn title="PARTS" links={partCategories.map((category) => ({ name: category.name, href: `/parts?tab=${category.id}` }))} />
             <div>
               <FooterColumn title="SERVICE" links={serviceLinks} />
               <ul className="mt-5 space-y-3 text-sm text-[var(--industrial-muted)]">
-                <li><Link href="/news" className="hover:text-[var(--industrial-accent)]">News</Link></li>
-                <li><Link href="/video" className="hover:text-[var(--industrial-accent)]">Video</Link></li>
-                <li><Link href="/contact" className="hover:text-[var(--industrial-accent)]">Contact Us</Link></li>
+                <li><Link href="/news" className="flex min-h-11 items-center hover:text-[var(--industrial-accent)]">News</Link></li>
+                <li><Link href="/video" className="flex min-h-11 items-center hover:text-[var(--industrial-accent)]">Video</Link></li>
+                <li><Link href="/contact" className="flex min-h-11 items-center hover:text-[var(--industrial-accent)]">Contact Us</Link></li>
               </ul>
             </div>
           </div>
@@ -71,7 +71,7 @@ function FooterColumn({ title, links }: { title: string; links: FooterLink[] }) 
     <div>
       <h2 className="[font-family:var(--industrial-display)] text-base font-semibold uppercase tracking-[0.1em] text-[var(--industrial-text)]">{title}</h2>
       <ul className="mt-5 space-y-3 text-sm text-[var(--industrial-muted)]">
-        {links.map((link) => <li key={link.name}><Link href={link.href} className="hover:text-[var(--industrial-accent)]">{link.name}</Link></li>)}
+        {links.map((link) => <li key={link.name}><Link href={link.href} className="flex min-h-11 items-center hover:text-[var(--industrial-accent)]">{link.name}</Link></li>)}
       </ul>
     </div>
   )

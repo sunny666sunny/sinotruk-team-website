@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { SiteImage } from '@/components/SiteImage';
 
 const slides = [
   {
@@ -40,7 +41,7 @@ export default function HeroBanner() {
 
   return (
     <section className="relative isolate min-h-[580px] overflow-hidden bg-[var(--color-ink)] text-white sm:min-h-[650px]">
-      {slides.map((item, index) => <img key={item.image} src={item.image} alt="" aria-hidden="true" className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${index === activeSlide ? 'opacity-100' : 'opacity-0'}`} />)}
+      {slides.map((item, index) => <SiteImage key={item.image} src={item.image} decorative fill priority={index === activeSlide} sizes="100vw" className={`-z-20 object-cover transition-opacity duration-700 ${index === activeSlide ? 'opacity-100' : 'opacity-0'}`} />)}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(16,35,39,.86),rgba(16,35,39,.42)_52%,rgba(16,35,39,.12))]" />
       <div className="mx-auto flex min-h-[580px] max-w-7xl items-end px-4 pb-20 pt-40 sm:min-h-[650px] sm:px-6 lg:px-8">
         <div className="max-w-2xl">
@@ -54,8 +55,8 @@ export default function HeroBanner() {
         </div>
       </div>
       <div className="absolute inset-x-0 bottom-0 mx-auto flex max-w-7xl items-center justify-between px-4 pb-7 sm:px-6 lg:px-8">
-        <div className="flex gap-2" aria-label="Hero slides">{slides.map((item, index) => <button key={item.title} type="button" onClick={() => setActiveSlide(index)} aria-label={`Show ${item.title}`} aria-current={index === activeSlide} className={`h-1.5 transition-all ${index === activeSlide ? 'w-10 bg-white' : 'w-5 bg-white/50 hover:bg-white'}`} />)}</div>
-        <div className="flex gap-2"><button type="button" onClick={() => selectSlide(-1)} className="grid h-10 w-10 place-items-center border border-white/50 hover:bg-white hover:text-[var(--color-ink)]" aria-label="Previous slide"><ArrowLeft className="h-4 w-4" /></button><button type="button" onClick={() => selectSlide(1)} className="grid h-10 w-10 place-items-center border border-white/50 hover:bg-white hover:text-[var(--color-ink)]" aria-label="Next slide"><ArrowRight className="h-4 w-4" /></button></div>
+        <div className="flex gap-1" role="group" aria-label="Hero slides">{slides.map((item, index) => <button key={item.title} type="button" onClick={() => setActiveSlide(index)} aria-label={`Show ${item.title}`} aria-current={index === activeSlide} className="group grid min-h-11 min-w-11 place-items-center"><span aria-hidden="true" className={`h-1.5 transition-all ${index === activeSlide ? 'w-10 bg-white' : 'w-5 bg-white/50 group-hover:bg-white'}`} /></button>)}</div>
+        <div className="flex gap-2"><button type="button" onClick={() => selectSlide(-1)} className="grid h-11 w-11 place-items-center border border-white/50 hover:bg-white hover:text-[var(--color-ink)]" aria-label="Previous slide"><ArrowLeft className="h-4 w-4" /></button><button type="button" onClick={() => selectSlide(1)} className="grid h-11 w-11 place-items-center border border-white/50 hover:bg-white hover:text-[var(--color-ink)]" aria-label="Next slide"><ArrowRight className="h-4 w-4" /></button></div>
       </div>
     </section>
   );

@@ -17,7 +17,6 @@ body.industrial-site {
 }
 
 .industrial-page {
-  overflow: clip;
   background: var(--industrial-bg);
   color: var(--industrial-text);
 }
@@ -28,9 +27,30 @@ body.industrial-site {
   font-family: var(--industrial-display);
 }
 
-.industrial-page a:focus-visible {
+body.industrial-site :where(a, button, input, select, textarea, summary):focus-visible {
   outline: 3px solid var(--industrial-accent);
   outline-offset: 4px;
+}
+
+.industrial-skip-link {
+  position: fixed;
+  z-index: 100;
+  top: .75rem;
+  left: .75rem;
+  min-height: 44px;
+  padding: .75rem 1rem;
+  background: var(--industrial-accent);
+  color: #061314;
+  font-weight: 600;
+  transform: translateY(calc(-100% - 1rem));
+}
+
+.industrial-skip-link:focus {
+  transform: translateY(0);
+}
+
+.industrial-page :where(button, select, input:not([type='checkbox']):not([type='radio'])) {
+  min-height: 44px;
 }
 
 .industrial-home-cover {
@@ -917,6 +937,44 @@ body.industrial-site {
   }
 }
 
+@media (max-width: 767px) {
+  .industrial-home-catalogue-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .industrial-home-category,
+  .industrial-home-category-primary,
+  .industrial-home-category-wide {
+    min-height: 19rem;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .industrial-home-engineering-grid,
+  .industrial-home-application-grid,
+  .industrial-home-article-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-home-engineering-grid figure:nth-child(2) {
+    transform: none;
+  }
+
+  .industrial-home-application-grid a:first-child,
+  .industrial-home-application-grid a:nth-child(6) {
+    grid-column: span 1;
+  }
+
+  .industrial-home-article-featured {
+    grid-row: auto;
+  }
+
+  .industrial-home-article-grid article:not(.industrial-home-article-featured) > a {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 639px) {
   .industrial-home-section {
     padding-right: 1rem;
@@ -1033,9 +1091,9 @@ body.industrial-site {
     animation: none;
   }
 
-  .industrial-page *,
-  .industrial-page *::before,
-  .industrial-page *::after {
+  body.industrial-site *,
+  body.industrial-site *::before,
+  body.industrial-site *::after {
     scroll-behavior: auto !important;
     transition-duration: .01ms !important;
     animation-duration: .01ms !important;

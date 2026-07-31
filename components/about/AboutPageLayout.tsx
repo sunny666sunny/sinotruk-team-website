@@ -7,7 +7,7 @@ import Header from '@/components/layout/Header'
 
 type ImageItem = { src: string; alt: string; label?: string }
 
-const imageSizes = '(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw'
+const imageSizes = '(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw'
 
 export default function AboutPageLayout({ title, description, children, gallery = [] }: { title: string; description: string; children: React.ReactNode; gallery?: ImageItem[] }) {
   const isJourney = title === 'Our Journey'
@@ -41,15 +41,15 @@ export default function AboutPageLayout({ title, description, children, gallery 
           </li>)}
         </ol>}
 
-        {isFacilities && gallery.length > 0 && <ul aria-label="Manufacturing facilities gallery" className="mt-14 grid auto-rows-[13rem] gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {gallery.map((image, index) => <li key={image.src} className={`group relative isolate overflow-hidden border border-[var(--industrial-line)] ${index % 7 === 0 ? 'sm:col-span-2 sm:row-span-2' : index % 5 === 0 ? 'lg:col-span-2' : ''}`}>
+        {isFacilities && gallery.length > 0 && <ul aria-label="Manufacturing facilities gallery" className="mt-14 grid auto-rows-[13rem] gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {gallery.map((image, index) => <li key={image.src} className={`group relative isolate overflow-hidden border border-[var(--industrial-line)] ${index % 7 === 0 ? 'md:col-span-2 md:row-span-2' : index % 5 === 0 ? 'lg:col-span-2' : ''}`}>
             <SiteImage src={image.src} alt={image.alt} fill sizes={imageSizes} className="-z-20 object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
             <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#051012]/90 via-transparent to-transparent" />
             <span className="absolute inset-x-0 bottom-0 p-4 [font-family:var(--industrial-display)] text-lg font-semibold uppercase tracking-[.04em]">{image.label}</span>
           </li>)}
         </ul>}
 
-        {!isJourney && !isFacilities && gallery.length > 0 && <section aria-label={`${title} image gallery`} className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
+        {!isJourney && !isFacilities && gallery.length > 0 && <section aria-label={`${title} image gallery`} className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-12">
           {gallery.map((image, index) => <figure key={image.src} className={`overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-surface)] ${index === 0 ? 'lg:col-span-7' : 'lg:col-span-5'}`}>
             <div className="relative aspect-[4/3]"><SiteImage src={image.src} alt={image.alt} fill sizes={imageSizes} className="object-cover" /></div>
             {image.label && <figcaption className="p-4 text-sm text-[var(--industrial-muted)]">{image.label}</figcaption>}

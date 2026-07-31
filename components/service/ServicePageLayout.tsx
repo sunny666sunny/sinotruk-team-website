@@ -40,7 +40,7 @@ export default function ServicePageLayout({ title, description, sections }: { ti
             <section className="pt-2">
               <h2 className="[font-family:var(--industrial-display)] text-3xl font-semibold uppercase tracking-[-.02em]">{section.title}</h2>
               <p className="mt-4 leading-8 text-[var(--industrial-muted)]">{section.description}</p>
-              {section.bullets && <ul className="mt-6 grid gap-3 text-sm leading-6 text-[var(--industrial-muted)] sm:grid-cols-2">{section.bullets.map((bullet) => <li key={bullet} className="border-l border-[var(--industrial-accent)] pl-3">{bullet}</li>)}</ul>}
+              {section.bullets && <ul className="mt-6 grid gap-3 text-sm leading-6 text-[var(--industrial-muted)] md:grid-cols-2">{section.bullets.map((bullet) => <li key={bullet} className="border-l border-[var(--industrial-accent)] pl-3">{bullet}</li>)}</ul>}
             </section>
             <figure className="relative aspect-[4/3] overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-surface)]"><SiteImage src={section.image} alt={section.imageAlt} fill sizes="(min-width: 1024px) 38vw, 100vw" className="object-cover" /></figure>
           </li>)}

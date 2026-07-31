@@ -25,7 +25,7 @@ export function GroupedSpecifications({ groups }: GroupedSpecificationsProps) {
             {specifications.length ? (
               <dl className="mt-4 divide-y divide-[var(--industrial-line)]">
                 {specifications.map(([label, value]) => (
-                  <div key={label} className="grid gap-1 py-3 text-sm sm:grid-cols-[minmax(8rem,.85fr)_minmax(0,1.15fr)] sm:gap-5">
+                  <div key={label} className="grid gap-1 py-3 text-sm md:grid-cols-[minmax(8rem,.85fr)_minmax(0,1.15fr)] md:gap-5">
                     <dt className="text-[var(--industrial-muted)]">{label}</dt>
                     <dd className="break-words font-semibold text-[var(--industrial-text)] sm:text-right">{value}</dd>
                   </div>

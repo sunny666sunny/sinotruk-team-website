@@ -56,7 +56,7 @@ export default function PartDetailPage() {
             <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)]">Product specifications</h2>
             <dl className="mt-7 overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-panel)]">
               {Object.entries(partData.specifications).map(([key, value]) => (
-                <div key={key} className="grid gap-2 border-b border-[var(--industrial-line)] px-5 py-4 last:border-0 sm:grid-cols-[minmax(9rem,.7fr)_minmax(0,1.3fr)] sm:gap-4">
+                <div key={key} className="grid gap-2 border-b border-[var(--industrial-line)] px-5 py-4 last:border-0 md:grid-cols-[minmax(9rem,.7fr)_minmax(0,1.3fr)] md:gap-4">
                   <dt className="text-sm text-[var(--industrial-muted)]">{key}</dt>
                   <dd className="break-words text-sm font-bold text-[var(--industrial-text)] sm:text-right">{value}</dd>
                 </div>

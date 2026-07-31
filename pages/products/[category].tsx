@@ -66,7 +66,7 @@ export default function ProductCategoryPage({ category, products }: Props) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Vehicle types</p>
             <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)]">Browse by vehicle type</h2>
-            <div className="mt-7 grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)] sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-7 grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)] md:grid-cols-2 lg:grid-cols-3">
               {category.subcategories.map((subcategory) => {
                 const items = products.filter((product) => product.subcategory === subcategory.id);
                 return (
@@ -88,7 +88,7 @@ export default function ProductCategoryPage({ category, products }: Props) {
             <div>
               <CatalogueToolbar count={visible.length} onOpenFilters={() => setFiltersOpen(true)} sort={sort} onSort={setSort} />
               {visible.length ? (
-                <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {visible.map((product) => (
                     <IndustrialProductCard
                       key={product.id}

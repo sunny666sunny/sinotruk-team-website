@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, CheckCircle } from 'lucide-react'
+import { SiteImage } from '@/components/SiteImage'
 
 const features = [
   'Over 60 years of heavy-duty truck R&D and manufacturing experience',
@@ -24,11 +25,13 @@ export default function AboutSection() {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
-            <div className="rounded-lg overflow-hidden shadow-xl">
-              <img
+            <div className="relative aspect-[3/2] overflow-hidden rounded-lg shadow-xl">
+              <SiteImage
                 src="/images/reference/about-SINOTRUK.webp"
                 alt="SINOTRUK Facility"
-                className="w-full h-auto object-cover"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary rounded-lg opacity-20"></div>

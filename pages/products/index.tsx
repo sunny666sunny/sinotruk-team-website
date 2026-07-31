@@ -79,7 +79,7 @@ export default function Products({ products }: { products: ProcurementProduct[] 
             <div>
               <CatalogueToolbar count={visible.length} onOpenFilters={() => setFiltersOpen(true)} sort={sort} onSort={setSort} />
               {visible.length ? (
-                <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {visible.map((product) => (
                     <IndustrialProductCard
                       key={product.id}
