@@ -4,6 +4,8 @@ import test from 'node:test';
 import { JSDOM } from 'jsdom';
 import { act, createElement, Fragment, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import type { NextRouter } from 'next/router';
 import { CompareDialog } from '../components/industrial/catalogue/CompareDialog';
 import { CatalogueToolbar } from '../components/industrial/catalogue/CatalogueToolbar';
 import { IndustrialProductCard, toCatalogueProduct } from '../components/industrial/catalogue/IndustrialProductCard';
@@ -11,6 +13,7 @@ import PageHero from '../components/layout/PageHero';
 import ProductFilters from '../components/procurement/ProductFilters';
 import { SHORTLIST_KEY } from '../lib/procurement/shortlist';
 import type { ProductFilterState } from '../lib/procurement/types';
+import ProductsPage from '../pages/products';
 
 const installDom = () => {
   const dom = new JSDOM('<div id="root"></div>', { url: 'https://www.sinotrukteam.com/products' });
@@ -205,6 +208,90 @@ test('compare dialog traps focus, closes on Escape, restores focus and unlocks s
     assert.equal(container.querySelector('[role="dialog"]'), null);
     assert.equal(dom.document.body.style.overflow, 'auto');
     assert.equal(dom.document.activeElement, trigger);
+  } finally {
+    await act(async () => { root.unmount(); });
+    dom.restore();
+  }
+});
+
+test('real products page integrates catalogue routing and procurement interactions', async () => {
+  const dom = installDom();
+  const container = dom.document.querySelector('#root') as HTMLElement;
+  const root = createRoot(container);
+  const zuluTruck = { ...runtimeProduct, id: 'zulu-truck', name: 'Zulu Truck', applicationTags: ['mining'] };
+  const alphaTruck = {
+    ...runtimeProduct,
+    id: 'alpha-truck',
+    name: 'Alpha Truck',
+    normalizedSpecs: { ...runtimeProduct.normalizedSpecs, drive: '8x4', power: '420 hp' },
+    applicationTags: ['logistics'],
+  };
+
+  function PageHarness() {
+    const [query, setQuery] = useState<NextRouter['query']>({});
+    const push: NextRouter['push'] = async (url) => {
+      if (typeof url !== 'string') setQuery(url.query || {});
+      return true;
+    };
+    const router = {
+      basePath: '',
+      pathname: '/products',
+      route: '/products',
+      query,
+      asPath: '/products',
+      push,
+      replace: async () => true,
+      reload: () => undefined,
+      back: () => undefined,
+      forward: () => undefined,
+      prefetch: async () => undefined,
+      beforePopState: () => undefined,
+      events: { on: () => undefined, off: () => undefined, emit: () => undefined },
+      isFallback: false,
+      isLocaleDomain: false,
+      isReady: true,
+      isPreview: false,
+    } as NextRouter;
+    return createElement(
+      RouterContext.Provider,
+      { value: router },
+      createElement(ProductsPage, { products: [zuluTruck, alphaTruck] }),
+    );
+  }
+
+  try {
+    await act(async () => { root.render(createElement(PageHarness)); });
+    assert.equal(container.querySelectorAll('main h1').length, 1);
+    assert.equal(container.querySelector('[aria-live="polite"]')?.textContent?.replace(/\s+/g, ' ').trim(), 'Showing 2 vehicles');
+    assert.ok(container.querySelector('a[href="/products/heavy-truck/dump-truck/zulu-truck"]'));
+    assert.ok(container.querySelector('a[href="/products/heavy-truck/dump-truck/alpha-truck"]'));
+
+    const sort = container.querySelector('[aria-label="Sort products"]') as HTMLSelectElement;
+    sort.value = 'name-asc';
+    await act(async () => { sort.dispatchEvent(new dom.document.defaultView!.Event('change', { bubbles: true })); });
+    assert.deepEqual(
+      Array.from(container.querySelectorAll('main article h2')).map((heading) => heading.textContent),
+      ['Alpha Truck', 'Zulu Truck'],
+    );
+
+    await act(async () => { (container.querySelector('aside input[type="checkbox"]') as HTMLInputElement).click(); });
+    assert.equal(container.querySelector('[aria-live="polite"]')?.textContent?.replace(/\s+/g, ' ').trim(), 'Showing 1 vehicles');
+    assert.ok(container.querySelector('a[href="/products/heavy-truck/dump-truck/zulu-truck"]'));
+    assert.equal(container.querySelector('a[href="/products/heavy-truck/dump-truck/alpha-truck"]'), null);
+
+    await act(async () => { (container.querySelector('[aria-label="Add Zulu Truck to shortlist"]') as HTMLButtonElement).click(); });
+    assert.deepEqual(JSON.parse(dom.document.defaultView!.localStorage.getItem(SHORTLIST_KEY) || '[]'), ['zulu-truck']);
+
+    await act(async () => { (container.querySelector('[aria-label="Compare Zulu Truck"]') as HTMLButtonElement).click(); });
+    const openComparison = Array.from(container.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Compare');
+    assert.ok(openComparison);
+    await act(async () => { openComparison.click(); });
+    const dialog = container.querySelector('[role="dialog"]') as HTMLElement;
+    assert.ok(dialog);
+    await act(async () => {
+      dialog.dispatchEvent(new dom.document.defaultView!.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+    });
+    assert.equal(container.querySelector('[role="dialog"]'), null);
   } finally {
     await act(async () => { root.unmount(); });
     dom.restore();
