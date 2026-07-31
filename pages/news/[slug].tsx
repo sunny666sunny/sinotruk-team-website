@@ -5,8 +5,8 @@ import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 import { SiteImage } from '@/components/SiteImage'
 import type { NewsItem } from '@/data/news'
-import { allProducts, type Product } from '@/data/products'
-import { getPublishedNews, getPublishedNewsItem } from '@/lib/content/repository'
+import type { Product } from '@/data/products'
+import { getPublishedNews, getPublishedNewsItem, getPublishedProducts } from '@/lib/content/repository'
 import { getNewsCategory, getNewsSourceLabel } from '@/lib/content/news-presentation'
 import { SeoHead } from '@/components/seo/SeoHead'
 
@@ -62,11 +62,10 @@ export const getStaticPaths: GetStaticPaths = async () => ({ paths: (await getPu
 
 export const getStaticProps: GetStaticProps<NewsDetailProps> = async ({ params }) => {
   const slug = String(params?.slug || '')
-  const [item, items] = await Promise.all([getPublishedNewsItem(slug), getPublishedNews()])
+  const [item, items, products] = await Promise.all([getPublishedNewsItem(slug), getPublishedNews(), getPublishedProducts()])
   if (!item) return { notFound: true }
   const index = items.findIndex((candidate) => candidate.slug === item.slug)
-  const terms = `${item.title} ${item.content}`.toLowerCase()
-  const matchedProducts = allProducts.filter((product) => [product.category, product.subcategory].some((value) => terms.includes(value.replaceAll('-', ' '))))
-  const relatedProducts = (matchedProducts.length ? matchedProducts : allProducts).slice(0, 3).map(({ id, name, category, subcategory, image }) => ({ id, name, category, subcategory, image }))
+  const terms = `${item.title} ${item.excerpt} ${item.content} ${item.category || ''}`.toLowerCase()
+  const relatedProducts = products.filter((product) => [product.name, product.category, product.subcategory].some((value) => terms.includes(value.replaceAll('-', ' ').toLowerCase()))).slice(0, 3).map(({ id, name, category, subcategory, image }) => ({ id, name, category, subcategory, image }))
   return { props: { item, previous: index > 0 ? items[index - 1] : null, next: index < items.length - 1 ? items[index + 1] : null, related: items.filter((candidate) => candidate.slug !== item.slug && getNewsCategory(candidate) === getNewsCategory(item)).slice(0, 3), relatedProducts } }
 }

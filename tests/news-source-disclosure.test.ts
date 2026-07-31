@@ -6,8 +6,9 @@ import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtim
 import type { NextRouter } from 'next/router'
 
 import NewsPage from '../pages/news'
-import NewsDetailPage from '../pages/news/[slug]'
+import NewsDetailPage, { getStaticProps as getNewsDetailStaticProps } from '../pages/news/[slug]'
 import type { NewsItem } from '../data/news'
+import { prisma } from '../lib/db'
 
 const router = {
   basePath: '', pathname: '/news', route: '/news', query: {}, asPath: '/news',
@@ -45,6 +46,13 @@ test('news list uses one lead story and an asymmetric image-led editorial grid',
   assert.match(markup, /Source details are disclosed in the article\./)
 })
 
+test('news list renders a real article link for every item beyond the old page size', () => {
+  const slugs = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve']
+  const markup = render(createElement(NewsPage, { items: slugs.map((slug) => item(slug)) }))
+
+  for (const slug of slugs) assert.match(markup, new RegExp(`href="/news/${slug}"`))
+})
+
 test('article keeps cited-source disclosure and provides related articles and products', () => {
   const current = item('current')
   const markup = render(createElement(NewsDetailPage, { item: current, previous: null, next: null, related: [item('related')], relatedProducts: products }))
@@ -63,4 +71,37 @@ test('article without a source URL is explicitly disclosed as an original procur
 
   assert.match(markup, /Original procurement guide prepared by SINOTRUK TEAM\./)
   assert.doesNotMatch(markup, /Open cited source/)
+})
+
+test('article props expose only honestly matched products returned by the published catalogue', async (t) => {
+  const now = new Date('2026-07-20T00:00:00.000Z')
+  const newsRow = {
+    id: 'news-db-source', slug: 'db-source', title: 'Dump truck buyer guide', date: '2026-07-20', image: '/images/news/HOWO-TX-6x4-tractor5.webp',
+    excerpt: 'How to specify a dump truck.', content: 'Confirm the dump truck body and operating conditions.', category: 'Procurement Guides', tags: '[]',
+    seoTitle: 'Dump truck buyer guide', seoDescription: 'How to specify a dump truck.', keywords: '[]', internalLinks: '[]', externalLinks: '[]', seoScore: null,
+    isPublished: true, sourceUrl: null, sourceTitle: null, sourceDate: null, sourceFingerprint: null, generatedBy: null, createdAt: now, updatedAt: now,
+  }
+  const productRow = {
+    id: 'published-dump', name: 'Published Dump Truck', categoryId: 'heavy-truck', subcategoryId: 'dump-truck', description: 'An active dump truck.',
+    image: '/images/products/HOWO-TX-6X4.jpg', bannerImage: null, specifications: '{}', features: '[]', detailedFeatures: '{}', galleryImages: '[]',
+    normalizedSpecs: '{}', applicationTags: '[]', marketTags: '[]', isActive: true, sortOrder: 1, createdAt: now, updatedAt: now, performanceItems: [],
+  }
+  const newsDelegate = prisma.news as unknown as { findFirst: () => Promise<typeof newsRow | null>; findMany: () => Promise<typeof newsRow[]> }
+  const productDelegate = prisma.product as unknown as { findMany: () => Promise<typeof productRow[]> }
+  const originalFindFirst = newsDelegate.findFirst
+  const originalFindNews = newsDelegate.findMany
+  const originalFindProducts = productDelegate.findMany
+  newsDelegate.findFirst = async () => newsRow
+  newsDelegate.findMany = async () => [newsRow]
+  productDelegate.findMany = async () => [productRow]
+  t.after(() => {
+    newsDelegate.findFirst = originalFindFirst
+    newsDelegate.findMany = originalFindNews
+    productDelegate.findMany = originalFindProducts
+  })
+
+  const result = await getNewsDetailStaticProps({ params: { slug: 'db-source' } } as Parameters<typeof getNewsDetailStaticProps>[0])
+
+  assert.ok('props' in result)
+  assert.deepEqual(result.props.relatedProducts.map((product) => product.id), ['published-dump'])
 })

@@ -10,16 +10,11 @@ import type { NewsItem } from '@/data/news'
 import { getPublishedNews } from '@/lib/content/repository'
 import { getNewsCategory, getNewsSourceLabel, NEWS_CATEGORIES } from '@/lib/content/news-presentation'
 
-const ITEMS_PER_PAGE = 9
 const formatDate = (date: string) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
 export default function NewsPage({ items }: { items: NewsItem[] }) {
   const [activeCategory, setActiveCategory] = useState<'All' | (typeof NEWS_CATEGORIES)[number]>('All')
-  const [currentPage, setCurrentPage] = useState(1)
   const filteredItems = useMemo(() => items.filter((item) => activeCategory === 'All' || getNewsCategory(item) === activeCategory), [activeCategory, items])
-  const totalPages = Math.max(1, Math.ceil(filteredItems.length / ITEMS_PER_PAGE))
-  const paginatedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-  const selectCategory = (category: typeof activeCategory) => { setActiveCategory(category); setCurrentPage(1) }
 
   return <div className="industrial-page">
     <Head><title>Truck News & Procurement Guides | SINOTRUK TEAM</title><meta name="description" content="Manufacturer news, industry insights, and practical commercial-truck procurement guides for international buyers." /></Head>
@@ -33,10 +28,10 @@ export default function NewsPage({ items }: { items: NewsItem[] }) {
 
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 border-b border-[var(--industrial-line)] pb-8 lg:grid-cols-[1fr_auto] lg:items-end"><p className="max-w-3xl leading-7 text-[var(--industrial-muted)]">Use current updates and configuration guides to prepare a clearer truck or parts requirement before requesting a quotation.</p><div className="flex flex-wrap gap-2" aria-label="News category filters">{(['All', ...NEWS_CATEGORIES] as const).map((category) => <button key={category} type="button" onClick={() => selectCategory(category)} className={`min-h-11 border px-4 text-xs font-semibold uppercase tracking-[.08em] ${activeCategory === category ? 'border-[var(--industrial-accent)] bg-[var(--industrial-accent)] text-[#061314]' : 'border-[var(--industrial-line)] text-[var(--industrial-muted)] hover:text-[var(--industrial-text)]'}`}>{category}</button>)}</div></div>
+          <div className="grid gap-6 border-b border-[var(--industrial-line)] pb-8 lg:grid-cols-[1fr_auto] lg:items-end"><p className="max-w-3xl leading-7 text-[var(--industrial-muted)]">Use current updates and configuration guides to prepare a clearer truck or parts requirement before requesting a quotation.</p><div className="flex flex-wrap gap-2" aria-label="News category filters">{(['All', ...NEWS_CATEGORIES] as const).map((category) => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`min-h-11 border px-4 text-xs font-semibold uppercase tracking-[.08em] ${activeCategory === category ? 'border-[var(--industrial-accent)] bg-[var(--industrial-accent)] text-[#061314]' : 'border-[var(--industrial-line)] text-[var(--industrial-muted)] hover:text-[var(--industrial-text)]'}`}>{category}</button>)}</div></div>
 
-          {paginatedItems.length ? <div aria-label="News editorial grid" className="mt-8 grid auto-rows-min gap-4 md:grid-cols-12">
-            {paginatedItems.map((item, index) => {
+          {filteredItems.length ? <div aria-label="News editorial grid" className="mt-8 grid auto-rows-min gap-4 md:grid-cols-12">
+            {filteredItems.map((item, index) => {
               const lead = index === 0
               return <article key={item.slug} className={`group overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-surface)] ${lead ? 'md:col-span-8 md:row-span-2' : 'md:col-span-4'}`}>
                 <Link href={`/news/${item.slug}`} className="block h-full">
@@ -55,7 +50,6 @@ export default function NewsPage({ items }: { items: NewsItem[] }) {
             })}
           </div> : <div className="mt-8 border border-dashed border-[var(--industrial-line)] p-10 text-center text-[var(--industrial-muted)]">No articles are available in this category yet.</div>}
 
-          {totalPages > 1 && <nav className="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="News pages"><button onClick={() => setCurrentPage((page) => Math.max(1, page - 1))} disabled={currentPage === 1} className="min-h-11 border border-[var(--industrial-line)] px-4 text-sm disabled:opacity-40">Previous</button>{Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => <button key={page} onClick={() => setCurrentPage(page)} aria-current={currentPage === page ? 'page' : undefined} className={`min-h-11 min-w-11 px-3 text-sm ${currentPage === page ? 'bg-[var(--industrial-accent)] text-[#061314]' : 'border border-[var(--industrial-line)]'}`}>{page}</button>)}<button onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))} disabled={currentPage === totalPages} className="min-h-11 border border-[var(--industrial-line)] px-4 text-sm disabled:opacity-40">Next</button></nav>}
         </div>
       </section>
       <section className="border-y border-[var(--industrial-line)] bg-[var(--industrial-surface)] py-10"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 md:flex-row md:items-center lg:px-8"><div><h2 className="[font-family:var(--industrial-display)] text-3xl font-semibold uppercase">Prepare the next RFQ</h2><p className="mt-2 text-[var(--industrial-muted)]">Share the operating conditions and available vehicle or parts identifiers.</p></div><Link href="/contact" className="industrial-home-text-link">Request a quote <ArrowRight /></Link></div></section>

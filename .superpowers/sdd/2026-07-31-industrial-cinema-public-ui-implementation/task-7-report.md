@@ -34,3 +34,10 @@ Implemented the Industrial Cinema redesign for About, Service, News, Video, Priv
 
 - One existing article `seoTitle` already ends with `SINOTRUK`, while the shared `SeoHead` also adds the brand, producing a duplicated browser-title suffix. This was left for Task 8 SEO metadata work rather than changing shared SEO behavior here.
 - The current published set has no `Procurement Guides` items, so that filter correctly renders the tested empty state.
+
+## Review follow-up
+
+- Removed client-only news pagination so the initial SSG HTML contains a real link for every published article; category buttons remain a progressive client enhancement.
+- News detail props now obtain products through `getPublishedProducts()` and include only text/category matches. There is no arbitrary fallback, so unmatched or inactive catalogue products do not appear as related.
+- RED was observed for both regressions: the 10th fixture link was absent, and static product IDs leaked despite a published-catalogue fixture.
+- Follow-up verification: focused news tests 5/5, directed ESLint passed, full suite 104/104, production build passed with 204 generated pages, and data/schema diffs remained empty.
