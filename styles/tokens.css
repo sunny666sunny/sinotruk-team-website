@@ -21,6 +21,17 @@
   --transition-slow: 200ms ease-out;
 }
 
+.industrial-site {
+  --color-ink: var(--industrial-text);
+  --color-steel: var(--industrial-muted);
+  --color-canvas: var(--industrial-bg);
+  --color-panel: var(--industrial-surface);
+  --color-line: var(--industrial-line);
+  --color-signal: var(--industrial-accent);
+  --color-signal-dark: var(--industrial-accent);
+  --color-signal-soft: rgb(32 170 164 / 12%);
+}
+
 .ui-button {
   align-items: center;
   border: 1px solid transparent;

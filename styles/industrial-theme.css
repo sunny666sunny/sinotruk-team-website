@@ -1,0 +1,17 @@
+:root {
+  --industrial-bg: #081113;
+  --industrial-surface: #0d1a1d;
+  --industrial-panel: #132327;
+  --industrial-text: #edf3f1;
+  --industrial-muted: #a5b4b2;
+  --industrial-accent: #20aaa4;
+  --industrial-line: rgb(213 231 228 / 0.17);
+  --industrial-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --industrial-body: "Manrope", "Helvetica Neue", sans-serif;
+}
+
+body.industrial-site {
+  background: var(--industrial-bg);
+  color: var(--industrial-text);
+  font-family: var(--industrial-body);
+}
