@@ -60,3 +60,20 @@ Browser control emitted intermittent external Statsig/CDP timeout noise during n
 ## Self-review
 
 No blocking findings. Scope is limited to the four requested pages, three focused tests, and this report. Existing untracked protected files were not touched.
+
+## Review Blocker Remediation
+
+Follow-up review found that `part-detail-copy.test.ts` and `shortlist-resolution.test.ts` relied mainly on source regex checks. Those checks were replaced with JSDOM + React runtime contracts using the repository's existing test dependencies; production code was not changed.
+
+- Mounted the real `PartDetailPage` behind `RouterContext` with a published part and verified visible part number, qualified compatibility language, contain-fit image, catalogue/RFQ links, and the complete `getStaticPaths` result.
+- Mounted the real `ShortlistPage` from localStorage containing one real part and one real product; verified stored order, displayed identifiers, removal, saved localStorage state, and the RFQ link.
+- Mounted the real `ContactPage`, verified normalized shortlist loading, filled every existing field, intercepted `fetch`, parsed the request body, and asserted endpoint `/api/contact`, POST JSON headers, all existing keys, exact procurement values, selections, and consent.
+- Kept a direct resolver test for stale-ID handling; removed changed-page source parsing from both reviewed test files.
+
+Review-fix RED: 3/4 runtime tests passed; contact initially exposed an invalid pre-DOM renderer setup in the test harness, leaving controlled text fields empty.
+
+Review-fix GREEN and final validation:
+
+- Task 6 focused tests: 10/10 passed.
+- Targeted ESLint for both reviewed test files: 0 errors, 0 warnings.
+- Full suite: 94/94 passed.
