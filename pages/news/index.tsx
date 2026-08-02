@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import type { GetStaticProps } from 'next'
 import { ArrowRight } from 'lucide-react'
 import Footer from '@/components/layout/Footer'
@@ -13,8 +13,10 @@ import { SeoHead } from '@/components/seo/SeoHead'
 const formatDate = (date: string) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
 export default function NewsPage({ items }: { items: NewsItem[] }) {
-  const [activeCategory, setActiveCategory] = useState<'All' | (typeof NEWS_CATEGORIES)[number]>('All')
-  const filteredItems = useMemo(() => items.filter((item) => activeCategory === 'All' || getNewsCategory(item) === activeCategory), [activeCategory, items])
+  const router = useRouter()
+  const requestedCategory = typeof router.query.category === 'string' ? router.query.category : ''
+  const activeCategory = NEWS_CATEGORIES.includes(requestedCategory as (typeof NEWS_CATEGORIES)[number]) ? requestedCategory : 'All'
+  const filteredItems = items.filter((item) => activeCategory === 'All' || getNewsCategory(item) === activeCategory)
 
   return <div className="industrial-page">
     <SeoHead input={{ path: '/news', pageType: 'collection', name: 'Truck News & Procurement Guides', description: 'Manufacturer news, industry insights, and practical commercial-truck procurement guides for international buyers.', image: '/images/news/banner-news.webp', items: items.map((item) => ({ name: item.title, url: `/news/${item.slug}` })) }} />
@@ -28,7 +30,7 @@ export default function NewsPage({ items }: { items: NewsItem[] }) {
 
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 border-b border-[var(--industrial-line)] pb-8 lg:grid-cols-[1fr_auto] lg:items-end"><p className="max-w-3xl leading-7 text-[var(--industrial-muted)]">Use current updates and configuration guides to prepare a clearer truck or parts requirement before requesting a quotation.</p><div className="flex flex-wrap gap-2" aria-label="News category filters">{(['All', ...NEWS_CATEGORIES] as const).map((category) => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`min-h-11 border px-4 text-xs font-semibold uppercase tracking-[.08em] ${activeCategory === category ? 'border-[var(--industrial-accent)] bg-[var(--industrial-accent)] text-[#061314]' : 'border-[var(--industrial-line)] text-[var(--industrial-muted)] hover:text-[var(--industrial-text)]'}`}>{category}</button>)}</div></div>
+          <div className="grid gap-6 border-b border-[var(--industrial-line)] pb-8 lg:grid-cols-[1fr_auto] lg:items-end"><p className="max-w-3xl leading-7 text-[var(--industrial-muted)]">Use current updates and configuration guides to prepare a clearer truck or parts requirement before requesting a quotation.</p><nav className="flex flex-wrap gap-2" aria-label="News category filters">{(['All', ...NEWS_CATEGORIES] as const).map((category) => <Link key={category} href={category === 'All' ? '/news' : { pathname: '/news', query: { category } }} aria-current={activeCategory === category ? 'page' : undefined} className={`inline-flex min-h-11 items-center border px-4 text-xs font-semibold uppercase tracking-[.08em] ${activeCategory === category ? 'border-[var(--industrial-accent)] bg-[var(--industrial-accent)] text-[#061314]' : 'border-[var(--industrial-line)] text-[var(--industrial-muted)] hover:text-[var(--industrial-text)]'}`}>{category}</Link>)}</nav></div>
 
           {filteredItems.length ? <div aria-label="News editorial grid" className="mt-8 grid auto-rows-min gap-4 md:grid-cols-12">
             {filteredItems.map((item, index) => {

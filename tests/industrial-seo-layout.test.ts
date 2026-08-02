@@ -13,6 +13,10 @@ import { resolveSeo } from '../lib/seo/resolve'
 import { absoluteUrl } from '../lib/seo/site-url'
 import ProductsPage, { getStaticProps as getProductsStaticProps } from '../pages/products'
 import { getStaticPaths as getProductStaticPaths } from '../pages/products/[category]/[subcategory]/[product]'
+import OurFacilitiesPage from '../pages/about/our-facilities'
+import AfterSalesServicePage from '../pages/service/after-sales-service'
+import VideoPage from '../pages/video'
+import ShortlistPage from '../pages/shortlist'
 
 const router = {
   basePath: '', pathname: '/products', route: '/products', query: {}, asPath: '/products?drive=6x4',
@@ -154,12 +158,40 @@ test('social metadata falls back to a real site image without adding it to JSON-
   assert.equal('image' in seo.jsonLd[0], false)
 })
 
-test('shared public layouts give Next a single resolved title string', () => {
-  const about = AboutPageLayout({ title: 'Our Facilities', description: 'Facilities.', children: null }) as any
-  const service = ServicePageLayout({ title: 'After-sales Service', description: 'Support.', sections: [] }) as any
+test('shared public layouts keep their existing props while accepting explicit canonical paths', () => {
+  const about = AboutPageLayout({ title: 'Our Facilities', description: 'Facilities.', children: null, path: '/about/our-facilities' }) as any
+  const service = ServicePageLayout({ title: 'After-sales Service', description: 'Support.', sections: [], path: '/service/after-sales-service' }) as any
 
-  assert.equal(about.props.children[0].props.children[0].props.children, 'Our Facilities | SINOTRUK TEAM')
-  assert.equal(service.props.children[0].props.children[0].props.children, 'After-sales Service | SINOTRUK TEAM')
+  assert.ok(about)
+  assert.ok(service)
+})
+
+test('actual about, service, video and shortlist heads emit complete unified metadata with one canonical', () => {
+  const cases = [
+    { path: '/about/our-facilities', Page: OurFacilitiesPage, robots: 'index,follow,max-image-preview:large' },
+    { path: '/service/after-sales-service', Page: AfterSalesServicePage, robots: 'index,follow,max-image-preview:large' },
+    { path: '/video', Page: VideoPage, robots: 'index,follow,max-image-preview:large' },
+    { path: '/shortlist', Page: ShortlistPage, robots: 'noindex,follow' },
+  ]
+
+  for (const { path, Page, robots } of cases) {
+    const routeRouter = { ...router, pathname: path, route: path, asPath: path }
+    let head: any[] = []
+    const manager = { mountedInstances: new Set(), updateHead: (next: any[]) => { head = next } }
+    renderToStaticMarkup(createElement(RouterContext.Provider, { value: routeRouter }, createElement(HeadManagerContext.Provider, { value: manager }, createElement(Page))))
+    const get = (type: string, key: string, value: string) => head.find((item) => item.type === type && item.props[key] === value)
+    const canonicals = head.filter((item) => item.type === 'link' && item.props.rel === 'canonical')
+    const schemas = head.filter((item) => item.type === 'script' && item.props.type === 'application/ld+json').map((item) => JSON.parse(item.props.dangerouslySetInnerHTML.__html))
+
+    assert.ok(head.find((item) => item.type === 'title')?.props.children)
+    assert.ok(get('meta', 'name', 'description')?.props.content)
+    assert.equal(canonicals.length, 1)
+    assert.equal(canonicals[0].props.href, absoluteUrl(path))
+    assert.equal(get('meta', 'name', 'robots')?.props.content, robots)
+    for (const property of ['og:title', 'og:description', 'og:type', 'og:url', 'og:image']) assert.ok(get('meta', 'property', property)?.props.content)
+    for (const name of ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) assert.ok(get('meta', 'name', name)?.props.content)
+    assert.ok(schemas.some((schema) => schema['@type'] === 'WebPage'))
+  }
 })
 
 test('public page hero uses a responsive Next image with decorative alternative text', () => {

@@ -12,6 +12,12 @@ export function readRfqSelection(value: string | null) {
   }
 }
 
+export function mergePublishedSelections(storedIds: string[], queryValues: Array<string | string[] | undefined>, publishedIds: string[]) {
+  const requestedIds = queryValues.flatMap((value) => Array.isArray(value) ? value : value ? [value] : []);
+  const published = new Set(publishedIds);
+  return buildSelectionPayload([...storedIds, ...requestedIds]).filter((id) => published.has(id));
+}
+
 type RfqInput = Record<string, unknown>;
 const text = (value: unknown) => typeof value === 'string' ? value.trim() : '';
 

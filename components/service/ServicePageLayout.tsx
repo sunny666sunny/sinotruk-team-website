@@ -1,9 +1,9 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SiteImage } from '@/components/SiteImage'
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 type ServiceSection = {
   title: string
@@ -13,9 +13,10 @@ type ServiceSection = {
   bullets?: string[]
 }
 
-export default function ServicePageLayout({ title, description, sections }: { title: string; description: string; sections: ServiceSection[] }) {
+export default function ServicePageLayout({ title, description, sections, path }: { title: string; description: string; sections: ServiceSection[]; path?: string }) {
+  const canonicalPath = path || `/service/${title.toLowerCase().replaceAll(' ', '-')}`
   return <div className="industrial-page flex min-h-screen flex-col">
-    <Head><title>{`${title} | SINOTRUK TEAM`}</title><meta name="description" content={description} /></Head>
+    <SeoHead input={{ path: canonicalPath, pageType: 'website', name: title, description, image: '/images/reference/banner-ser.webp' }} />
     <Header />
     <main id="main" className="flex-grow pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[380px] overflow-hidden border-b border-[var(--industrial-line)]">

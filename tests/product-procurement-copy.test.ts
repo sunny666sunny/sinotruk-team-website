@@ -99,7 +99,7 @@ test('rendered product detail keeps every unique published image path and wires 
     const compare = Array.from(container.querySelectorAll('a')).find((link) => link.textContent?.trim() === 'Compare');
     const rfq = Array.from(container.querySelectorAll('a')).find((link) => link.textContent?.trim() === 'Prepare RFQ');
     assert.equal(compare?.getAttribute('href'), '/products');
-    assert.equal(rfq?.getAttribute('href'), '/contact');
+    assert.equal(rfq?.getAttribute('href'), '/contact?product=qa-truck');
   } finally {
     await act(async () => { root.unmount(); });
     dom.restore();

@@ -1,23 +1,31 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { AlertCircle, CheckCircle, ClipboardList, Globe, Loader2, Lock, Mail, MessageSquare, Phone, Send, User } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import { readRfqSelection } from '@/lib/procurement/rfq'
+import { mergePublishedSelections, readRfqSelection } from '@/lib/procurement/rfq'
 import { SHORTLIST_KEY } from '@/lib/procurement/shortlist'
 import { SeoHead } from '@/components/seo/SeoHead'
 import PageHero from '@/components/layout/PageHero'
+import { getPublishedParts, getPublishedProducts } from '@/lib/content/repository'
 
 const fieldClassName = 'mt-2 min-h-12 w-full min-w-0 border border-[var(--industrial-line)] bg-[var(--industrial-panel)] px-4 text-[var(--industrial-text)] outline-none transition placeholder:text-[var(--industrial-muted)] focus:border-[var(--industrial-accent)] focus:ring-2 focus:ring-[var(--industrial-accent)]/25'
 const labelClassName = 'min-w-0 text-sm font-semibold text-[var(--industrial-text)]'
 
-export default function ContactPage() {
+export default function ContactPage({ publishedSelectionIds }: { publishedSelectionIds: string[] }) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', country: '', message: '', selections: [] as string[], quantity: '', useCase: '', destinationPort: '', consent: false,
   })
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
-  useEffect(() => setFormData((current) => ({ ...current, selections: readRfqSelection(window.localStorage.getItem(SHORTLIST_KEY)) })), [])
+  useEffect(() => {
+    if (!router.isReady) return
+    const storedIds = readRfqSelection(window.localStorage.getItem(SHORTLIST_KEY))
+    const selections = mergePublishedSelections(storedIds, [router.query.product, router.query.part], publishedSelectionIds)
+    setFormData((current) => ({ ...current, selections }))
+  }, [publishedSelectionIds, router.isReady, router.query.part, router.query.product])
 
   const FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/0a8ca31f-bcd9-4079-8085-514663ae7ddd'
 
@@ -119,4 +127,9 @@ export default function ContactPage() {
     </main>
     <Footer />
   </>
+}
+
+export async function getStaticProps() {
+  const [products, parts] = await Promise.all([getPublishedProducts(), getPublishedParts()])
+  return { props: { publishedSelectionIds: [...products, ...parts].map((item) => item.id) }, revalidate: 300 }
 }

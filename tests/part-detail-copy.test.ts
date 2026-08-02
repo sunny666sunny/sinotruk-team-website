@@ -71,7 +71,7 @@ test('mounted part detail exposes the published part number and qualified compat
 
     const links = Array.from(main.querySelectorAll('a')).map((link) => link.getAttribute('href'));
     assert.ok(links.includes('/parts'));
-    assert.ok(links.includes(`/contact?part=${encodeURIComponent(part.id)}`));
+    assert.equal(links.filter((href) => href === `/contact?part=${encodeURIComponent(part.id)}`).length, 2);
     assert.match(main.querySelector(`img[alt*="${part.partNumber}"]`)?.getAttribute('class') || '', /object-contain/);
   } finally {
     await act(async () => { root.unmount(); });

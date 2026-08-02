@@ -1,20 +1,21 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SiteImage } from '@/components/SiteImage'
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 type ImageItem = { src: string; alt: string; label?: string }
 
 const imageSizes = '(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw'
 
-export default function AboutPageLayout({ title, description, children, gallery = [] }: { title: string; description: string; children: React.ReactNode; gallery?: ImageItem[] }) {
+export default function AboutPageLayout({ title, description, children, gallery = [], path }: { title: string; description: string; children: React.ReactNode; gallery?: ImageItem[]; path?: string }) {
   const isJourney = title === 'Our Journey'
   const isFacilities = title === 'Our Facilities'
+  const canonicalPath = path || `/about/${title.toLowerCase().replaceAll(' ', '-')}`
 
   return <div className="industrial-page flex min-h-screen flex-col">
-    <Head><title>{`${title} | SINOTRUK TEAM`}</title><meta name="description" content={description} /></Head>
+    <SeoHead input={{ path: canonicalPath, pageType: 'website', name: title, description, image: '/images/reference/banner-about-1.webp' }} />
     <Header />
     <main id="main" className="flex-grow pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[360px] overflow-hidden border-b border-[var(--industrial-line)]">

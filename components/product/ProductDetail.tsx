@@ -61,7 +61,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             <KeySpecCluster groups={groups} maxItems={5} />
           </div>
         </div>
-        <StickyRfqActions productId={product.id} contactHref="/contact" />
+        <StickyRfqActions productId={product.id} contactHref={`/contact?product=${encodeURIComponent(product.id)}`} />
       </section>
 
       <section className="border-y border-[var(--industrial-line)] bg-[var(--industrial-surface)] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">

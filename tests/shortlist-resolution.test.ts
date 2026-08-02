@@ -55,8 +55,8 @@ const installDom = (path: string) => {
   };
 };
 
-const routerFor = (pathname: string) => ({
-  basePath: '', pathname, route: pathname, query: {}, asPath: pathname,
+const routerFor = (pathname: string, query: NextRouter['query'] = {}) => ({
+  basePath: '', pathname, route: pathname, query, asPath: pathname,
   push: async () => true, replace: async () => true, reload: () => undefined, back: () => undefined, forward: () => undefined,
   prefetch: async () => undefined, beforePopState: () => undefined,
   events: { on: () => undefined, off: () => undefined, emit: () => undefined },
@@ -101,11 +101,12 @@ test('mounted shortlist resolves stored products and parts, saves removal, and l
   }
 });
 
-test('mounted contact submits the complete existing RFQ payload to the contact API', async () => {
+test('mounted contact merges only published shortlist and query selections into the exact existing RFQ payload', async () => {
   const product = allProducts[0];
   const part = parts[0];
+  const queryPart = parts[1];
   const dom = installDom('/contact');
-  dom.window.localStorage.setItem(SHORTLIST_KEY, JSON.stringify([part.id, product.id, part.id]));
+  dom.window.localStorage.setItem(SHORTLIST_KEY, JSON.stringify([part.id, product.id, part.id, 'injected-shortlist-id']));
   const container = dom.document.querySelector('#root') as HTMLElement;
   const calls: Array<{ input: string | URL | Request; init?: RequestInit }> = [];
   const originalFetch = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
@@ -118,7 +119,8 @@ test('mounted contact submits the complete existing RFQ payload to the contact A
     },
   });
   const { default: ContactPage } = await import('../pages/contact');
-  const root = await renderPage(container, routerFor('/contact'), ContactPage);
+  const router = routerFor('/contact', { product: [product.id, 'injected-product-id'], part: [part.id, queryPart.id, 'injected-part-id'] });
+  const root = await renderPage(container, router, () => createElement(ContactPage, { publishedSelectionIds: [product.id, part.id, queryPart.id] }));
 
   const setValue = async (name: string, value: string) => {
     const field = container.querySelector(`[name="${name}"]`) as HTMLInputElement | HTMLTextAreaElement;
@@ -132,7 +134,7 @@ test('mounted contact submits the complete existing RFQ payload to the contact A
   };
 
   try {
-    assert.match(container.textContent || '', /Shortlist attached:\s*2 selected item\(s\)/);
+    assert.match(container.textContent || '', /Shortlist attached:\s*3 selected item\(s\)/);
     await setValue('name', 'Ada Buyer');
     await setValue('phone', '+254700000000');
     await setValue('email', 'ada@example.com');
@@ -156,7 +158,7 @@ test('mounted contact submits the complete existing RFQ payload to the contact A
       email: 'ada@example.com',
       country: 'Kenya',
       message: 'Confirm truck configuration and part compatibility.',
-      selections: [part.id, product.id],
+      selections: [part.id, product.id, queryPart.id],
       quantity: '3',
       useCase: 'Mining haulage',
       destinationPort: 'Mombasa',

@@ -16,6 +16,7 @@ export interface SeoInput {
   name: string
   description?: string | null
   image?: string | null
+  noIndex?: boolean
   override?: SeoOverride | null
   datePublished?: string | null
   dateModified?: string | null

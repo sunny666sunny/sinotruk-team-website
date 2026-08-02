@@ -86,7 +86,7 @@ export default function PartDetailPage() {
       <section className="border-t border-[var(--industrial-line)] bg-[var(--industrial-bg)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <Link href="/parts" className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]"><ArrowLeft aria-hidden="true" className="h-4 w-4" />Back to parts catalogue</Link>
-          <Link href="/contact" className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">Prepare an RFQ <FileText aria-hidden="true" className="h-4 w-4" /></Link>
+          <Link href={`/contact?part=${encodeURIComponent(partData.id)}`} className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">Prepare an RFQ <FileText aria-hidden="true" className="h-4 w-4" /></Link>
         </div>
       </section>
     </main>

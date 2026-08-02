@@ -26,6 +26,7 @@ export function toCatalogueProduct(product: Product): ProcurementProduct {
 export function IndustrialProductCard({ product, compareSelected = false, onCompareChange }: IndustrialProductCardProps) {
   const [shortlisted, setShortlisted] = useState(false);
   const href = `/products/${product.category}/${product.subcategory}/${product.id}`;
+  const contactHref = `/contact?product=${encodeURIComponent(product.id)}`;
   const specifications = Object.entries(
     Object.keys(product.normalizedSpecs).length ? product.normalizedSpecs : product.specifications,
   ).filter(([, value]) => value).slice(0, 3);
@@ -57,7 +58,7 @@ export function IndustrialProductCard({ product, compareSelected = false, onComp
           </span>
         </div>
         <div className="p-5">
-          <h2 className="text-2xl font-bold uppercase leading-none text-[var(--industrial-text)]">{product.name}</h2>
+          <h3 className="text-2xl font-bold uppercase leading-none text-[var(--industrial-text)]">{product.name}</h3>
           <p className="mt-3 line-clamp-2 text-sm leading-6 text-[var(--industrial-muted)]">{product.description || 'Description unavailable.'}</p>
           {specifications.length ? (
             <dl className="mt-5 grid gap-2 border-t border-[var(--industrial-line)] pt-4">
@@ -101,13 +102,13 @@ export function IndustrialProductCard({ product, compareSelected = false, onComp
             {compareSelected ? 'Selected' : 'Compare'}
           </button>
         ) : (
-          <Link href="/contact" aria-label={`Prepare RFQ for ${product.name}`} className="inline-flex min-h-12 items-center justify-center px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)]">
+          <Link href={contactHref} aria-label={`Prepare RFQ for ${product.name}`} className="inline-flex min-h-12 items-center justify-center px-3 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)]">
             Prepare RFQ
           </Link>
         )}
       </div>
       {onCompareChange && (
-        <Link href="/contact" aria-label={`Prepare RFQ for ${product.name}`} className="flex min-h-11 items-center justify-center border-t border-[var(--industrial-line)] text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">
+        <Link href={contactHref} aria-label={`Prepare RFQ for ${product.name}`} className="flex min-h-11 items-center justify-center border-t border-[var(--industrial-line)] text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">
           Prepare RFQ
         </Link>
       )}

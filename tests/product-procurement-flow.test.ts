@@ -166,7 +166,9 @@ test('rendered catalogue controls preserve product routes and dispatch procureme
 
     await act(async () => { (container.querySelector('[aria-label="Compare Truck 1"]') as HTMLButtonElement).click(); });
     assert.equal(comparedId, 'truck-1');
-    assert.equal(container.querySelector('[aria-label="Prepare RFQ for Truck 1"]')?.getAttribute('href'), '/contact');
+    assert.equal(container.querySelector('[aria-label="Prepare RFQ for Truck 1"]')?.getAttribute('href'), '/contact?product=truck-1');
+    assert.equal(container.querySelector('article h3')?.textContent, 'Truck 1');
+    assert.equal(container.querySelector('article h2'), null);
   } finally {
     await act(async () => { root.unmount(); });
     dom.restore();
@@ -270,7 +272,7 @@ test('real products page integrates catalogue routing and procurement interactio
     sort.value = 'name-asc';
     await act(async () => { sort.dispatchEvent(new dom.document.defaultView!.Event('change', { bubbles: true })); });
     assert.deepEqual(
-      Array.from(container.querySelectorAll('main article h2')).map((heading) => heading.textContent),
+      Array.from(container.querySelectorAll('main article h3')).map((heading) => heading.textContent),
       ['Alpha Truck', 'Zulu Truck'],
     );
 

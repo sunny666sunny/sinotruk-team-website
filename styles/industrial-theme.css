@@ -10,7 +10,8 @@
   --industrial-body: "Manrope", "Helvetica Neue", sans-serif;
 }
 
-body.industrial-site {
+.industrial-site {
+  min-height: 100vh;
   background: var(--industrial-bg);
   color: var(--industrial-text);
   font-family: var(--industrial-body);
@@ -27,7 +28,7 @@ body.industrial-site {
   font-family: var(--industrial-display);
 }
 
-body.industrial-site :where(a, button, input, select, textarea, summary):focus-visible {
+.industrial-site :where(a, button, input, select, textarea, summary):focus-visible {
   outline: 3px solid var(--industrial-accent);
   outline-offset: 4px;
 }
@@ -1091,9 +1092,9 @@ body.industrial-site :where(a, button, input, select, textarea, summary):focus-v
     animation: none;
   }
 
-  body.industrial-site *,
-  body.industrial-site *::before,
-  body.industrial-site *::after {
+  .industrial-site *,
+  .industrial-site *::before,
+  .industrial-site *::after {
     scroll-behavior: auto !important;
     transition-duration: .01ms !important;
     animation-duration: .01ms !important;

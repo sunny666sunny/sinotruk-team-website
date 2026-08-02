@@ -1,9 +1,9 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SiteImage } from '@/components/SiteImage'
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
+import { SeoHead } from '@/components/seo/SeoHead'
 
 const mediaTopics = [
   { title: 'HOWO TX Tipper', image: '/images/products/Howo-TX-8x4-Tipper-Truck-1.webp', href: '/products/heavy-truck', note: 'Heavy-truck catalogue' },
@@ -16,7 +16,7 @@ const mediaTopics = [
 
 export default function VideoPage() {
   return <div className="industrial-page flex min-h-screen flex-col">
-    <Head><title>Video and Product Media | SINOTRUK TEAM</title><meta name="description" content="Explore commercial truck product imagery and request available media for a vehicle range." /></Head>
+    <SeoHead input={{ path: '/video', pageType: 'website', name: 'Video and Product Media', description: 'Explore commercial truck product imagery and request available media for a vehicle range.', image: '/images/reference/banner-ser.webp' }} />
     <Header />
     <main id="main" className="flex-grow pt-16 lg:pt-[72px]">
       <section className="relative isolate min-h-[350px] overflow-hidden border-b border-[var(--industrial-line)]">

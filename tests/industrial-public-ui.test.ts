@@ -1,8 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
 import { existsSync, readFileSync } from 'node:fs'
 import { createElement } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
+import type { NextRouter } from 'next/router'
 import { CatalogueMatrix } from '@/components/industrial/home/CatalogueMatrix'
 import { productCategories } from '@/data/siteConfig'
 
@@ -20,6 +23,38 @@ test('industrial public theme is loaded without changing catalogue records', () 
   assert.match(theme, /--industrial-accent:\s*#20aaa4/i)
   assert.match(integrityTests, /compareCatalogSnapshots/)
   assert.match(integrityTests, /createCatalogSnapshot/)
+})
+
+test('public app SSR emits the industrial theme root while admin SSR does not need a hydration effect', async () => {
+  const require = createRequire(import.meta.url)
+  const extensions = (require as any).extensions
+  const previousCssLoader = extensions['.css']
+  extensions['.css'] = () => undefined
+  let appModule: any
+  try {
+    appModule = await import('../pages/_app')
+  } finally {
+    if (previousCssLoader) extensions['.css'] = previousCssLoader
+    else delete extensions['.css']
+  }
+  const App = (appModule.default as any).default || appModule.default
+  const Page = () => createElement('main', null, 'Rendered page')
+  const routerFor = (pathname: string) => ({
+    basePath: '', pathname, route: pathname, query: {}, asPath: pathname,
+    push: async () => true, replace: async () => true, reload: () => undefined, back: () => undefined, forward: () => undefined,
+    prefetch: async () => undefined, beforePopState: () => undefined,
+    events: { on: () => undefined, off: () => undefined, emit: () => undefined },
+    isFallback: false, isLocaleDomain: false, isReady: true, isPreview: false,
+  }) as NextRouter
+  const renderApp = (router: NextRouter) => renderToString(createElement(
+    RouterContext.Provider,
+    { value: router },
+    createElement(App, { Component: Page, pageProps: {}, router } as any),
+  ))
+
+  assert.match(renderApp(routerFor('/products')), /class="industrial-site"/)
+  assert.doesNotMatch(renderApp(routerFor('/admin/products')), /industrial-site/)
+  assert.doesNotMatch(readFileSync('pages/_app.tsx', 'utf8'), /useEffect/)
 })
 
 test('catalogue matrix renders all six category links in a five-column desktop grid', () => {

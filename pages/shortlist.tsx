@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { ArrowRight, FileText, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import { allProducts } from '@/data/products';
 import { parts } from '@/data/parts';
 import { readShortlist, removeFromShortlist, saveShortlist } from '@/lib/procurement/shortlist';
 import { resolveShortlist } from '@/lib/procurement/resolve-shortlist';
+import { SeoHead } from '@/components/seo/SeoHead';
 
 export default function ShortlistPage() {
   const [ids, setIds] = useState<string[]>([]);
@@ -17,7 +17,7 @@ export default function ShortlistPage() {
   const remove = (id: string) => { const next = removeFromShortlist(ids, id); saveShortlist(next); setIds(next); };
 
   return <div className="flex min-h-screen flex-col">
-    <Head><title>Shortlist | SINOTRUK TEAM</title><meta name="description" content="Review selected commercial trucks and parts before submitting an RFQ." /></Head>
+    <SeoHead input={{ path: '/shortlist', pageType: 'website', name: 'Procurement Shortlist', description: 'Review selected commercial trucks and parts before submitting an RFQ.', image: '/images/products/Heavy-Truck.webp', noIndex: true }} />
     <Header />
     <main id="main" className="industrial-page flex-grow pt-16 lg:pt-[72px]">
       <PageHero eyebrow="Procurement shortlist" title="Review selected vehicles and parts." description="Check the catalogue records you saved, then add configuration, compatibility and shipping details to your RFQ." image="/images/products/Heavy-Truck.webp" />

@@ -95,7 +95,7 @@ export function resolveSeo(input: SeoInput, siteUrl = process.env.SITE_URL): Res
     description,
     ...(nonBlank(input.override?.keywords) ? { keywords: nonBlank(input.override?.keywords) } : {}),
     canonical,
-    robots: 'index,follow,max-image-preview:large',
+    robots: input.noIndex ? 'noindex,follow' : 'index,follow,max-image-preview:large',
     openGraph: {
       title: ogTitle,
       description: ogDescription,
