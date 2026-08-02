@@ -26,3 +26,11 @@
 ```
 
 两者未暂存、未删除。提交为 `docs: finalize industrial public UI delivery`。
+
+## Important 文档真实性修复
+
+- 根据 `pages/sitemap.xml.ts` 的实际条目修正上线文档：当前 sitemap 只覆盖首页、产品/配件/新闻总览、关于、服务、联系、产品详情、配件详情和已发布新闻。
+- 明确产品分类与子分类页尚未纳入 sitemap，目前依靠站内链接与可抓取 HTML 被发现；将纳入 sitemap 仅列为上线后的可选增强。
+- README 未声称 sitemap 覆盖分类，无需修改。未改 sitemap 代码、数据、测试或其它生产文件。
+- 文档聚焦检查：PASS；覆盖清单与源码一致，旧错误表述及 README 同类错误均不存在。
+- `git diff --check`：PASS。

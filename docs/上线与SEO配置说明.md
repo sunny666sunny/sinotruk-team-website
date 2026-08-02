@@ -30,7 +30,8 @@ PC 端六分类矩阵必须一次完整呈现：
 - 首页 schema 为 `Organization`、`WebSite`、`WebPage`；分类与目录为 `CollectionPage` 和真实记录组成的 `ItemList`；产品与配件为 `Product`；新闻为 `Article`；有面包屑的页面增加 `BreadcrumbList`。
 - JSON-LD 只使用现有数据库和页面真实字段。产品 schema 不填写未提供的价格、库存、评分或评价；新闻保留真实发布日期和已有来源说明。
 - 页面保持单一 H1、层级正确的 H2/H3、面包屑，以及指向真实分类、产品、配件、新闻、联系和询价页面的内部链接。
-- `/sitemap.xml` 覆盖公开静态页、分类、产品、配件和已发布新闻；`/robots.txt` 指向同一最终域名下的 sitemap，并排除后台与 API 路由。
+- `/sitemap.xml` 当前覆盖首页、产品总览、配件总览、新闻总览、关于、服务、联系，以及产品详情、配件详情和已发布新闻；`/robots.txt` 指向同一最终域名下的 sitemap，并排除后台与 API 路由。
+- 产品分类页和子分类页目前依靠公开导航、目录页站内链接及可抓取 HTML 被发现，尚未纳入 sitemap。上线后如需强化分类层级发现，可将其作为可选增强，不能视为当前已完成能力。
 
 ## Google、Bing 与 IndexNow
 
