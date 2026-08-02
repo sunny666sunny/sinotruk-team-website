@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaLibSql } from '@prisma/adapter-libsql'
 import { createIfMissing, runSeedCli } from '../scripts/seed-preservation.mjs'
+import { generateProductDetailContent } from '../lib/product-detail/generate'
+import { buildReviewedProductDatabaseUpdate } from '../lib/product-data/reviewed-catalog-sync'
 
 const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL || 'file:admin.db' })
 const prisma = new PrismaClient({ adapter })
@@ -51,13 +53,34 @@ async function importProducts() {
     const subMapKey = p.category + ':' + p.subcategory
     const mappedSubcategory = subcategoryMap[subMapKey] || p.subcategory
     const scopedSubcategory = `${mappedCategory}:${mappedSubcategory}`
-    await createIfMissing(prisma.product, { id: p.id }, {
-      id: p.id, name: p.name, categoryId: mappedCategory, subcategoryId: scopedSubcategory,
-      description: p.description, image: p.image, bannerImage: p.bannerImage || '',
+    const reviewed = buildReviewedProductDatabaseUpdate({
+      id: p.id,
+      name: p.name,
+      categoryId: mappedCategory,
+      subcategoryId: scopedSubcategory,
+      description: p.description,
+      image: p.image,
+      bannerImage: p.bannerImage || null,
       specifications: JSON.stringify(p.specifications || {}),
       features: JSON.stringify(p.features || []),
       detailedFeatures: JSON.stringify(p.detailedFeatures || {}),
       galleryImages: JSON.stringify(p.galleryImages || []),
+      detailContent: JSON.stringify(generateProductDetailContent(p)),
+      normalizedSpecs: '{}',
+      applicationTags: '[]',
+      marketTags: '[]',
+      performanceItems: p.performanceItems || [],
+    })
+    await createIfMissing(prisma.product, { id: p.id }, {
+      id: p.id, name: p.name, categoryId: mappedCategory, subcategoryId: scopedSubcategory,
+      description: reviewed.data.description, image: reviewed.data.image, bannerImage: reviewed.data.bannerImage || '',
+      specifications: reviewed.data.specifications,
+      features: JSON.stringify(p.features || []),
+      detailedFeatures: reviewed.data.detailedFeatures,
+      galleryImages: reviewed.data.galleryImages,
+      detailContent: reviewed.data.detailContent,
+      normalizedSpecs: reviewed.data.normalizedSpecs,
+      performanceItems: { create: reviewed.performanceItems.map((item, sortOrder) => ({ ...item, sortOrder })) },
       isActive: true, sortOrder: 0,
     })
   }
@@ -66,17 +89,21 @@ async function importProducts() {
 
 async function importNews() {
   process.stdout.write('Importing news...\n')
-  const { newsItems } = require('../data/news')
+  const { newsItems, newsRedirects } = require('../data/news')
   for (const n of newsItems) {
-    await createIfMissing(prisma.news, { slug: n.slug }, {
+    const data = {
       slug: n.slug, title: n.title, excerpt: n.excerpt || '', content: n.content || '',
       image: n.image || '', category: n.category || 'news',
-      tags: JSON.stringify(n.tags || []),
-      keywords: '[]', internalLinks: '[]', externalLinks: '[]',
+      tags: JSON.stringify((n.keywords || []).slice(1)),
+      keywords: JSON.stringify(n.keywords || []), internalLinks: JSON.stringify(n.internalLinks || []), externalLinks: JSON.stringify(n.sourceUrl ? [n.sourceUrl] : []),
       seoTitle: n.seoTitle || n.title, seoDescription: n.seoDescription || n.excerpt || '',
+      sourceUrl: n.sourceUrl || null, sourceTitle: n.sourceTitle || null, sourceDate: n.sourceDate || null,
+      generatedBy: 'reviewed-editorial', updatedAt: new Date(`${n.updatedAt || n.date}T00:00:00.000Z`),
       isPublished: true, date: n.date || '2025-01-01',
-    })
+    }
+    await prisma.news.upsert({ where: { slug: n.slug }, create: data, update: data })
   }
+  await prisma.news.deleteMany({ where: { slug: { in: Object.keys(newsRedirects) } } })
   process.stdout.write('  ' + newsItems.length + ' news articles checked\n')
 }
 

@@ -217,6 +217,8 @@ test('duplicate product records receive unique honest metadata', async () => {
   assert.notEqual(first.props.seoDescription, second.props.seoDescription)
   assert.match(first.props.seoTitle, /catalogue record 1 of 2/i)
   assert.match(second.props.seoTitle, /catalogue record 2 of 2/i)
+  assert.equal(first.props.canonicalPath, second.props.canonicalPath)
+  assert.equal(first.props.canonicalPath, '/products/special-vehicle/other-truck/sinotruck-howo-garbage-truck')
 })
 
 test('products sharing source copy receive distinct readable descriptions', async () => {

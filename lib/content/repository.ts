@@ -3,6 +3,15 @@ import { toPartDto, toProductDto } from './serializers'
 import type { ProcurementPart, ProcurementProduct } from './serializers'
 import type { NewsItem } from '@/data/news'
 
+function parseStringArray(value: string): string[] {
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : []
+  } catch {
+    return []
+  }
+}
+
 const productInclude = {
   performanceItems: { orderBy: { sortOrder: 'asc' as const } },
 }
@@ -13,12 +22,12 @@ export async function getPublishedProducts(): Promise<ProcurementProduct[]> {
     include: productInclude,
     orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
   })
-  return rows.map(toProductDto)
+  return rows.map((row) => toProductDto(row))
 }
 
 export async function getPublishedProduct(id: string): Promise<ProcurementProduct | null> {
   const row = await prisma.product.findFirst({ where: { id, isActive: true }, include: productInclude })
-  return row ? toProductDto(row) : null
+  return row ? toProductDto(row, { includeDetailContent: true }) : null
 }
 
 export async function getPublishedProductsByCategory(category: string): Promise<ProcurementProduct[]> {
@@ -50,6 +59,9 @@ export async function getPublishedNews(): Promise<NewsItem[]> {
     content: row.content,
     seoTitle: row.seoTitle || row.title,
     seoDescription: row.seoDescription || row.excerpt,
+    keywords: parseStringArray(row.keywords),
+    internalLinks: parseStringArray(row.internalLinks),
+    updatedAt: row.updatedAt.toISOString().slice(0, 10),
     category: row.category,
     sourceUrl: row.sourceUrl,
     sourceTitle: row.sourceTitle,
@@ -64,6 +76,9 @@ export async function getPublishedNewsItem(slug: string): Promise<NewsItem | nul
     excerpt: row.excerpt, content: row.content,
     seoTitle: row.seoTitle || row.title,
     seoDescription: row.seoDescription || row.excerpt,
+    keywords: parseStringArray(row.keywords),
+    internalLinks: parseStringArray(row.internalLinks),
+    updatedAt: row.updatedAt.toISOString().slice(0, 10),
     category: row.category,
     sourceUrl: row.sourceUrl,
     sourceTitle: row.sourceTitle,

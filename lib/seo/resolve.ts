@@ -1,5 +1,5 @@
 import { absoluteUrl, normalizeSiteUrl } from './site-url'
-import { buildArticleSchema, buildCollectionSchema, buildOrganizationSchema, buildPageSchema, buildProductSchema, buildWebSiteSchema } from './schema'
+import { buildArticleSchema, buildCollectionSchema, buildFaqSchema, buildOrganizationSchema, buildPageSchema, buildProductSchema, buildWebSiteSchema } from './schema'
 import type { ResolvedSeo, SeoInput } from './types'
 
 const SITE_NAME = 'SINOTRUK TEAM'
@@ -40,7 +40,7 @@ function generatedDescription(input: SeoInput): string {
 
 function buildPrimaryJsonLd(input: SeoInput, canonical: string, description: string, image?: string): Record<string, unknown> {
   if (input.pageType === 'product' || input.pageType === 'part') {
-    return buildProductSchema(input, canonical, description, image)
+    return buildProductSchema(input, canonical, description, image, canonical)
   }
 
   if (input.pageType === 'article') {
@@ -88,6 +88,10 @@ export function resolveSeo(input: SeoInput, siteUrl = process.env.SITE_URL): Res
 
   if (input.breadcrumbs?.length) {
     jsonLd.push(buildBreadcrumbJsonLd(input.breadcrumbs, baseUrl))
+  }
+
+  if (input.faqs?.length) {
+    jsonLd.push(buildFaqSchema(input.faqs))
   }
 
   return {

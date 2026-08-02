@@ -5,7 +5,7 @@ import { ArrowRight, Search } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHero from '@/components/layout/PageHero';
-import { SiteImage } from '@/components/SiteImage';
+import { PartImageStage } from '@/components/parts/PartImageStage';
 import { SeoHead } from '@/components/seo/SeoHead';
 import { parts, partCategories } from '@/data/parts';
 import { filterParts } from '@/lib/procurement/filter-parts';
@@ -86,9 +86,7 @@ export default function PartsPage() {
           <div className="mt-7 grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {visible.map((part) => (
               <Link key={part.id} href={`/parts/${part.id}`} className="group flex min-h-[21rem] min-w-0 flex-col bg-[var(--industrial-panel)] p-4 transition hover:bg-[#17292d] focus-visible:z-10">
-                <span className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-[#0b1517] p-5">
-                  <SiteImage src={part.image} alt={`${part.name}, part number ${part.partNumber}`} fill sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw" className="object-contain p-5 transition duration-300 group-hover:scale-[1.03]" />
-                </span>
+                <PartImageStage src={part.image} alt={`${part.name}, part number ${part.partNumber}`} className="aspect-[4/3]" imageClassName="object-contain" />
                 <span className="mt-5 font-mono text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-accent)]">Part no. {part.partNumber}</span>
                 <h3 className="mt-3 text-2xl font-bold uppercase leading-none text-[var(--industrial-text)]">{part.name}</h3>
                 <span className="mt-auto inline-flex min-h-11 items-end gap-2 pt-5 text-xs font-bold uppercase tracking-[0.08em] text-[var(--industrial-muted)]">

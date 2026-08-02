@@ -53,6 +53,7 @@ model Product {
   features         String            @default("[]")
   detailedFeatures String            @default("{}")
   galleryImages    String            @default("[]")
+  detailContent    String            @default("{}")
   normalizedSpecs  String            @default("{}")
   applicationTags  String            @default("[]")
   marketTags       String            @default("[]")

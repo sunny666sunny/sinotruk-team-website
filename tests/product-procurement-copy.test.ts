@@ -69,7 +69,7 @@ const publishedPath = (image: HTMLImageElement) => {
   return src.searchParams.get('url') || src.pathname;
 };
 
-test('rendered product detail keeps every unique published image path and wires procurement actions', async () => {
+test('rendered product detail keeps unique gallery images, excludes the Banner, and wires procurement actions', async () => {
   const dom = installDom();
   const container = dom.document.querySelector('#root') as HTMLElement;
   const root = createRoot(container);
@@ -83,7 +83,6 @@ test('rendered product detail keeps every unique published image path and wires 
       Array.from(gallery.querySelectorAll('img')).map(publishedPath),
       [
         '/images/products/qa-main.jpg',
-        '/images/products/qa-banner.jpg',
         '/images/products/qa-gallery-a.jpg',
         '/images/products/qa-gallery-b.jpg',
       ],

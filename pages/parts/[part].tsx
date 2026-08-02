@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, ChevronRight, FileText, PackageCheck, Wrench } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { SiteImage } from '@/components/SiteImage';
+import { PartImageStage } from '@/components/parts/PartImageStage';
 import { getPartById, parts } from '@/data/parts';
 import { SeoHead } from '@/components/seo/SeoHead';
 
@@ -33,9 +33,7 @@ export default function PartDetailPage() {
 
       <section className="border-b border-[var(--industrial-line)] bg-[var(--industrial-bg)]">
         <div className="mx-auto grid max-w-7xl lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,.85fr)]">
-          <div className="relative flex min-h-[24rem] items-center justify-center bg-[var(--industrial-panel)] p-6 sm:min-h-[32rem] sm:p-10 lg:min-h-[38rem]">
-            <SiteImage src={partData.image} alt={`${partData.name}, part number ${partData.partNumber}`} fill priority sizes="(min-width: 1024px) 58vw, 100vw" className="object-contain p-6 sm:p-10" />
-          </div>
+          <PartImageStage src={partData.image} alt={`${partData.name}, part number ${partData.partNumber}`} priority sizes="(min-width: 1024px) 58vw, 100vw" className="min-h-[24rem] sm:min-h-[32rem] lg:min-h-[38rem]" />
           <div className="flex min-w-0 flex-col justify-center border-t border-[var(--industrial-line)] px-4 py-10 sm:px-8 lg:border-l lg:border-t-0 lg:px-12">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">{categoryNames[partData.category] || partData.category} part</p>
             <h1 className="mt-4 break-words text-5xl font-bold uppercase leading-[0.9] text-[var(--industrial-text)] sm:text-6xl">{partData.name}</h1>

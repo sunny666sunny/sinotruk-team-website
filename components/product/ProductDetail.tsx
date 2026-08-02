@@ -10,12 +10,16 @@ import { ProductMediaPanel } from '@/components/industrial/catalogue/ProductMedi
 import { RelatedContent } from '@/components/industrial/catalogue/RelatedContent';
 import { StickyRfqActions } from '@/components/industrial/catalogue/StickyRfqActions';
 import { groupSpecifications } from '@/lib/procurement/group-specifications';
+import { generateProductDetailContent } from '@/lib/product-detail/generate';
+import { PerformanceSection } from './PerformanceSection';
+import { ApplicationAreasSection } from './ApplicationAreasSection';
+import { SolutionsSection } from './SolutionsSection';
+import { CustomerServiceSection } from './CustomerServiceSection';
+import { ProductFaqSection } from './ProductFaqSection';
 
 export default function ProductDetail({ product }: { product: Product }) {
   const groups = groupSpecifications(product.specifications);
-  const galleryImages = [...new Set(
-    [product.image, product.bannerImage, ...(product.galleryImages ?? [])].filter((image): image is string => Boolean(image)),
-  )];
+  const detailContent = product.detailContent ?? generateProductDetailContent(product);
   const hasUnreviewedDetails = Boolean(product.detailedFeatures && Object.keys(product.detailedFeatures).length);
 
   return (
@@ -80,17 +84,23 @@ export default function ProductDetail({ product }: { product: Product }) {
         </div>
       </section>
 
+      <PerformanceSection content={detailContent} />
+
       <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Product gallery</p>
           <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)] sm:text-5xl">Vehicle views</h2>
           <div className="mt-8">
-            <ProductMediaPanel images={galleryImages} name={product.name} />
+            <ProductMediaPanel images={detailContent.gallery} name={product.name} />
           </div>
         </div>
       </section>
 
-      <RelatedContent currentPath={`/products/${product.category}/${product.subcategory}/${product.id}`} category={product.category} performanceItems={product.performanceItems} />
+      <ApplicationAreasSection areas={detailContent.applicationAreas} />
+      <SolutionsSection solutions={detailContent.solutions} />
+      <CustomerServiceSection productName={product.name} />
+      <ProductFaqSection faqs={detailContent.faqs} />
+      <RelatedContent currentPath={`/products/${product.category}/${product.subcategory}/${product.id}`} category={product.category} />
     </div>
   );
 }

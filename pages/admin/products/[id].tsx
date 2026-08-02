@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { Save, ArrowLeft, Plus, Trash2, Upload, Sparkles, Loader2, Link, Search } from 'lucide-react'
+import { ProductDetailContentEditor } from '@/components/admin/ProductDetailContentEditor'
+import { generateProductDetailContent } from '@/lib/product-detail/generate'
+import type { ProductDetailContent } from '@/lib/product-detail/types'
 
 interface Category { id: string; name: string; subcategories: { id: string; name: string }[] }
 interface PerformanceItem { id?: string; title: string; description: string; image: string }
@@ -13,6 +16,7 @@ interface ProductForm {
   detailedFeatures: { key: string; value: string }[]
   galleryImages: string[]
   performanceItems: PerformanceItem[]
+  detailContent?: ProductDetailContent
 }
 
 interface AIProduct {
@@ -65,6 +69,7 @@ export default function ProductEdit() {
             detailedFeatures: Object.entries(p.detailedFeatures || {}).map(([k, v]) => ({ key: k, value: v as string })),
             galleryImages: p.galleryImages || [],
             performanceItems: p.performanceItems || [],
+            detailContent: p.detailContent,
           })
         }).catch(() => {})
         .finally(() => setLoading(false))
@@ -142,6 +147,31 @@ export default function ProductEdit() {
     setSaving(false)
     if (data.product) router.push('/admin/products')
     else setError(data.error || '保存失败')
+  }
+
+  const handleGenerateDetailContent = () => {
+    if (!form.name.trim() || !form.image || !form.categoryId || !form.subcategoryId) {
+      setError('请先填写产品名称、主图、分类和子分类，再自动补全详情 SEO 内容')
+      return
+    }
+    const subcategory = form.subcategoryId.includes(':') ? form.subcategoryId.split(':').slice(1).join(':') : form.subcategoryId
+    const productId = typeof id === 'string' && id !== 'new' ? id : form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    const detailContent = generateProductDetailContent({
+      id: productId,
+      name: form.name,
+      category: form.categoryId,
+      subcategory,
+      description: form.description,
+      image: form.image,
+      bannerImage: form.bannerImage || undefined,
+      specifications: Object.fromEntries(form.specifications.filter((item) => item.key).map((item) => [item.key, item.value])),
+      features: form.features,
+      detailedFeatures: Object.fromEntries(form.detailedFeatures.filter((item) => item.key).map((item) => [item.key, item.value])),
+      galleryImages: form.galleryImages,
+      performanceItems: form.performanceItems,
+    })
+    setForm((previous) => ({ ...previous, detailContent }))
+    setError('')
   }
 
   if (loading) {
@@ -394,6 +424,8 @@ export default function ProductEdit() {
               ))}
             </div>
           </div>
+
+          <ProductDetailContentEditor value={form.detailContent} onChange={(detailContent) => setForm((previous) => ({ ...previous, detailContent }))} onGenerate={handleGenerateDetailContent} />
 
           {/* Settings */}
           <div className="bg-white rounded-xl p-6 shadow-sm">

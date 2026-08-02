@@ -17,6 +17,7 @@ export interface Product {
   detailedFeatures?: Record<string, string>
   performanceItems?: PerformanceItem[]
   galleryImages?: string[]
+  detailContent?: import('@/lib/product-detail/types').ProductDetailContent
 }
 
 // ============ Heavy Truck - Dump Truck ============

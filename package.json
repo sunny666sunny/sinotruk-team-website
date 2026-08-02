@@ -12,6 +12,8 @@
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
     "db:backup": "node scripts/backup-database.mjs",
+    "db:sync-reviewed-products": "tsx scripts/sync-reviewed-product-catalog.ts",
+    "db:sync-reviewed-news": "tsx scripts/sync-reviewed-news.ts",
     "db:verify-catalog": "node scripts/verify-catalog-integrity.mjs",
     "content:worker:once": "tsx scripts/content-worker.ts"
   },

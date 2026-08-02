@@ -55,15 +55,33 @@ export function buildPageSchema(input: SeoInput, url: string, description: strin
   }
 }
 
-export function buildProductSchema(input: SeoInput, url: string, description: string, image?: string): Record<string, unknown> {
+export function buildProductSchema(input: SeoInput, url: string, description: string, image?: string, siteUrl = url): Record<string, unknown> {
+  const productImages = input.productImages?.length
+    ? input.productImages.map((item) => ({ '@type': 'ImageObject', contentUrl: new URL(item.url, siteUrl).toString(), caption: item.caption }))
+    : image ? [image] : undefined
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: input.name,
     description,
     url,
-    ...(image ? { image } : {}),
+    ...(productImages ? { image: productImages } : {}),
+    ...(input.productId ? { sku: input.productId } : {}),
+    ...(input.category ? { category: input.category } : {}),
+    ...(input.additionalProperties?.length ? { additionalProperty: input.additionalProperties.map((item) => ({ '@type': 'PropertyValue', name: item.name, value: item.value })) } : {}),
     brand: { '@type': 'Brand', name: 'SINOTRUK' },
+  }
+}
+
+export function buildFaqSchema(faqs: NonNullable<SeoInput['faqs']>): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
   }
 }
 
@@ -86,6 +104,7 @@ export function buildArticleSchema(input: SeoInput, url: string, description: st
     ...(input.datePublished ? { datePublished: input.datePublished } : {}),
     ...(input.dateModified ? { dateModified: input.dateModified } : {}),
     ...(citation ? { citation } : {}),
+    author: { '@type': 'Organization', name: 'SINOTRUK TEAM Editorial' },
     publisher: { '@type': 'Organization', name: SITE_NAME },
   }
 }

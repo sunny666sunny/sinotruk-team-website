@@ -18,3 +18,22 @@ test('quality gate accepts fact-bound original content with complete SEO and int
   const result = checkGeneratedArticle({ title: 'Planning an export truck request', slug: 'planning-export-truck-request', excerpt: 'A practical checklist for buyers preparing an export truck request.', body: passage, seoTitle: 'Planning an export truck request for commercial vehicle buyers', seoDescription: 'Use this practical checklist to prepare a commercial truck request, review destination requirements, and ask for the right configuration.', keywords: ['truck export', 'RFQ checklist'], relatedProductIds: ['/products'], sourceUrl: facts.sourceUrl, sourceTitle: facts.sourceTitle, sourceDate: facts.sourceDate }, facts)
   assert.deepEqual(result, { publishable: true, issues: [] })
 })
+
+test('quality gate rejects unsupported commercial claims and dated template titles', () => {
+  const result = checkGeneratedArticle({
+    title: 'Complete Guide 2025: truck sourcing',
+    slug: 'complete-guide-truck-sourcing',
+    excerpt: 'Buy at the best price with immediate delivery from an authorized dealer.',
+    body: passage,
+    seoTitle: 'Complete Guide 2025 for commercial truck sourcing',
+    seoDescription: 'Use this practical checklist to prepare a commercial truck request, review destination requirements, and ask for the right configuration.',
+    keywords: ['truck export', 'RFQ checklist'],
+    relatedProductIds: ['/products'],
+    sourceUrl: facts.sourceUrl,
+    sourceTitle: facts.sourceTitle,
+    sourceDate: facts.sourceDate,
+  }, facts)
+  assert.equal(result.publishable, false)
+  assert.ok(result.issues.includes('unsupported_commercial_claim'))
+  assert.ok(result.issues.includes('dated_or_template_title'))
+})

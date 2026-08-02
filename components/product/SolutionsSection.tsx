@@ -1,0 +1,8 @@
+import { SiteImage } from '@/components/SiteImage'
+import type { ProductSolution } from '@/lib/product-detail/types'
+
+export function SolutionsSection({ solutions }: { solutions: ProductSolution[] }) {
+  return <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20"><div className="mx-auto max-w-7xl"><div className="max-w-3xl"><p className="text-xs font-bold uppercase tracking-[.14em] text-[var(--industrial-accent)]">Procurement planning</p><h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)] sm:text-5xl">SINOTRUK Solutions</h2><p className="mt-5 leading-7 text-[var(--industrial-muted)]">Connect the published vehicle record to the configuration, documentation and support inputs needed for an export enquiry.</p></div>
+    <div className="mt-8 grid gap-px bg-[var(--industrial-line)] lg:grid-cols-3">{solutions.map((solution) => <article key={solution.title} className="bg-[var(--industrial-panel)]"><div className="relative aspect-[16/9] overflow-hidden bg-[#081113]"><SiteImage src={solution.image} alt={`${solution.title} visual reference`} fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" /></div><div className="p-6"><h3 className="text-2xl font-bold uppercase text-[var(--industrial-text)]">{solution.title}</h3><p className="mt-3 text-sm leading-6 text-[var(--industrial-muted)]">{solution.description}</p><ul className="mt-5 border-t border-[var(--industrial-line)] pt-4 text-sm text-[var(--industrial-muted)]">{solution.bullets.map((bullet) => <li key={bullet} className="py-1.5">{bullet}</li>)}</ul></div></article>)}</div>
+  </div></section>
+}

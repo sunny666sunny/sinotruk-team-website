@@ -5,6 +5,7 @@ import { SiteImage } from '@/components/SiteImage';
 import { addToShortlist, readShortlist, saveShortlist } from '@/lib/procurement/shortlist';
 import type { ProcurementProduct } from '@/lib/content/serializers';
 import type { Product } from '@/data/products';
+import { canonicalizeSpecifications, preparePublishedProduct } from '@/lib/product-data/published-product';
 
 export type IndustrialProductCardProps = {
   product: ProcurementProduct;
@@ -13,11 +14,13 @@ export type IndustrialProductCardProps = {
 };
 
 export function toCatalogueProduct(product: Product): ProcurementProduct {
-  const drive = Object.entries(product.specifications).find(([label]) => /^(?:drive type|driving form)$/i.test(label))?.[1];
-  const power = Object.entries(product.specifications).find(([label]) => /\bpower\b/i.test(label))?.[1];
+  const published = preparePublishedProduct(product);
+  const normalizedSpecs = canonicalizeSpecifications(published.specifications, published.category);
+  const drive = normalizedSpecs['Drive type'];
+  const power = normalizedSpecs['Engine power'] || normalizedSpecs['Motor power'];
   return {
-    ...product,
-    normalizedSpecs: { ...product.specifications, ...(drive ? { drive } : {}), ...(power ? { power } : {}) },
+    ...published,
+    normalizedSpecs: { ...normalizedSpecs, ...(drive ? { drive } : {}), ...(power ? { power } : {}) },
     applicationTags: [],
     marketTags: [],
   };

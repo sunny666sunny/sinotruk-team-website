@@ -2,6 +2,20 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getAdminSession } from '@/lib/security/api-auth'
 import { prisma } from '@/lib/db'
 import { afterContentMutation, productPublicPath } from '@/lib/content/mutation-effects'
+import { toProductDto } from '@/lib/content/serializers'
+import { canonicalizeSpecifications } from '@/lib/product-data/published-product'
+
+export function validateDetailContent(value: unknown): string | null {
+  if (!value || typeof value !== 'object') return '详情内容格式无效'
+  const content = value as Record<string, unknown>
+  if (!Array.isArray(content.faqs) || content.faqs.length < 4 || content.faqs.length > 6) return '每款产品必须配置 4–6 个 FAQ'
+  if (!content.faqs.every((item) => item && typeof item === 'object' && typeof (item as Record<string, unknown>).question === 'string' && typeof (item as Record<string, unknown>).answer === 'string')) return 'FAQ 问题和答案不能为空'
+  for (const field of ['performanceItems', 'gallery', 'applicationAreas', 'solutions']) {
+    if (!Array.isArray(content[field]) || !(content[field] as unknown[]).length) return `${field} 不能为空`
+  }
+  if (typeof content.performanceSummary !== 'string' || !content.performanceSummary.trim()) return 'Performance 总述不能为空'
+  return null
+}
 
 type ProductArchiveClient = {
   product: {
@@ -41,22 +55,33 @@ export function createProductHandler(overrides: Partial<ProductHandlerDependenci
         include: { performanceItems: { orderBy: { sortOrder: 'asc' } }, category: true, subcategory: true },
       })
       if (!product) return res.status(404).json({ error: 'Product not found' })
+      const detailContent = toProductDto(product, { includeDetailContent: true }).detailContent
       return res.status(200).json({
         ...product,
         specifications: JSON.parse(product.specifications),
         features: JSON.parse(product.features),
         detailedFeatures: JSON.parse(product.detailedFeatures),
         galleryImages: JSON.parse(product.galleryImages),
+        detailContent,
       })
     }
 
     case 'PUT': {
       const previous = await dependencies.prisma.product.findUnique({ where: { id: id as string }, select: { categoryId: true, subcategoryId: true } })
-      const { name, categoryId, subcategoryId, description, image, bannerImage, specifications, features, detailedFeatures, galleryImages, isActive, sortOrder, performanceItems } = req.body
+      const { name, categoryId, subcategoryId, description, image, bannerImage, specifications, features, detailedFeatures, galleryImages, detailContent, isActive, sortOrder, performanceItems } = req.body
+      if (detailContent !== undefined) {
+        const validationError = validateDetailContent(detailContent)
+        if (validationError) return res.status(400).json({ error: validationError })
+      }
       // Delete existing performance items and recreate
       if (performanceItems) {
         await dependencies.prisma.performanceItem.deleteMany({ where: { productId: id as string } })
       }
+      const normalizedSpecs = specifications
+        ? canonicalizeSpecifications(specifications, categoryId || previous?.categoryId || '')
+        : null
+      const drive = normalizedSpecs?.['Drive type']
+      const power = normalizedSpecs?.['Engine power'] || normalizedSpecs?.['Motor power']
       const product = await dependencies.prisma.product.update({
         where: { id: id as string },
         data: {
@@ -67,9 +92,15 @@ export function createProductHandler(overrides: Partial<ProductHandlerDependenci
           ...(image !== undefined && { image }),
           ...(bannerImage !== undefined && { bannerImage }),
           ...(specifications && { specifications: JSON.stringify(specifications) }),
+          ...(normalizedSpecs && { normalizedSpecs: JSON.stringify({
+            ...normalizedSpecs,
+            ...(drive ? { drive } : {}),
+            ...(power ? { power } : {}),
+          }) }),
           ...(features && { features: JSON.stringify(features) }),
           ...(detailedFeatures && { detailedFeatures: JSON.stringify(detailedFeatures) }),
           ...(galleryImages && { galleryImages: JSON.stringify(galleryImages) }),
+          ...(detailContent !== undefined && { detailContent: JSON.stringify(detailContent) }),
           ...(isActive !== undefined && { isActive }),
           ...(sortOrder !== undefined && { sortOrder }),
           ...(performanceItems && {

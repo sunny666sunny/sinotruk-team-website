@@ -23,6 +23,11 @@ export interface SeoInput {
   source?: { title?: string | null; url?: string | null; datePublished?: string | null } | null
   items?: Array<{ name: string; url: string }>
   breadcrumbs?: Array<{ name: string; path: string }>
+  productId?: string
+  category?: string
+  productImages?: Array<{ url: string; caption: string }>
+  additionalProperties?: Array<{ name: string; value: string }>
+  faqs?: Array<{ question: string; answer: string }>
 }
 
 export interface ResolvedSeo {

@@ -3,6 +3,10 @@ import type { FactPacket } from './types'
 
 const words = (value: string) => value.trim().split(/\s+/).filter(Boolean)
 const normalized = (value: string) => value.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim()
+const unsupportedClaims = [
+  'authorized dealer', 'factory-direct price', 'best price', 'financing available',
+  'manufacturer warranty', 'immediate delivery', 'leading manufacturer', 'guaranteed',
+]
 
 export function checkGeneratedArticle(article: GeneratedArticle, packet: FactPacket) {
   const issues: string[] = []
@@ -14,6 +18,10 @@ export function checkGeneratedArticle(article: GeneratedArticle, packet: FactPac
   if (article.seoDescription.length < 120 || article.seoDescription.length > 160) issues.push('invalid_seo_description_length')
   if (!article.relatedProductIds.length || article.relatedProductIds.some((path) => !path.startsWith('/'))) issues.push('invalid_internal_links')
   if (!article.keywords.length) issues.push('missing_keywords')
+
+  const completeText = normalized([article.title, article.excerpt, article.body, article.seoTitle, article.seoDescription].join(' '))
+  if (unsupportedClaims.some((claim) => completeText.includes(claim))) issues.push('unsupported_commercial_claim')
+  if (/\bcomplete guide\b/.test(completeText) || /\b20(?:1\d|2[0-5])\b/.test(`${article.title} ${article.seoTitle}`)) issues.push('dated_or_template_title')
 
   const allowedNumbers = new Set([packet.sourceDate || '', ...packet.facts].join(' ').match(/\b\d+(?:[.,]\d+)?\b/g) || [])
   for (const number of article.body.match(/\b\d+(?:[.,]\d+)?\b/g) || []) if (!allowedNumbers.has(number)) issues.push('unsupported_number')
