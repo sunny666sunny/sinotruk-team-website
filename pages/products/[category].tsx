@@ -22,8 +22,13 @@ type Props = {
   category: {
     id: string;
     name: string;
-    categoryDescription?: string;
+    seoTitle: string;
+    seoDescription: string;
+    categoryDescription: string;
     description: string;
+    tagline: string;
+    fullDescription: string;
+    contentSections: { title: string; body: string }[];
     bannerImage: string;
     subcategories: { id: string; name: string }[];
   };
@@ -53,20 +58,20 @@ export default function ProductCategoryPage({ category, products }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <SeoHead input={{ path, pageType: 'collection', name: category.name, description: category.categoryDescription || category.description, image: category.bannerImage, items: products.map((product) => ({ name: product.name, url: `/products/${product.category}/${product.subcategory}/${product.id}` })), breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: category.name, path }] }} />
+      <SeoHead input={{ path, pageType: 'collection', name: category.name, description: category.seoDescription, image: category.bannerImage, items: products.map((product) => ({ name: product.name, url: `/products/${product.category}/${product.subcategory}/${product.id}` })), override: { title: category.seoTitle }, breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: category.name, path }] }} />
       <Header />
       <main id="main" className="industrial-page flex-grow pt-16 lg:pt-[72px]">
         <PageHero
           eyebrow="Products / Vehicle range"
           title={category.name}
-          description={category.categoryDescription || category.description}
+          description={category.categoryDescription}
           image={category.bannerImage}
         />
         <section className="border-b border-[var(--industrial-line)] bg-[var(--industrial-surface)] py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Vehicle types</p>
             <h2 className="mt-3 text-4xl font-bold uppercase text-[var(--industrial-text)]">Browse by vehicle type</h2>
-            <div className="mt-7 grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)] md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-7 grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)]" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 18rem), 1fr))' }}>
               {category.subcategories.map((subcategory) => {
                 const items = products.filter((product) => product.subcategory === subcategory.id);
                 return (
@@ -79,6 +84,31 @@ export default function ProductCategoryPage({ category, products }: Props) {
                   </Link>
                 );
               })}
+            </div>
+          </div>
+        </section>
+        <section className="border-b border-[var(--industrial-line)] bg-[var(--industrial-bg)] py-14" aria-labelledby="category-procurement-guide">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.5fr)] lg:px-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--industrial-accent)]">Category procurement guide</p>
+              <h2 id="category-procurement-guide" className="mt-3 text-3xl font-bold uppercase text-[var(--industrial-text)] sm:text-4xl">{category.tagline}</h2>
+              <p className="mt-5 max-w-xl text-base leading-7 text-[var(--industrial-muted)]">{category.fullDescription}</p>
+              <div className="mt-7 flex flex-wrap gap-2" aria-label={`${category.name} vehicle type links`}>
+                {category.subcategories.map((subcategory) => (
+                  <Link key={subcategory.id} href={`/products/${category.id}/${subcategory.id}`} className="inline-flex min-h-11 items-center gap-2 border border-[var(--industrial-line)] px-4 text-xs font-bold uppercase tracking-[0.06em] text-[var(--industrial-text)] transition hover:border-[var(--industrial-accent)] hover:text-[var(--industrial-accent)]">
+                    {subcategory.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-px overflow-hidden border border-[var(--industrial-line)] bg-[var(--industrial-line)] md:grid-cols-3">
+              {category.contentSections.map((section, index) => (
+                <article key={section.title} className="bg-[var(--industrial-panel)] p-6">
+                  <p className="text-xs font-bold tracking-[0.12em] text-[var(--industrial-accent)]">0{index + 1}</p>
+                  <h3 className="mt-4 text-xl font-bold uppercase text-[var(--industrial-text)]">{section.title}</h3>
+                  <p className="mt-4 text-sm leading-6 text-[var(--industrial-muted)]">{section.body}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -139,8 +169,13 @@ export async function getStaticProps({ params }: { params: { category: string } 
       category: {
         id: category.id,
         name: category.name,
-        categoryDescription: category.categoryDescription || null,
+        seoTitle: category.seoTitle,
+        seoDescription: category.seoDescription,
+        categoryDescription: category.categoryDescription,
         description: category.description,
+        tagline: category.tagline,
+        fullDescription: category.fullDescription,
+        contentSections: category.contentSections,
         bannerImage: category.bannerImage,
         subcategories: category.subcategories.map((subcategory) => ({ id: subcategory.id, name: subcategory.name })),
       },
